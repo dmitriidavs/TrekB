@@ -7,21 +7,15 @@ data infrastructure solutions, designed to allow
 easy performance tracking of your preferred assets
 via simple Telegram interfaces
 
-[Links](#links) •
-[Key Features](#key-features) •
-[Architecture Overview](#architecture-overview) •
-[Data Sources](#data-sources) •
-[How to DIY](#how-to-diy)
+[Features](#features) •
+[Architecture](#architecture) •
+[Sources](#sources) •
+[DIY](#diy) •
+[Links](#links)
 
 </div>
 
-## Links
-
-Bots:
-
-Author:
-
-## Key Features
+## Features
 
 ### High-level:
 
@@ -41,7 +35,7 @@ Author:
 
 • asynchronous and non-blocking behaviour on the 'front-end'
 
-## Architecture Overview
+## Architecture
 
 ### VM
 
@@ -67,11 +61,11 @@ local interface testing purposes.
 
 Stack: `SQLite`, `Python`, `SQL`
 
-## Data Sources
+## Sources
 
 s
 
-## How to DIY
+## DIY
 
 ### VM way
 
@@ -82,3 +76,9 @@ s
 ---
 
 ### Lite way
+
+## Links
+
+Bots:
+
+Author:
