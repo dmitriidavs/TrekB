@@ -2,11 +2,9 @@
 
 # Assets tracker bot
 
----
-
 A Telegram bot powered by modern data engineering and
-infrastructure solutions designed to allow to easily
-keep track of your assets' performance.
+infrastructure solutions designed to allow easy
+tracking of your preferred assets' performance
 
 [Key Features](#key-features) •
 [Architecture Overview](#architecture-overview) •
@@ -16,8 +14,6 @@ keep track of your assets' performance.
 </div>
 
 ## Key Features
-
----
 
 s
 
@@ -33,8 +29,6 @@ s
 
 ## Architecture Overview
 
----
-
 s
 
 s
@@ -49,8 +43,6 @@ s
 
 ## Sources & Services
 
----
-
 s
 
 s
@@ -64,8 +56,6 @@ s
 s
 
 ## How to DIY
-
----
 
 s
 
