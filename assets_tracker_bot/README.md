@@ -2,7 +2,7 @@
 
 # Assets Tracker Bot
 
-Bot powered by modern data engineering and
+This bot is powered by modern data engineering and
 infrastructure solutions designed to allow easy
 tracking of your preferred assets' performance
 via simple Telegram interface
@@ -16,25 +16,42 @@ via simple Telegram interface
 
 ## Key Features
 
-s
+### High-level:
 
-s
+• popular crypto and stocks assets
 
-s
+• ability to receive reports in preferred formats
 
-s
+•
 
-s
+### Low-level:
 
-s
+•
+
+•
+
+• asynchronous and non-blocking behaviour on the 'front-end'
 
 ## Architecture Overview
 
 ### VM
 
+Initial version of the project.
+
+Stack:
+
 ### Cloud
 
+A migration of VM version to AWS cloud architecture.
+
+Stack:
+
 ### Lite
+
+Easily deployable version of the project mainly for
+local interface testing purposes.
+
+Stack:
 
 ## Sources and Services
 
@@ -52,15 +69,8 @@ s
 
 ## How to DIY
 
-s
+### VM way
 
-s
+### Cloud way
 
-s
-
-s
-
-s
-
-s
-
+### Lite way
