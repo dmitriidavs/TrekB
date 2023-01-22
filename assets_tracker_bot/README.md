@@ -1,6 +1,6 @@
 <div align="center">
 
-# Assets tracker bot
+# Assets Tracker Bot
 
 A Telegram bot powered by modern data engineering and
 infrastructure solutions designed to allow easy
@@ -8,7 +8,7 @@ tracking of your preferred assets' performance
 
 [Key Features](#key-features) •
 [Architecture Overview](#architecture-overview) •
-[Sources & Services](#sources-&-services) •
+[Sources and Services](#sources-and-services) •
 [How to DIY](#how-to-diy)
 
 </div>
@@ -29,19 +29,13 @@ s
 
 ## Architecture Overview
 
-s
+### VM
 
-s
+### Cloud
 
-s
+### Lite
 
-s
-
-s
-
-s
-
-## Sources & Services
+## Sources and Services
 
 s
 
