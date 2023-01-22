@@ -7,6 +7,7 @@ data infrastructure solutions, designed to allow
 easy performance tracking of your preferred assets
 via simple Telegram interfaces
 
+[About](#about) •
 [Features](#features) •
 [Architecture](#architecture) •
 [Sources](#sources) •
@@ -14,6 +15,10 @@ via simple Telegram interfaces
 [Links](#links)
 
 </div>
+
+## About
+
+a
 
 ## Features
 
