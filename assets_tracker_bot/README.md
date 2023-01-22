@@ -4,7 +4,7 @@
 
 A bot powered by modern data engineering and
 data infrastructure solutions, designed to allow
-easy tracking of your preferred assets' performance
+easy performance tracking of your preferred assets'
 via simple Telegram interfaces
 
 [Key Features](#key-features) •
@@ -40,14 +40,14 @@ via simple Telegram interfaces
 
 Initial version of the project.
 
-Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO`, `Docker`,
+Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
 ---
 
 ### Cloud
 
-A migration of VM based version to AWS cloud architecture.
+A migration of VM based solution to AWS cloud architecture.
 
 Stack: `?AWS!`, `Python`, `SQL`
 
