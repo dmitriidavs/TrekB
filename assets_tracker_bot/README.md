@@ -4,15 +4,22 @@
 
 A bot powered by modern data engineering and
 data infrastructure solutions, designed to allow
-easy performance tracking of your preferred assets'
+easy performance tracking of your preferred assets
 via simple Telegram interfaces
 
+[Links](#links) •
 [Key Features](#key-features) •
 [Architecture Overview](#architecture-overview) •
-[Sources and Services](#sources-and-services) •
+[Data sources](#data-sources) •
 [How to DIY](#how-to-diy)
 
 </div>
+
+## Links
+
+Bots:
+
+Author:
 
 ## Key Features
 
@@ -60,7 +67,7 @@ local interface testing purposes.
 
 Stack: `SQLite`, `Python`, `SQL`
 
-## Sources and Services
+## Data sources
 
 s
 
