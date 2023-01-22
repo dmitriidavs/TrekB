@@ -45,7 +45,7 @@ Author:
 
 ### VM
 
-Initial version of the project.
+Initial version of the project based on virtualization and containerization techniques.
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
