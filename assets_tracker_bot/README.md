@@ -2,9 +2,9 @@
 
 # Assets Tracker Bot
 
-This bot is powered by modern data engineering and
-infrastructure solutions designed to allow easy
-tracking of your preferred assets' performance
+A bot powered by modern data engineering and
+data infrastructure solutions, designed to allow
+easy tracking of your preferred assets' performance
 via simple Telegram interface
 
 [Key Features](#key-features) •
