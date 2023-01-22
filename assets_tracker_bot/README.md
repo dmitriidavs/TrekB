@@ -5,7 +5,7 @@
 A bot powered by modern data engineering and
 data infrastructure solutions, designed to allow
 easy tracking of your preferred assets' performance
-via simple Telegram interface
+via simple Telegram interfaces
 
 [Key Features](#key-features) •
 [Architecture Overview](#architecture-overview) •
