@@ -10,7 +10,7 @@ via simple Telegram interfaces
 [Links](#links) •
 [Key Features](#key-features) •
 [Architecture Overview](#architecture-overview) •
-[Data sources](#data-sources) •
+[Data Sources](#data-sources) •
 [How to DIY](#how-to-diy)
 
 </div>
@@ -67,17 +67,7 @@ local interface testing purposes.
 
 Stack: `SQLite`, `Python`, `SQL`
 
-## Data sources
-
-s
-
-s
-
-s
-
-s
-
-s
+## Data Sources
 
 s
 
