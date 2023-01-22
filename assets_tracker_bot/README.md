@@ -40,11 +40,15 @@ Initial version of the project.
 
 Stack:
 
+---
+
 ### Cloud
 
 A migration of VM version to AWS cloud architecture.
 
 Stack:
+
+---
 
 ### Lite
 
@@ -71,6 +75,10 @@ s
 
 ### VM way
 
+---
+
 ### Cloud way
+
+---
 
 ### Lite way
