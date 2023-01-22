@@ -40,24 +40,25 @@ via simple Telegram interface
 
 Initial version of the project.
 
-Stack:
+Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO`, `Docker`,
+`Python`, `SQL`
 
 ---
 
 ### Cloud
 
-A migration of VM version to AWS cloud architecture.
+A migration of VM based version to AWS cloud architecture.
 
-Stack:
+Stack: `?AWS!`, `Python`, `SQL`
 
 ---
 
 ### Lite
 
-Easily deployable version of the project mainly for
+An easily deployable version of the project mainly for
 local interface testing purposes.
 
-Stack:
+Stack: `SQLite`, `Python`, `SQL`
 
 ## Sources and Services
 
