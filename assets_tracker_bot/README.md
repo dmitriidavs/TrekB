@@ -46,7 +46,7 @@ a
 
 Initial version of the project based on virtualization and containerization techniques.
 
-![VM architecture](pics/arch1.jpg?raw=true "VM architecture")
+![VM architecture](pics/arch1.png?raw=true "VM architecture")
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
