@@ -1,0 +1,7 @@
+__pycache__
+
+env
+.env.bat
+
+requirements.txt
+tmp.txt
