@@ -73,9 +73,10 @@ takeaways
 
 <div align="center">
 
-[VM bot](https://t.me/assets_tracker_VM_bot) •
-[Cloud bot](https://t.me/*) •
-[Lite bot](https://t.me/*)
+Bot links:
+[VM](https://t.me/assets_tracker_VM_bot) •
+[Cloud](https://t.me/*) •
+[Lite](https://t.me/*)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
