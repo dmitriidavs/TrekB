@@ -2,23 +2,22 @@
 
 # Assets Tracker Bot
 
-A bot powered by modern data engineering and
-data infrastructure solutions, designed to allow
-easy performance tracking of your preferred assets
+A bot powered by modern data engineering and data infrastructure solutions,\
+designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces
 
 [About](#about) •
 [Features](#features) •
 [Architecture](#architecture) •
-[Sources](#sources) •
-[DIY](#diy) •
-[Links](#links)
+[***](#scalability) •
+[***](#layers) •
+[Takeaways](#takeaways)
 
 </div>
 
 ## About
 
-a
+about
 
 ## Features
 
@@ -68,24 +67,16 @@ local interface testing purposes.
 
 Stack: `SQLite`, `Python`, `SQL`
 
-## Sources
+## Takeaways
 
-s
+takeaways
 
-## DIY
+<div align="center">
 
-### VM way
+[VM bot](https://t.me/assets_tracker_VM_bot) •
+[Cloud bot](https://t.me/*) •
+[Lite bot](https://t.me/*)
 
----
+Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
-### Cloud way
-
----
-
-### Lite way
-
-## Links
-
-Bots:
-
-Author:
+</div>
