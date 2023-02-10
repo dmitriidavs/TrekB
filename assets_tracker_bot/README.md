@@ -75,8 +75,8 @@ takeaways
 
 Bot links:
 [VM](https://t.me/assets_tracker_VM_bot) •
-[Cloud](https://t.me/*) •
-[Lite](https://t.me/*)
+[Cloud](https://t.me/assets_tracker_cloud_bot) •
+[Lite](https://t.me/assets_tracker_lite_bot)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
