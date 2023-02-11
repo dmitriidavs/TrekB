@@ -22,12 +22,12 @@ class ATCoreBot:
         self.set_bot()
         self.set_dispatcher()
 
+    def set_bot(self) -> None:
+        self.bot = Bot(token=self.api_key)
+
     def set_dispatcher(self) -> None:
         if self.storage_type == self.__class__.fsm_basic_storage:
             self.dispatcher = Dispatcher(self.bot, storage=MemoryStorage())
         else:
             # TODO: migrate to db type of storage
             pass
-
-    def set_bot(self) -> None:
-        self.bot = Bot(token=self.api_key)
