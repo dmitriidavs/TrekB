@@ -4,7 +4,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 
 class ATCoreBot:
-    """Parent class for bot creation"""
+    """Core class for bot creation"""
 
     fsm_basic_storage: str = 'memory'
 
