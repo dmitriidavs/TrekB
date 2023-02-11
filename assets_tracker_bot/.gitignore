@@ -1,7 +1,9 @@
 __pycache__
 
-env
-.env.bat
+.idea
+
+venv
+.venv.bat
 
 requirements.txt
 tmp.txt
