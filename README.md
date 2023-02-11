@@ -10,5 +10,3 @@ Portfolio Organization
     │   ├── VM                      <- VM based solution (in DEV)
     │   ├── Cloud                   <- Cloud based solution
     │   └── Lite                    <- Solution for "quick-start" with some basic features
-
---------
