@@ -1,5 +1,8 @@
-Portfolio Organization
+# Portfolio Organization
+------------
 
 ├── LICENSE
 ├── README.md                      <- The top-level README
-├── assets_tracker_project         <- Telegram Bot for assets tracking repo
+├── assets_tracker_project         <- Assets tracking bot for Telegram
+
+------------
