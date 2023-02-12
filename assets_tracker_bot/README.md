@@ -17,27 +17,15 @@ via simple Telegram interfaces
 
 ## About
 
-about
+To be updated ...
 
 ## Features
 
-### High-level:
-
-• popular crypto and stocks assets
-
-• ability to receive reports in preferred formats
-
-•
-
----
-
-### Low-level:
+• overkill architecture
 
 •
 
 •
-
-• asynchronous and non-blocking behaviour on the 'front-end'
 
 ## Architecture
 
@@ -84,14 +72,14 @@ Stack: `SQLite`, `Python`, `SQL`
 
 ## Takeaways
 
-takeaways
+To be updateted ...
 
 <div align="center">
 
-Bot links:
+Try it:
 [VM](https://t.me/assets_tracker_VM_bot) •
-[Cloud](https://t.me/assets_tracker_cloud_bot) •
-[Lite](https://t.me/assets_tracker_lite_bot)
+[Cloud](https://t.me/*) •
+[Lite](https://t.me/*)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
