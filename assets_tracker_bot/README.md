@@ -45,22 +45,25 @@ about
 
 Initial version of the project based on virtualization and containerization techniques.
 
-### *High-level Overview*
+### <ins> High-level Overview </ins>
 
 ![VM architecture](pics/arch1.png?raw=true "VM architecture")
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
-### *Telegram Component*
+### <ins> Database Component </ins>
+
+
+### <ins> Telegram Component </ins>
 
 ![Telegram Component](pics/arch2.png?raw=true "Telegram Component")
 
 Tags: `tag1`
 
-### *Docker Component*
+### <ins> Docker Component </ins>
 
-### *CI/CD Component*
+### <ins> CI/CD Component </ins>
 
 ---
 
