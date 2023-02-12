@@ -41,26 +41,38 @@ about
 
 ## Architecture
 
-### VM
+### **VM**
 
 Initial version of the project based on virtualization and containerization techniques.
+
+### *High-level Overview*
 
 ![VM architecture](pics/arch1.png?raw=true "VM architecture")
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
+### *Telegram Component*
+
+![Telegram Component](pics/arch2.png?raw=true "Telegram Component")
+
+Tags: `tag1`
+
+### *Docker Component*
+
+### *CI/CD Component*
+
 ---
 
-### Cloud
+### **Cloud**
 
 A migration of VM based solution to AWS cloud architecture.
 
-Stack: `?AWS!`, `Python`, `SQL`
+Stack: `?AWS!`, `?Azure!`, `Python`, `SQL`
 
 ---
 
-### Lite
+### **Lite**
 
 An easily deployable version of the project mainly for
 local interface testing purposes.

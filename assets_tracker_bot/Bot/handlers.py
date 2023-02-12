@@ -1,8 +1,7 @@
-from aiogram import types, Dispatcher
-from bot_create import bot
+from aiogram import types, Dispatcher, Bot
 
 
-async def cmd_start(message: types.Message) -> None:
+async def cmd_start(bot: Bot, message: types.Message) -> None:
     """/start command handler"""
 
     answer = 'You Take The Red Pill - You Stay In Wonderland, And I Show You How Deep The Rabbit Hole Goes.'

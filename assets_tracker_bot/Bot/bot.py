@@ -6,7 +6,7 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 class ATCoreBot:
     """Core class for bot creation"""
 
-    fsm_basic_storage: str = 'memory'
+    fsm_basic_storage = 'memory'
 
     def __init__(self,
                  arch_type: str,
