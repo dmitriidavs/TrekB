@@ -59,7 +59,7 @@ Tags: `tag1`
 
 A migration of VM based solution to AWS cloud architecture.
 
-Stack: `?AWS!`, `?Azure!`, `Python`, `SQL`
+Stack: `- AWS? Azure? - Excel!`, `Python`, `SQL`
 
 ---
 
