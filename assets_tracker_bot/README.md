@@ -76,7 +76,7 @@ To be updateted ...
 
 <div align="center">
 
-Try it [here](https://t.me/assets_tracker_VM_bot)
+Try bot by yourself [here](https://t.me/assets_tracker_VM_bot)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
