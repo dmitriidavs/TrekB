@@ -76,10 +76,7 @@ To be updateted ...
 
 <div align="center">
 
-Try it:
-[VM](https://t.me/assets_tracker_VM_bot) •
-[Cloud](https://t.me/*) •
-[Lite](https://t.me/*)
+Try it [here](https://t.me/assets_tracker_VM_bot)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
