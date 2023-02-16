@@ -1,14 +1,25 @@
-from aiogram import types, Dispatcher, Bot
+import asyncio
+from aiogram import types, Dispatcher#, Bot
 
 
-async def cmd_start(bot: Bot, message: types.Message) -> None:
+async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
-    answer = 'You Take The Red Pill - You Stay In Wonderland, And I Show You How Deep The Rabbit Hole Goes.'
-    await bot.send_message(message.from_user.id, answer)
+    answer = f'Check out available commands above!'
+    await message.answer(text=answer)
+
+
+async def cmd_wtfru(message: types.Message) -> None:
+    """/wtfru command handler"""
+
+    answer = 'You can read about me here: https://github.com/dmitriidavs/__portefeuille__/tree/main/assets_tracker_bot'
+    await message.answer(text=answer)
+    await asyncio.sleep(1)
+    await message.answer(text='★ Don\'t forget to star the project ★')
 
 
 def register_handlers(disp: Dispatcher) -> None:
     """Handlers assembly"""
 
-    disp.register_message_handler(cmd_start, commands=['start'], state=None)
+    disp.register_message_handler(cmd_start, commands=['start'])
+    disp.register_message_handler(cmd_wtfru, commands=['wtfru'])
