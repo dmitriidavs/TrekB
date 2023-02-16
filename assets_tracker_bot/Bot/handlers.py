@@ -1,5 +1,6 @@
 import asyncio
-from aiogram import types, Dispatcher#, Bot
+
+from aiogram import types, Dispatcher
 
 
 async def cmd_start(message: types.Message) -> None:
@@ -12,7 +13,7 @@ async def cmd_start(message: types.Message) -> None:
 async def cmd_wtfru(message: types.Message) -> None:
     """/wtfru command handler"""
 
-    answer = 'You can read about me here: https://github.com/dmitriidavs/__portefeuille__/tree/main/assets_tracker_bot'
+    answer = 'You can read about me in my repo: https://github.com/dmitriidavs/__portefeuille__/tree/main/assets_tracker_bot'
     await message.answer(text=answer)
     await asyncio.sleep(1)
     await message.answer(text='★ Don\'t forget to star the project ★')
