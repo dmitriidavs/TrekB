@@ -1,5 +1,18 @@
 import os
 
-API_KEY = os.environ.get("API_KEY")
-ARCH_TYPE = os.environ.get("ARCH_TYPE")
-BOT_ADDRESS = os.environ.get("BOT_ADDRESS")
+from includes.validators import validate_env_vars
+
+
+env_vars = {
+    'bot_arch_type': os.environ.get('BOT_ARCH_TYPE'),
+    'bot_address': os.environ.get('BOT_ADDRESS'),
+    'bot_fsm_storage_type': os.environ.get('BOT_FSM_STORAGE_TYPE'),
+    'bot_api_token': os.environ.get('BOT_API_TOKEN'),
+    'user_db_conn': os.environ.get('USER_DB_CONN')
+}
+
+# verify correctness of environment variables
+env_vars = validate_env_vars(env_vars)
+# create variables from env_vars keys in upper case
+for key, val in env_vars.items():
+    exec(key.upper() + '=val')
