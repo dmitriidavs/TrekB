@@ -10,4 +10,4 @@ Portfolio Organization
     │   ├── VM                      <- VM based solution
     │   ├── Cloud                   <- Cloud based solution
     │   ├── Lite                    <- Quick-start solution with some basic features [DEV]
-    │   └── Research                <- Maths, statistics & metrics logic research folder
+    │   └── Research                <- Maths, statistics & metrics logic research
