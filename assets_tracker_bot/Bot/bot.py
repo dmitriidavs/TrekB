@@ -2,32 +2,38 @@ from aiogram import Bot
 from aiogram.dispatcher import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
+# from includes.DBMSconnection import
+
 
 class ATCoreBot:
     """Core class for bot creation"""
 
-    fsm_basic_storage = 'memory'
-
-    def __init__(self,
-                 arch_type: str,
-                 api_key: str,
-                 storage_type: str = fsm_basic_storage) -> None:
-        """Param desc mb?"""
-
-        self.arch_type = arch_type
-        self.api_key = api_key
+    def __init__(self, api_token: str, storage_type: str):
         self.storage_type = storage_type
+        self.api_token = api_token
         self.bot = None
         self.dispatcher = None
-        self.set_bot()
-        self.set_dispatcher()
 
     def set_bot(self) -> None:
-        self.bot = Bot(token=self.api_key)
+        self.bot = Bot(token=self.api_token)
 
     def set_dispatcher(self) -> None:
-        if self.storage_type == self.__class__.fsm_basic_storage:
+        if self.storage_type == 'memory':
             self.dispatcher = Dispatcher(self.bot, storage=MemoryStorage())
         else:
-            # TODO: migrate to db type of storage
+            # TODO: migrate to db type of storage (SQLite)
             pass
+
+
+class LiteBot(ATCoreBot):
+    """Lite Bot class creator"""
+
+    def __init__(self, api_token: str, arch_type: str, user_db_conn: str, storage_type: str = 'memory'):
+        super().__init__(api_token, storage_type)
+        super().set_bot()
+        super().set_dispatcher()
+        self.arch_type = arch_type
+        self.user_db_conn = user_db_conn
+        # TODO: add connectors to db through external parent class in DBMSconnection
+        # self.conn =
+
