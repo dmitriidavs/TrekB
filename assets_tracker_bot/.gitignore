@@ -7,5 +7,7 @@ Static
 venv
 .venv.bat
 
+.ipynb_checkpoints
+
 requirements.txt
 tmp.txt
