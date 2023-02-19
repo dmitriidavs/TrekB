@@ -2,7 +2,7 @@ from bot import LiteBot
 from includes.creds import BOT_API_TOKEN, BOT_ARCH_TYPE, USER_DB_CONN, BOT_FSM_STORAGE_TYPE
 
 
-# create bot class depending on ARCH_TYPE
+# TODO: create bot class depending on ARCH_TYPE
 BaseBot = LiteBot(api_token=BOT_API_TOKEN,
                   arch_type=BOT_ARCH_TYPE,
                   user_db_conn=USER_DB_CONN,
