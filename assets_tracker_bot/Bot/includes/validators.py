@@ -7,12 +7,12 @@ from pydantic import (
 )
 
 
-class EnvVarStds:
+class EnvVarsStds:
     supported_arch_types = ['VM', 'Cloud', 'Lite']
     supported_fsm_storage_types = ['memory', 'db']
 
 
-class EnvVars(EnvVarStds, BaseModel):
+class EnvVars(EnvVarsStds, BaseModel):
     bot_arch_type: str
     bot_address: str
     bot_fsm_storage_type: str
