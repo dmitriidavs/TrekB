@@ -2,10 +2,10 @@ __pycache__
 
 .idea
 
+Static
+
 venv
 .venv.bat
 
 requirements.txt
 tmp.txt
-
-Dockerfile
