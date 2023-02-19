@@ -7,3 +7,5 @@ venv
 
 requirements.txt
 tmp.txt
+
+Dockerfile

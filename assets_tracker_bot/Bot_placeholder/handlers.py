@@ -10,7 +10,7 @@ async def cmd_start(message: types.Message) -> None:
     await message.answer(text=answer)
 
 
-async def cmd_info(message: types.Message) -> None:
+async def cmd_wtfru(message: types.Message) -> None:
     """/info command handler"""
 
     answer = 'You can read about me in my repo: https://github.com/dmitriidavs/__portefeuille__/tree/main/assets_tracker_bot'
@@ -23,4 +23,4 @@ def register_handlers(disp: Dispatcher) -> None:
     """Handlers assembly"""
 
     disp.register_message_handler(cmd_start, commands=['start'])
-    disp.register_message_handler(cmd_info, commands=['info'])
+    disp.register_message_handler(cmd_wtfru, commands=['info'])
