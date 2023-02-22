@@ -7,7 +7,7 @@ A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces
 
-Try it out by yourself: [@TrekB_bot](https://t.me/TrekB_bot)
+Try it out yourself: [@TrekB_bot](https://t.me/TrekB_bot)
 
 [About](#about) •
 [Features](#features) •
