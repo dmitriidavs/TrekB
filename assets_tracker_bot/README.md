@@ -3,7 +3,7 @@
 # TrekB
 Smart Portfolio Tracker
 
-A bot powered by modern data engineering and data infrastructure solutions,\
+A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces
 
