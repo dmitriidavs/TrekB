@@ -76,7 +76,7 @@ To be updateted ...
 
 <div align="center">
 
-Try bot by yourself [@trekbee_bot](https://t.me/trekbee_bot)
+Try bot by yourself: [@trekbee_bot](https://t.me/trekbee_bot)
 
 Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
 
