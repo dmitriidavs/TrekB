@@ -5,9 +5,13 @@ Smart Portfolio Tracker
 
 A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
-via simple Telegram interfaces
+via simple Telegram interfaces. **Try it out yourself:**
 
-Try it out yourself: [@TrekB_bot](https://t.me/TrekB_bot)
+<div style="width:10% ; height:10%">
+
+[![TrekB Logo](pics/TrekB_logo.png?raw=true "TrekB Logo")](https://t.me/TrekB_bot)
+
+</div>
 
 [About](#about) •
 [Features](#features) •
@@ -38,7 +42,7 @@ Initial version of the project based on virtualization and containerization tech
 
 ### <ins> High-level Overview </ins>
 
-![VM architecture](pics/arch1.png?raw=true "VM architecture")
+![VM Architecture](pics/arch1.png?raw=true "VM Architecture")
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
