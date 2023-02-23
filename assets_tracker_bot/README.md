@@ -7,11 +7,9 @@ A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces. **Try it out yourself:**
 
-<div style="width:10% ; height:10%">
-
-[![TrekB Logo](pics/TrekB_logo.png?raw=true "TrekB Logo")](https://t.me/TrekB_bot)
-
-</div>
+<a href="[link address](https://t.me/TrekB_bot)">
+  <img src="pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
+</a>
 
 [About](#about) •
 [Features](#features) •
