@@ -10,9 +10,35 @@ via simple Telegram interfaces. **Try it out yourself:**
 <a href="https://t.me/TrekB_bot">
   <img src="pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
 </a>
-  
----
- 
+
+</div>
+
+## Repository Organization:
+
+    ├── README.md               <- Project README
+    ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
+    |   ├── bot.py
+    |   ├── bot_create.py
+    |   ├── bot_run.py
+    |   ├── DBMSconnection.py
+    |   ├── handlers.py
+    |   ├── utils.py
+    |   ├── .venv_example.bat
+    |   └── includes
+    |   |   ├── answers.py
+    |   |   ├── creds.py
+    |   |   ├── keyboards.py
+    |   |   ├── loggers.py
+    |   |   ├── queries.py
+    |   |   └── validators.py
+    ├── Bot_placeholder         <- Interim "front-end" runner while Bot is in DEV ✔️
+    ├── VM                      <- VM based solution
+    ├── Cloud                   <- Cloud based solution
+    ├── Lite                    <- Quick-start solution with some basic features 👨‍💻
+    └── Research                <- Some research on maths, statistics & metrics logic
+
+<div align="center">
+
 [About](#about) •
 [Features](#features) •
 [Architecture](#architecture) •
