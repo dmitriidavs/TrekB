@@ -1,21 +1,21 @@
 <div align="center">
 
 # TrekB
-Smart Portfolio Tracker
+### *Smart Portfolio Tracker*
 
 A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces. **Try it out yourself:**
 
 <a href="https://t.me/TrekB_bot">
-  <img src="pics/TrekB_logo.png" alt="TrekB Logo" style="width:10% ; height:10%">
+  <img src="pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
 </a>
-
+  
+---
+ 
 [About](#about) •
 [Features](#features) •
 [Architecture](#architecture) •
-[***](#scalability) •
-[***](#layers) •
 [Takeaways](#takeaways)
 
 </div>
