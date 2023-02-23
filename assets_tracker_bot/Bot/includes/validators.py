@@ -37,16 +37,14 @@ class EnvVars(EnvVarsTypes, BaseModel):
     def api_token_is_active(cls, val: str) -> str:
         try:
             check_token(val)
+            return val
         except AioValidErr:
             raise AioValidErr('Error in BOT_API_TOKEN! Invalid token.')
-        else:
-            return val
 
 
 def validate_env_vars(env_vars: dict) -> dict:
     try:
         env_vars = EnvVars.parse_obj(env_vars)
+        return env_vars.dict()
     except ValidationError as err:
         raise TypeError(err.json())
-    else:
-        return env_vars.dict()

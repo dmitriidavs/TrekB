@@ -19,10 +19,12 @@ class ATCoreBot:
 
     def set_dispatcher(self) -> None:
         if self.storage_type == 'memory':
-            self.dispatcher = Dispatcher(self.bot, storage=MemoryStorage())
+            storage = MemoryStorage()
         else:
             # TODO: migrate to db type of storage (SQLite)
-            pass
+            storage = None
+
+        self.dispatcher = Dispatcher(self.bot, storage=storage)
 
 
 class LiteBot(ATCoreBot):
