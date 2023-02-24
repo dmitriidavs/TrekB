@@ -66,7 +66,7 @@ Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 
 Tags: `tag1`
 
-### <ins> Docker Component </ins>
+### <ins> Docker Layers & Networking </ins>
 
 ### <ins> CI/CD Component </ins>
 
