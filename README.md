@@ -1,5 +1,4 @@
 Portfolio Organization
-------------
 
     ├── LICENSE
     ├── README.md                   <- The top-level README
