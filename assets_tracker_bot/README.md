@@ -20,17 +20,20 @@ via simple Telegram interfaces. **Try it out yourself:**
     |   ├── bot.py
     |   ├── bot_create.py
     |   ├── bot_run.py
-    |   ├── DBMSconnection.py
     |   ├── handlers.py
+    |   ├── creds.py
+    |   ├── validation.py
     |   ├── utils.py
     |   ├── .venv_example.bat
     |   └── includes
-    |   |   ├── answers.py
-    |   |   ├── creds.py
+    |   |   ├── DBMSconnection.py
+    |   |   ├── finite_state_machines.py
     |   |   ├── keyboards.py
-    |   |   ├── loggers.py
-    |   |   ├── queries.py
-    |   |   └── validators.py
+    |   |   ├── validators.py
+    |   |   └── loggers
+    |   |   |   └── debug.py
+    |   |   └── queries
+    |   |   |   └── user_db.py
     ├── Bot_placeholder         <- Interim "front-end" runner while Bot is in DEV ✔️
     ├── VM                      <- VM based solution
     ├── Cloud                   <- Cloud based solution
