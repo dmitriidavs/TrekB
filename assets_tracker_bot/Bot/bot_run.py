@@ -1,8 +1,8 @@
 from aiogram.utils import executor
 
-from utils import on_startup, on_shutdown
 from bot_create import dispatcher
 from handlers import register_handlers
+from includes.loggers.debug import on_startup, on_shutdown
 
 
 if __name__ == '__main__':

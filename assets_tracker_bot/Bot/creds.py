@@ -1,6 +1,6 @@
 import os
 
-from includes.validators import validate_env_vars
+from validation import validate_env_vars
 
 
 env_vars = {
