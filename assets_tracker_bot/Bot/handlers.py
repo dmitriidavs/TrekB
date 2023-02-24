@@ -39,7 +39,6 @@ async def cmd_info(message: types.Message) -> None:
 async def cmd_join(message: types.Message) -> None:
     """/join command handler"""
 
-    # await FSMJoin.is_join.set()
     msg = 'All right, let\'s set you up!'
     await message.answer(text=msg)
     await asyncio.sleep(1)
@@ -52,7 +51,7 @@ async def cmd_join(message: types.Message) -> None:
 async def cmd_manual_add(message: types.Message) -> None:
     """/manual & /add command handler: start FSMManualSetup"""
 
-    await FSMManualSetup.asset_name.set()    # start fsm
+    await FSMManualSetup.asset_name.set()
     msg = 'OK. Send me the ticker symbol of an asset.\n' \
           'E.g.: BTC (Bitcoin) | MSFT (Microsoft)'
     await message.answer(text=msg)
