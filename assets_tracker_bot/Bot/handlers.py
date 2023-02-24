@@ -4,7 +4,7 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 
 from includes.keyboards import *
-from includes.fsm_clients import *
+from includes.finite_state_machines import *
 
 
 # TODO: move answer msgs to db
@@ -12,7 +12,9 @@ from includes.fsm_clients import *
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
-    msg = 'Hey, glad you\'re here!'
+    # TODO: check if user is already in DB. If: | If not:
+
+    msg = 'Hey, I\'m TrekB! Glad you\'re here!'
     await message.answer(text=msg)
     await asyncio.sleep(1)
     msg = 'I\'m your best friend when it comes to assets tracking. ' \
@@ -20,7 +22,7 @@ async def cmd_start(message: types.Message) -> None:
     await message.answer(text=msg)
     await asyncio.sleep(1)
     msg = 'You can learn more about me by pressing /info. ' \
-          'Or you can just go ahead and /join'
+          'Or you can just go ahead and /join.'
     await message.answer(text=msg, reply_markup=kb_start)
 
 
@@ -41,17 +43,18 @@ async def cmd_join(message: types.Message) -> None:
     msg = 'All right, let\'s set you up!'
     await message.answer(text=msg)
     await asyncio.sleep(1)
-    msg = 'There are 2 ways to start configuring your portfolio:\n' \
+    msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
           '/manual - add assets by hand\n' \
           '/import - import crypto wallet balance'
     await message.answer(text=msg, reply_markup=kb_join)
 
 
-async def cmd_manual(message: types.Message) -> None:
-    """/manual command handler: start FSMManualSetup"""
+async def cmd_manual_add(message: types.Message) -> None:
+    """/manual & /add command handler: start FSMManualSetup"""
 
     await FSMManualSetup.asset_name.set()    # start fsm
-    msg = 'OK. Send me the name of an asset.'
+    msg = 'OK. Send me the ticker symbol of an asset.\n' \
+          'E.g.: BTC (Bitcoin) | MSFT (Microsoft)'
     await message.answer(text=msg)
 
 
@@ -79,7 +82,7 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
 
     async with state.proxy() as data:
         msg = f'Added {data["asset_quantity"]} {data["asset_name"]} to your portfolio.'
-        await message.answer(text=msg)
+        await message.answer(text=msg, reply_markup=kb_manual)
 
     await state.finish()
 
@@ -90,6 +93,6 @@ def register_handlers(disp: Dispatcher) -> None:
     disp.register_message_handler(cmd_start, commands=['start'])
     disp.register_message_handler(cmd_info, commands=['info'])
     disp.register_message_handler(cmd_join, commands=['join'])
-    disp.register_message_handler(cmd_manual, commands=['manual', 'add'], state=None)
+    disp.register_message_handler(cmd_manual_add, commands=['manual', 'add'], state=None)
     disp.register_message_handler(add_asset_name, state=FSMManualSetup.asset_name)
     disp.register_message_handler(add_asset_quantity, state=FSMManualSetup.asset_quantity)
