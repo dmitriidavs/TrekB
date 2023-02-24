@@ -1,4 +1,4 @@
-# Bot Organization:
+## Bot Organization:
 
     ├── README.md               <- Bot README
     ├── bot_run.py              <- entrypoint
@@ -18,3 +18,8 @@
     |   |   └── debug.py                        <- CMD bot logging
     |   └── queries                     <- DB queries
     |   |   └── user_db.py                      <- SQLite user DB queries
+
+## Setup & Run Locally:
+
+    # some code
+    
