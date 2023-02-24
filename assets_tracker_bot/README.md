@@ -17,23 +17,6 @@ via simple Telegram interfaces. **Try it out yourself:**
 
     ├── README.md               <- Project README
     ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
-    |   ├── bot.py
-    |   ├── bot_create.py
-    |   ├── bot_run.py
-    |   ├── handlers.py
-    |   ├── creds.py
-    |   ├── validation.py
-    |   ├── utils.py
-    |   ├── .venv_example.bat
-    |   └── includes
-    |   |   ├── DBMSconnection.py
-    |   |   ├── finite_state_machines.py
-    |   |   ├── keyboards.py
-    |   |   ├── validators.py
-    |   |   └── loggers
-    |   |   |   └── debug.py
-    |   |   └── queries
-    |   |   |   └── user_db.py
     ├── Bot_placeholder         <- Interim "front-end" runner while Bot is in DEV ✔️
     ├── VM                      <- VM based solution
     ├── Cloud                   <- Cloud based solution
