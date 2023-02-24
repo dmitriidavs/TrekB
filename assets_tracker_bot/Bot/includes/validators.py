@@ -1,18 +1,14 @@
 from aiogram.bot.api import check_token
 from aiogram.utils.exceptions import ValidationError as AioValidErr
-from pydantic import (
-    BaseModel,
-    ValidationError,
-    validator
-)
+from pydantic import BaseModel, validator
 
 
-class EnvVarsTypes:
+class EnvVarsValidTypes:
     supported_arch_types = ['VM', 'Cloud', 'Lite']
     supported_fsm_storage_types = ['memory', 'db']
 
 
-class EnvVars(EnvVarsTypes, BaseModel):
+class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_arch_type: str
     bot_address: str
     bot_fsm_storage_type: str
@@ -40,11 +36,3 @@ class EnvVars(EnvVarsTypes, BaseModel):
             return val
         except AioValidErr:
             raise AioValidErr('Error in BOT_API_TOKEN! Invalid token.')
-
-
-def validate_env_vars(env_vars: dict) -> dict:
-    try:
-        env_vars = EnvVars.parse_obj(env_vars)
-        return env_vars.dict()
-    except ValidationError as err:
-        raise TypeError(err.json())
