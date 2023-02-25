@@ -30,12 +30,12 @@ class ATCoreBot:
 class LiteBot(ATCoreBot):
     """Lite Bot class creator"""
 
-    def __init__(self, api_token: str, arch_type: str, user_db_conn: str, storage_type: str = 'memory'):
+    def __init__(self, api_token: str, arch_type: str, users_db_conn: str, storage_type: str = 'memory'):
         super().__init__(api_token, storage_type)
         super().set_bot()
         super().set_dispatcher()
         self.arch_type = arch_type
-        self.user_db_conn = user_db_conn
+        self.users_db_conn = users_db_conn
         # TODO: add connectors to db through external parent class in DBMSconnection
         # self.conn =
 

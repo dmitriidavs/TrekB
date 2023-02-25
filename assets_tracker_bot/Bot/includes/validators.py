@@ -13,7 +13,7 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_address: str
     bot_fsm_storage_type: str
     bot_api_token: str
-    user_db_conn: str
+    users_db_conn: str
 
     @validator('bot_arch_type')
     def arch_type_is_supported(cls, val: str) -> str:

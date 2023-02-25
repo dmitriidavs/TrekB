@@ -8,7 +8,7 @@ env_vars = {
     'bot_address': os.environ.get('BOT_ADDRESS'),
     'bot_fsm_storage_type': os.environ.get('BOT_FSM_STORAGE_TYPE'),
     'bot_api_token': os.environ.get('BOT_API_TOKEN'),
-    'user_db_conn': os.environ.get('USER_DB_CONN')
+    'users_db_conn': os.environ.get('USERS_DB_CONN')
 }
 
 # verify correctness of environment variables

@@ -11,3 +11,5 @@ venv
 
 requirements.txt
 tmp.txt
+
+*.db
