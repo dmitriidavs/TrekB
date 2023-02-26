@@ -38,7 +38,7 @@ To be updated ...
 
 ## Features
 
-• overkill architecture
+• ~~overkill~~ scalable architecture
 
 •
 
