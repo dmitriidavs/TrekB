@@ -14,7 +14,7 @@ async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
     # check if user has a portfolio already
-    if await user_is_active(message.from_user.id):
+    if await user_has_portfolio(message.from_user.id):
         msg = 'Hey, you already have a portfolio!\n' \
               'What would you like to do with it?'
         await message.answer(text=msg, reply_markup=kb_start_active)

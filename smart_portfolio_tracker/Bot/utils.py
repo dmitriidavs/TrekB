@@ -6,5 +6,5 @@ from includes.queries.user_db_queries import *
 from includes.DBMSconnection import DBMSCreateConnection
 
 
-async def user_is_active(user_id: str) -> bool:
-    pass
+async def user_has_portfolio(user_id: str) -> bool:
+    return False
