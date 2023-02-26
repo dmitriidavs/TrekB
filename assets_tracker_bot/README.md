@@ -8,7 +8,7 @@ designed to allow easy performance tracking of your preferred assets\
 via simple Telegram interfaces. **Try it out yourself:**
 
 <a href="https://t.me/TrekB_bot">
-  <img src="pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
+  <img src="Misc/pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
 </a>
 
 </div>
@@ -52,7 +52,7 @@ Initial version of the project based on virtualization and containerization tech
 
 ### <ins> High-level Overview </ins>
 
-![VM Architecture](pics/arch1.png?raw=true "VM Architecture")
+![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
 
 Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
@@ -62,7 +62,7 @@ Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 
 ### <ins> Telegram Component </ins>
 
-![Telegram Component](pics/arch2.png?raw=true "Telegram Component")
+![Telegram Component](Misc/pics/arch2.png?raw=true "Telegram Component")
 
 Tags: `tag1`
 
