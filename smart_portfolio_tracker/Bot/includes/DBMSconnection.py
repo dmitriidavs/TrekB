@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 
 
 class DBMSCreateConnection:
-    """Async DMBS session connection class"""
+    """Async [2B] DMBS session context manager"""
 
     def __init__(self, connection_string):
         self.connection_str = connection_string
