@@ -9,7 +9,6 @@ venv
 
 .ipynb_checkpoints
 
-requirements.txt
 tmp.txt
 
 *.db
