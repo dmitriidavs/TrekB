@@ -5,7 +5,8 @@
 
 A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your preferred assets\
-via simple Telegram interfaces. **Try it out yourself:** [ TO BE HOSTED SOON ]
+via simple Telegram interfaces. **Try it out yourself:**\
+[ TO BE HOSTED SOON ]
 
 <a href="https://t.me/TrekB_bot">
   <img src="Misc/pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
