@@ -54,7 +54,7 @@ Initial version of the project based on virtualization and containerization tech
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
 
-Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
+Stack: `PostgreSQL`, `SQLite`, `MongoDB`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
 ### <ins> Database Component </ins>
