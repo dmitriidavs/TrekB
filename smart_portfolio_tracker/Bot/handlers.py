@@ -68,7 +68,7 @@ async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     FSMManualSetup.asset_name:
     Validating and saving name of an asset
     """
-
+    
     async with state.proxy() as data:
         data["asset_name"] = message.text
     await FSMManualSetup.next()
