@@ -62,7 +62,7 @@ Stack: `PostgreSQL`, `SQLite`, `Apache Airflow`, `MinIO S3`, `Docker`,
 
 ### <ins> Telegram Component </ins>
 
-![Telegram Component](Misc/pics/arch2.png?raw=true "Telegram Component")
+![Telegram Component](Misc/pics/arch_tg.png?raw=true "Telegram Component")
 
 Tags: `tag1`
 
