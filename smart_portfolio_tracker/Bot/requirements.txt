@@ -1,0 +1,7 @@
+aiogram==2.23.1
+asyncio==3.4.3
+APScheduler==3.9.1.post1
+psycopg2==2.9.3
+pytz==2021.1
+SQLAlchemy==1.4.26
+pydantic==1.10.5
