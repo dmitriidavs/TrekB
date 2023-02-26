@@ -8,7 +8,7 @@ from includes.keyboards import *
 from includes.finite_state_machines import *
 
 
-# TODO: move answer msgs to db
+# TODO: move answer msgs to MongoDB
 
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
