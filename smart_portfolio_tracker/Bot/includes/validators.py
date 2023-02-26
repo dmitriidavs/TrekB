@@ -5,7 +5,7 @@ from pydantic import BaseModel, validator
 
 class EnvVarsValidTypes:
     supported_arch_types = ['VM', 'Cloud', 'Lite']
-    supported_fsm_storage_types = ['memory', 'db']
+    supported_fsm_storage_types = ['memory', 'mongodb']
 
 
 class EnvVars(EnvVarsValidTypes, BaseModel):
@@ -14,6 +14,10 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_fsm_storage_type: str
     bot_api_token: str
     users_db_conn: str
+    util_db_conn: str
+    util_db_host: str
+    util_db_port: int
+    util_db_name: str
 
     @validator('bot_arch_type')
     def arch_type_is_supported(cls, val: str) -> str:
@@ -36,3 +40,5 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
             return val
         except AioValidErr:
             raise AioValidErr('Error in BOT_API_TOKEN! Invalid token.')
+
+    # TODO: add mongodb conn validation (it's in seperate container)

@@ -5,3 +5,5 @@ psycopg2==2.9.3
 pytz==2021.1
 SQLAlchemy==1.4.26
 pydantic==1.10.5
+pymongo==4.3.3
+motor==3.1.1
