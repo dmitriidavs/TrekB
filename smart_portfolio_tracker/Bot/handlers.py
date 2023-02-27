@@ -20,14 +20,14 @@ async def cmd_start(message: types.Message) -> None:
         await message.answer(text=msg, reply_markup=kb_start_active)
     # if new user
     else:
-        # save user info in user DB     # TODO: add validation layer
+        # save user info in user DB
         await save_user_info(**{
             'user_id': message.from_user.id,
             'user_first_name': message.from_user.first_name,
             'user_last_name': message.from_user.last_name,
             'user_username': message.from_user.username,
             'user_language_code': message.from_user.language_code,
-            'user_is_premium': message.from_user.is_premium
+            'user_is_premium': False if message.from_user.is_premium is None else True
         })
 
         msg = f'Hi, {message.from_user.first_name}. I\'m TrekB. Glad to see you here!'
