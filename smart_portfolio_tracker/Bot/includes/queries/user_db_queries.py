@@ -1,5 +1,5 @@
 SQL_USER_HAS_PORTFOLIO = """
-SELECT EXISTS(
+SELECT EXISTS (
     SELECT 1 FROM users
     WHERE user_id = {user_id}
 );
