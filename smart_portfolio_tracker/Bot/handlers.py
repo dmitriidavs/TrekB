@@ -8,19 +8,29 @@ from includes.keyboards import *
 from includes.finite_state_machines import *
 
 
-# TODO: move answer msgs to MongoDB
+# TODO: move interim dialogue states & bot answers to MongoDB (or Redis?)
 
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
-    # check if user has a portfolio already
+    # if user has already got a portfolio
     if await user_has_portfolio(message.from_user.id):
-        msg = 'Hey, you already have a portfolio!\n' \
+        msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
               'What would you like to do with it?'
         await message.answer(text=msg, reply_markup=kb_start_active)
-    # if not
+    # if new user
     else:
-        msg = 'Hey, I\'m TrekB! Glad you\'re here!'
+        # save user info in user DB     # TODO: add validation layer
+        await save_user_info(**{
+            'user_id': message.from_user.id,
+            'user_first_name': message.from_user.first_name,
+            'user_last_name': message.from_user.last_name,
+            'user_username': message.from_user.username,
+            'user_language_code': message.from_user.language_code,
+            'user_is_premium': message.from_user.is_premium
+        })
+
+        msg = f'Hi, {message.from_user.first_name}. I\'m TrekB. Glad to see you here!'
         await message.answer(text=msg)
         await asyncio.sleep(1)
         msg = 'I\'m your best friend when it comes to assets tracking. ' \
