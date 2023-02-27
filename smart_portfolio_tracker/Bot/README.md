@@ -18,8 +18,3 @@
     |   |   └── debug.py                        <- CMD bot logging
     |   └── queries                     <- DB queries
     |   |   └── user_db.py                      <- SQLite user DB queries
-
-## Setup & Run Locally: [put in LITE]
-
-    # some code
-    
