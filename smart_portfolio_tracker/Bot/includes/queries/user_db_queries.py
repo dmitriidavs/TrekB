@@ -20,6 +20,6 @@ INSERT INTO users_info (
     username, language_code, is_premium
 ) VALUES (
     {user_id}, '{user_first_name}', '{user_last_name}',
-    '{user_username}', '{user_language_code}', '{user_is_premium}'
+    '{user_username}', '{user_language_code}', {user_is_premium}
 );
 """
