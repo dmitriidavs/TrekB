@@ -1,14 +1,14 @@
-CREATE TABLE IF NOT EXISTS assets(
+CREATE TABLE IF NOT EXISTS assets (
     asset_id int2 PRIMARY KEY,
-    ticker_symbol varchar(10) UNIQUE,
-    name varchar(30) UNIQUE
+    ticker_symbol varchar(10) NOT NULL,
+    name varchar(30) NOT NULL
 );
 
 -- TODO: convert timestamp to datetimetz in pg
 CREATE TABLE IF NOT EXISTS users (
     user_id integer PRIMARY KEY,
     has_portfolio boolean DEFAULT false,
-    join_date timestamp DEFAULT CURRENT_TIMESTAMP
+    start_date timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS users_info (
@@ -17,11 +17,11 @@ CREATE TABLE IF NOT EXISTS users_info (
     last_name varchar(30) NULL,
     username varchar(30) NULL,
     language_code varchar(2) NULL,
-    is_premium boolean NULL,
+    is_premium boolean NOT NULL,
     FOREIGN KEY(user_id) REFERENCES users(user_id)
 );
 
--- move to SCD2
+-- TODO: move to SCD2
 CREATE TABLE IF NOT EXISTS portfolio (
     user_id integer NOT NULL,
     asset_id int2 NOT NULL,
