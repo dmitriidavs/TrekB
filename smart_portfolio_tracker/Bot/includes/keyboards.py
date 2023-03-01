@@ -6,15 +6,15 @@ from aiogram.types import (
 
 start_1 = KeyboardButton('/info')
 start_2 = KeyboardButton('/join')
-start_active_1 = KeyboardButton('/clear')
-start_active_2 = KeyboardButton('/portfolio')
+start_active_1 = KeyboardButton('/portfolio')
+start_active_2 = KeyboardButton('/delete')
 
 kb_start = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_start.row(start_1, start_2)
 kb_start_active = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_start_active.row(start_active_1, start_active_2)
 
-join_1 = KeyboardButton('/manual')
+join_1 = KeyboardButton('/add')
 join_2 = KeyboardButton('/import')
 
 kb_join = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
