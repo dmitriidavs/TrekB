@@ -1,6 +1,6 @@
 import logging
 
-# TODO: move logging to online dashboard
+# TODO: move logging to online dashboard + DB
 logging.basicConfig(format='[%(levelname)s]: %(message)s - %(asctime)s',
                     datefmt='%Y-%m-%d %H:%M:%S')
 
