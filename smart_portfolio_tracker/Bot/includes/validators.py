@@ -2,6 +2,8 @@ from aiogram.bot.api import check_token
 from aiogram.utils.exceptions import ValidationError as AioValidErr
 from pydantic import BaseModel, validator
 
+# TODO: validation not async :(
+
 
 class EnvVarsValidTypes:
     supported_arch_types = ['VM', 'Cloud', 'Lite']
