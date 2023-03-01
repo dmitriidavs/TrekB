@@ -20,16 +20,6 @@ async def cmd_start(message: types.Message) -> None:
         await message.answer(text=msg, reply_markup=kb_start_active)
     # if new user
     else:
-        # save user info in user DB
-        await save_user_info(**{
-            'user_id': message.from_user.id,
-            'user_first_name': message.from_user.first_name,
-            'user_last_name': message.from_user.last_name,
-            'user_username': message.from_user.username,
-            'user_language_code': message.from_user.language_code,
-            'user_is_premium': False if message.from_user.is_premium is None else True
-        })
-
         msg = f'Hi, {message.from_user.first_name}. I\'m TrekB. Glad to see you here!'
         await message.answer(text=msg)
         await asyncio.sleep(1)
@@ -40,6 +30,16 @@ async def cmd_start(message: types.Message) -> None:
         msg = 'You can learn more about me by pressing /info. ' \
               'Or you can just go ahead and /join.'
         await message.answer(text=msg, reply_markup=kb_start)
+
+        # save user info in user DB
+        await save_user_info(**{
+            'user_id': message.from_user.id,
+            'user_first_name': message.from_user.first_name,
+            'user_last_name': message.from_user.last_name,
+            'user_username': message.from_user.username,
+            'user_language_code': message.from_user.language_code,
+            'user_is_premium': False if message.from_user.is_premium is None else True
+        })
 
 
 async def cmd_info(message: types.Message) -> None:
