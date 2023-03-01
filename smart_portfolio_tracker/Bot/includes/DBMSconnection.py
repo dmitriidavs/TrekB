@@ -10,21 +10,21 @@ class DBMSCreateConnection:
         self.connection_str = connection_string
         self.session = None
 
-    def __enter__(self):
-        engine = create_engine(self.connection_str)
-        session = sessionmaker()
-        self.session = session(bind=engine)
-
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        self.session.close()
-
-    # async def __aenter__(self):
-    #     engine = create_async_engine(self.connection_str)
-    #     self.session = AsyncSession(bind=engine)
+    # def __enter__(self):
+    #     engine = create_engine(self.connection_str)
+    #     session = sessionmaker()
+    #     self.session = session(bind=engine)
     #
     #     return self
     #
-    # async def __aexit__(self, exc_type, exc_val, exc_tb):
+    # def __exit__(self, exc_type, exc_val, exc_tb):
     #     self.session.close()
+
+    async def __aenter__(self):
+        engine = create_async_engine(self.connection_str)
+        self.session = AsyncSession(bind=engine)
+
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        await self.session.close()
