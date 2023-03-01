@@ -1,8 +1,8 @@
 set BOT_ARCH_TYPE=<VM or Cloud or Lite>
 set BOT_ADDRESS=@<your_tg_bot_name>
-set BOT_FSM_STORAGE_TYPE=<type_of_storage_where_interim_answers_are_kept>
+set BOT_FSM_STORAGE_TYPE=<memory or mongodb>
 set BOT_API_TOKEN=<your_api_token>
-set USER_DB_CONN=sqlite:///path/to/db/<db_name>.db
+set USERS_DB_CONN=sqlite+aiosqlite:///path/to/db/<db_name>.db
 set UTIL_DB_CONN=
 set UTIL_DB_HOST=localhost
 set UTIL_DB_PORT=27017
