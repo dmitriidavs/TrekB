@@ -73,7 +73,7 @@ async def cmd_join(message: types.Message) -> None:
 async def cmd_manual_add(message: types.Message) -> None:
     """/add command handler: start FSMManualSetup"""
 
-    await FSMManualSetup.asset_name.set()
+    await FSMManualAdd.asset_name.set()
     msg = 'OK. Send me the ticker symbol of an asset.\n' \
           'E.g.: BTC (Bitcoin) | MSFT (Microsoft)'
     await message.answer(text=msg)
@@ -88,7 +88,7 @@ async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     
     async with state.proxy() as data:
         data["asset_name"] = message.text
-    await FSMManualSetup.next()
+    await FSMManualAdd.next()
     msg = 'Now send me the quantity.'
     await message.answer(text=msg)
 
@@ -120,6 +120,6 @@ def register_handlers(disp: Dispatcher) -> None:
     disp.register_message_handler(cmd_info, commands=['info'])
     disp.register_message_handler(cmd_join, commands=['join'])
     disp.register_message_handler(cmd_manual_add, commands=['add'], state=None)
-    disp.register_message_handler(add_asset_name, state=FSMManualSetup.asset_name)
-    disp.register_message_handler(add_asset_quantity, state=FSMManualSetup.asset_quantity)
+    disp.register_message_handler(add_asset_name, state=FSMManualAdd.asset_name)
+    disp.register_message_handler(add_asset_quantity, state=FSMManualAdd.asset_quantity)
     # disp.register_message_handler(cmd_portfolio, commands=['portfolio'])

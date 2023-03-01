@@ -1,7 +1,7 @@
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-class FSMManualSetup(StatesGroup):
+class FSMManualAdd(StatesGroup):
     asset_name = State()
     asset_quantity = State()
 
