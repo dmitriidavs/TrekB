@@ -6,17 +6,20 @@ from aiogram.dispatcher import FSMContext
 from utils import *
 from includes.keyboards import *
 from includes.finite_state_machines import *
+from includes.loggers.log import log_ux
 
 
 # TODO: move interim dialogue states & bot answers to MongoDB (or Redis?)
-
+@log_ux(btn='/start')
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
     # if user has already got a portfolio
     if await user_has_portfolio(message.from_user.id):
         msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
-              'What would you like to do with it?'
+              'What would you like to do with it? You can:\n' \
+              '/portfolio - manage it.\n' \
+              '/delete - start again.'
         await message.answer(text=msg, reply_markup=kb_start_active)
     # if new user
     else:
@@ -42,6 +45,7 @@ async def cmd_start(message: types.Message) -> None:
         })
 
 
+@log_ux(btn='/info')
 async def cmd_info(message: types.Message) -> None:
     """/info command handler"""
 
@@ -52,6 +56,7 @@ async def cmd_info(message: types.Message) -> None:
     await message.answer(text=msg)
 
 
+@log_ux(btn='/join')
 async def cmd_join(message: types.Message) -> None:
     """/join command handler"""
 
@@ -59,13 +64,14 @@ async def cmd_join(message: types.Message) -> None:
     await message.answer(text=msg)
     await asyncio.sleep(1)
     msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
-          '/manual - add assets by hand\n' \
+          '/add - add assets by hand\n' \
           '/import - import crypto wallet balance'
     await message.answer(text=msg, reply_markup=kb_join)
 
 
+@log_ux(btn='/add')
 async def cmd_manual_add(message: types.Message) -> None:
-    """/manual & /add command handler: start FSMManualSetup"""
+    """/add command handler: start FSMManualSetup"""
 
     await FSMManualSetup.asset_name.set()
     msg = 'OK. Send me the ticker symbol of an asset.\n' \
@@ -73,6 +79,7 @@ async def cmd_manual_add(message: types.Message) -> None:
     await message.answer(text=msg)
 
 
+@log_ux(btn='/add', state='asset_name')
 async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_name:
@@ -86,6 +93,7 @@ async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     await message.answer(text=msg)
 
 
+@log_ux(btn='/add', state='asset_quantity')
 async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_quantity:

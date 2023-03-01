@@ -1,12 +1,12 @@
 from sqlite3 import Error as Sqlite3Error
 
 from creds import USERS_DB_CONN
-from includes.loggers.benchmark import benchq
+from includes.loggers.log import bench_query
 from includes.queries.users_db_queries import *
 from includes.DBMSconnection import DBMSCreateConnection
 
 
-@benchq
+@bench_query
 async def user_has_portfolio(user_id: str) -> bool:
     """Check if user has already got a portfolio running"""
 
@@ -25,7 +25,7 @@ async def user_has_portfolio(user_id: str) -> bool:
 
 
 # TODO?: add upsert
-@benchq
+@bench_query
 async def save_user_info(user_id: str, user_first_name: str, user_last_name: str,
                          user_username: str, user_language_code: str,
                          user_is_premium: bool) -> None:
