@@ -1,4 +1,4 @@
-from includes.loggers.config import basic_log
+from includes.loggers.log_config import basic_log
 from creds import BOT_ARCH_TYPE, BOT_ADDRESS
 
 
