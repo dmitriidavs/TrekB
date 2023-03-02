@@ -55,7 +55,7 @@ Initial version of the project based on virtualization and containerization tech
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
 
-Stack: `PostgreSQL`, `SQLite [Lite]`, `MongoDB`, `Apache Airflow`, `MinIO S3`, `Docker`,
+Stack: `PostgreSQL`, `SQLite [Lite]`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
 ### <ins> Telegram Component </ins>
