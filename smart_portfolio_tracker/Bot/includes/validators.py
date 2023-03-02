@@ -22,6 +22,7 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     util_db_name: str
 
     @validator('bot_arch_type')
+    @classmethod
     def arch_type_is_supported(cls, val: str) -> str:
         if val not in super().supported_arch_types:
             raise ValueError(f'Error in BOT_ARCH_TYPE! Supported types: {super().supported_arch_types}')
@@ -29,6 +30,7 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
             return val
 
     @validator('bot_fsm_storage_type')
+    @classmethod
     def bot_storage_is_supported(cls, val: str) -> str:
         if val not in super().supported_fsm_storage_types:
             raise ValueError(f'Error in BOT_FSM_STORAGE_TYPE! Supported types: {super().supported_fsm_storage_types}')
@@ -36,6 +38,7 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
             return val
 
     @validator('bot_api_token')
+    @classmethod
     def api_token_is_active(cls, val: str) -> str:
         try:
             check_token(val)
