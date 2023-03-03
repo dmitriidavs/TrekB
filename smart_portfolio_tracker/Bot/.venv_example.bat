@@ -6,4 +6,5 @@ set USERS_DB_CONN=sqlite+aiosqlite:///path/to/db/<db_name>.db
 set UTIL_DB_CONN=
 set UTIL_DB_HOST=localhost
 set UTIL_DB_PORT=6379
-set UTIL_DB=1
+set UTIL_DB_ANSWERS_DB=0
+set UTIL_DB_FSM_DB=1
