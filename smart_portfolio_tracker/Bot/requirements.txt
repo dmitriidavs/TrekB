@@ -1,10 +1,7 @@
 aiogram==2.23.1
 asyncio==3.4.3
 aiosqlite==0.18.0
-APScheduler==3.9.1.post1
 psycopg2==2.9.3
-pytz==2021.1
 SQLAlchemy==1.4.26
 pydantic==1.10.5
-pymongo==4.3.3
-motor==3.1.1
+redis==4.5.1
