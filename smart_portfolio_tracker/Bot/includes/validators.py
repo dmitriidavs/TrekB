@@ -6,8 +6,8 @@ from pydantic import BaseModel, validator
 
 
 class EnvVarsValidTypes:
-    supported_arch_types = ['VM', 'Cloud', 'Lite']
-    supported_fsm_storage_types = ['memory', 'mongodb']
+    implemented_arch_types = ['Lite']
+    implemented_fsm_storage_types = ['memory', 'redis']
 
 
 class EnvVars(EnvVarsValidTypes, BaseModel):
@@ -19,31 +19,38 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     util_db_conn: str
     util_db_host: str
     util_db_port: int
-    util_db_name: str
+    util_db: int
 
+    @classmethod
     @validator('bot_arch_type')
-    @classmethod
     def arch_type_is_supported(cls, val: str) -> str:
-        if val not in super().supported_arch_types:
-            raise ValueError(f'Error in BOT_ARCH_TYPE! Supported types: {super().supported_arch_types}')
+        """Validate that given architecture type is supported"""
+
+        if val not in super().implemented_arch_types:
+            raise NotImplementedError(f'Error in BOT_ARCH_TYPE! Supported types: {super().implemented_arch_types}')
         else:
             return val
 
+    @classmethod
     @validator('bot_fsm_storage_type')
-    @classmethod
     def bot_storage_is_supported(cls, val: str) -> str:
-        if val not in super().supported_fsm_storage_types:
-            raise ValueError(f'Error in BOT_FSM_STORAGE_TYPE! Supported types: {super().supported_fsm_storage_types}')
+        """Validate that given storage type is supported"""
+
+        if val not in super().implemented_fsm_storage_types:
+            raise NotImplementedError(f'Error in BOT_FSM_STORAGE_TYPE! '
+                                      f'Supported types: {super().implemented_fsm_storage_types}')
         else:
             return val
 
-    @validator('bot_api_token')
     @classmethod
+    @validator('bot_api_token')
     def api_token_is_active(cls, val: str) -> str:
+        """Validate that tg api token is active"""
+
         try:
             check_token(val)
             return val
         except AioValidErr:
             raise AioValidErr('Error in BOT_API_TOKEN! Invalid token.')
 
-    # TODO: add mongodb conn validation (it's in seperate container)
+    # TODO: add redis conn validation

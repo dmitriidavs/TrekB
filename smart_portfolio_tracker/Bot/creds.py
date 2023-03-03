@@ -12,7 +12,7 @@ env_vars = {
     'util_db_conn': os.environ.get('USERS_DB_CONN'),
     'util_db_host': os.environ.get('UTIL_DB_HOST'),
     'util_db_port': os.environ.get('UTIL_DB_PORT'),
-    'util_db_name': os.environ.get('UTIL_DB_NAME')
+    'util_db': os.environ.get('UTIL_DB')
 }
 
 # verify correctness of environment variables

@@ -5,5 +5,5 @@ set BOT_API_TOKEN=<your_api_token>
 set USERS_DB_CONN=sqlite+aiosqlite:///path/to/db/<db_name>.db
 set UTIL_DB_CONN=
 set UTIL_DB_HOST=localhost
-set UTIL_DB_PORT=27017
-set UTIL_DB_NAME=aiogram_fsm
+set UTIL_DB_PORT=6379
+set UTIL_DB=1
