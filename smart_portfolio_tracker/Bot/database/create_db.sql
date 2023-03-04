@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS assets (
 CREATE TABLE IF NOT EXISTS users (
     user_id integer PRIMARY KEY,
     has_portfolio boolean DEFAULT false,
-    start_date timestamp DEFAULT CURRENT_TIMESTAMP
+    registration_date timestamp DEFAULT CURRENT_TIMESTAMP,
+    update_date timestamp DEFAULT CURRENT_TIMESTAMP     -- should track log
 );
 
 CREATE TABLE IF NOT EXISTS users_info (
