@@ -1,32 +1,65 @@
-from sqlite3 import Error as Sqlite3Error
+from sqlite3 import Error as UsersDBError
 
 from creds import USERS_DB_CONN
-from includes.loggers.log import bench_query
+from cache import cache
 from includes.queries.users_db_queries import *
 from includes.DBMSconnection import DBMSCreateConnection
 
 
-@bench_query
-async def user_has_portfolio(user_id: str) -> bool:
+async def user_exists(user_id: int) -> int:
+    """Check if user exists in users DB"""
+
+    # check cache if user exists in users DB
+    c_response = 0 if await cache.get(name='user_exists:' + str(user_id)) in (None, 0) else 1
+    if not c_response:
+        print('<USING SQL>')
+        async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+            try:
+                # check users DB if user exists
+                response = await conn.session.execute(
+                    SQL_USER_EXISTS.format(user_id=user_id)
+                )
+                response = response.fetchone()[0]
+                # save response in cache
+                await cache.set(name='user_exists:' + str(user_id),
+                                value=int(response))
+                return response
+            except UsersDBError as error:
+                raise error
+            finally:
+                await conn.session.close()
+    else:
+        print('<USING CACHE>')
+        return c_response
+
+
+async def user_has_portfolio(user_id: int) -> bool:
     """Check if user has already got a portfolio running"""
 
+    # # check cache if user has portfolio
+    # cached_resp = int(await cache.get(name='user_has_portfolio:' + str(user_id)))
+    # if not cached_resp:
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
+            # check users DB if user has portfolio
             response = await conn.session.execute(
                 SQL_USER_HAS_PORTFOLIO.format(user_id=user_id)
             )
             response = response.fetchone()[0]
-        except (Exception, Sqlite3Error) as error:
+            # # save answer in cache
+            # await cache.set(name='user_has_portfolio:' + str(user_id),
+            #                 value=1)
+            return response
+        except UsersDBError as error:
             raise error
         finally:
             await conn.session.close()
-
-        return response
+    # else:
+    #     return bool(cached_resp)
 
 
 # TODO?: add upsert
-@bench_query
-async def save_user_info(user_id: str, user_first_name: str, user_last_name: str,
+async def save_user_info(user_id: int, user_first_name: str, user_last_name: str,
                          user_username: str, user_language_code: str,
                          user_is_premium: bool) -> None:
     """Save user info at first contact"""
@@ -44,7 +77,7 @@ async def save_user_info(user_id: str, user_first_name: str, user_last_name: str
             for query in queries:
                 await conn.session.execute(query)
             await conn.session.commit()
-        except (Exception, Sqlite3Error) as error:
+        except UsersDBError as error:
             raise error
         finally:
             await conn.session.close()
