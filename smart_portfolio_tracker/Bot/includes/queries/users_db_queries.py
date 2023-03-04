@@ -1,8 +1,15 @@
-SQL_USER_HAS_PORTFOLIO = """
+SQL_USER_EXISTS = """
 SELECT EXISTS (
     SELECT 1 FROM users
     WHERE user_id = {user_id}
 );
+"""
+
+SQL_USER_HAS_PORTFOLIO = """
+SELECT
+    has_portfolio
+FROM users
+WHERE user_id = {user_id};
 """
 
 SQL_ADD_NEW_USER = """
