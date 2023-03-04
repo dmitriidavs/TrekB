@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message) -> None:
             msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
                   'You can hit:\n' \
                   '/portfolio - to manage it\n' \
-                  '/delete - to delete it and start again'
+                  '/delete - to start again'
             await message.answer(text=msg, reply_markup=kb_start_active)
         # if no portfolio activate /join cmd
         else:
@@ -30,7 +30,7 @@ async def cmd_start(message: types.Message) -> None:
     else:
         msg = f'Hi, {message.from_user.first_name}. I\'m TrekB. Glad to see you here!'
         await message.answer(text=msg)
-        await asyncio.sleep(1)
+        await asyncio.sleep(0.5)
         msg = 'You can learn more about me by pressing /info. ' \
               'Or you can just go ahead and start your portfolio by clicking /join.'
         await message.answer(text=msg, reply_markup=kb_start)
@@ -50,9 +50,9 @@ async def cmd_start(message: types.Message) -> None:
 async def cmd_info(message: types.Message) -> None:
     """/info command handler"""
 
-    msg = 'Here is my repo: https://github.com/dmitriidavs/__portefeuille__/tree/main/assets_tracker_bot'
+    msg = 'Here is my repo: https://github.com/dmitriidavs/__portefeuille__/tree/main/smart_portfolio_tracker'
     await message.answer(text=msg)
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.5)
     msg = '★ Don\'t forget to star the project ★'
     await message.answer(text=msg)
 
@@ -63,7 +63,7 @@ async def cmd_join(message: types.Message) -> None:
 
     msg = 'All right, let\'s set you up!'
     await message.answer(text=msg)
-    await asyncio.sleep(1)
+    await asyncio.sleep(0.5)
     msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
           '/add - add assets by hand\n' \
           '/import - import crypto wallet balance'

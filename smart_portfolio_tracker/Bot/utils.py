@@ -10,9 +10,9 @@ async def user_exists(user_id: int) -> int:
     """Check if user exists in users DB"""
 
     # check cache if user exists in users DB
-    c_response = 0 if await cache.get(name='user_exists:' + str(user_id)) in (None, 0) else 1
-    if not c_response:
-        print('<USING SQL>')
+    c_response = await cache.get(name='user_exists:' + str(user_id))
+    # if cache not set
+    if c_response is None:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
                 # check users DB if user exists
@@ -22,15 +22,15 @@ async def user_exists(user_id: int) -> int:
                 response = response.fetchone()[0]
                 # save response in cache
                 await cache.set(name='user_exists:' + str(user_id),
-                                value=int(response))
+                                value=response)
                 return response
             except UsersDBError as error:
                 raise error
             finally:
                 await conn.session.close()
+    # use cache val
     else:
-        print('<USING CACHE>')
-        return c_response
+        return bool(c_response)
 
 
 async def user_has_portfolio(user_id: int) -> bool:
@@ -81,3 +81,7 @@ async def save_user_info(user_id: int, user_first_name: str, user_last_name: str
             raise error
         finally:
             await conn.session.close()
+
+    # update user_exists key
+    await cache.set(name='user_exists:' + str(user_id),
+                    value=1)
