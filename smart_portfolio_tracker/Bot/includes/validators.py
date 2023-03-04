@@ -1,9 +1,3 @@
-"""
-TrekB | Smart Portfolio Tracker
-:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
-"""
-
 from aiogram.bot.api import check_token
 from aiogram.utils.exceptions import ValidationError as AioValidErr
 from pydantic import BaseModel, validator

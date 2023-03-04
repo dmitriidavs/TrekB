@@ -1,9 +1,3 @@
-"""
-TrekB | Smart Portfolio Tracker
-:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
-"""
-
 import datetime as dt
 
 from creds import ARCH_TYPE, BOT_ADDRESS

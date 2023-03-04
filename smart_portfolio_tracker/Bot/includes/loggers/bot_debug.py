@@ -1,9 +1,3 @@
-"""
-TrekB | Smart Portfolio Tracker
-:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
-"""
-
 from includes.loggers.log_config import basic_log
 from creds import BOT_ARCH_TYPE, BOT_ADDRESS
 

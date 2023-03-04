@@ -1,7 +1,7 @@
 """
 TrekB | Smart Portfolio Tracker
 :copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
+:license: Apache 2.0, see LICENSE for more details
 """
 
 from aiogram.utils import executor

@@ -1,9 +1,3 @@
-"""
-TrekB | Smart Portfolio Tracker
-:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
-"""
-
 from aiogram import Bot
 from aiogram.dispatcher import Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage

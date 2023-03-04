@@ -1,9 +1,3 @@
-"""
-TrekB | Smart Portfolio Tracker
-:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
-:license: BSD-3-Clause, see LICENSE for more details
-"""
-
 from sqlite3 import Error as Sqlite3Error
 
 from creds import USERS_DB_CONN
