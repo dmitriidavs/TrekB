@@ -23,7 +23,7 @@ async def cmd_start(message: types.Message) -> None:
                   '/portfolio - to manage it\n' \
                   '/delete - to start again'
             await message.answer(text=msg, reply_markup=kb_start_active)
-        # if no portfolio activate /join cmd
+        # if no portfolio: activate /join cmd
         else:
             await cmd_join(message)
     # if new user
@@ -86,8 +86,10 @@ async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     FSMManualSetup.asset_name:
     Validating and saving name of an asset
     """
-    
+
+    # TODO: add asset_name validation
     async with state.proxy() as data:
+        # add asset name to fsm storage
         data["asset_name"] = message.text
     await FSMManualAdd.next()
     msg = 'Now send me the quantity.'
@@ -101,12 +103,15 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
     Validating and saving quantity of an asset
     """
 
+    # TODO: add asset_quantity validation
     async with state.proxy() as data:
+        # add asset quantity to fsm storage
         data["asset_quantity"] = float(message.text)
-
-    async with state.proxy() as data:
+        # send OK - asset added reply message
         msg = f'Added {data["asset_quantity"]} {data["asset_name"]} to your portfolio.'
         await message.answer(text=msg, reply_markup=kb_manual)
+        # # add asset to portfolio table in DB
+        # await add_asset_to_portfolio()
 
     await state.finish()
 
@@ -114,10 +119,22 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
 # TODO: when imported wallet address should be removed from dialogue in some time
 @log_ux(btn='/import')
 async def cmd_import(message: types.Message) -> None:
+    """/import command handler for crypto wallet balances"""
+
     msg = 'Wallet balance import is not supported in Lite version :('
     await message.answer(text=msg)
 
-# async def cmd_portfolio(message: types.Message) -> None:
+
+@log_ux(btn='/portfolio')
+async def cmd_portfolio(message: types.Message) -> None:
+    """/portfolio command handler for showing all the assets"""
+
+    # if user already has a portfolio
+    if await user_has_portfolio(message.from_user.id):
+        pass
+    # if no portfolio: activate /join cmd
+    else:
+        await cmd_join(message)
 
 
 def register_handlers(disp: Dispatcher) -> None:
