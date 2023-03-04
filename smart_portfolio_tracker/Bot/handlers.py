@@ -14,27 +14,28 @@ from includes.loggers.log import log_ux
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
 
-    # if user has already got a portfolio
-    if await user_has_portfolio(message.from_user.id):
-        msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
-              'What would you like to do with it? You can:\n' \
-              '/portfolio - manage it.\n' \
-              '/delete - start again.'
-        await message.answer(text=msg, reply_markup=kb_start_active)
+    # if user is already in users DB
+    if await user_exists(message.from_user.id):
+        # if user already has a portfolio
+        if await user_has_portfolio(message.from_user.id):
+            msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
+                  'You can hit:\n' \
+                  '/portfolio - to manage it\n' \
+                  '/delete - to delete it and start again'
+            await message.answer(text=msg, reply_markup=kb_start_active)
+        # if no portfolio activate /join cmd
+        else:
+            await cmd_join(message)
     # if new user
     else:
         msg = f'Hi, {message.from_user.first_name}. I\'m TrekB. Glad to see you here!'
         await message.answer(text=msg)
         await asyncio.sleep(1)
-        msg = 'I\'m your best friend when it comes to assets tracking. ' \
-              'My data-driven insights will help you make the best out of your investment portfolio!'
-        await message.answer(text=msg)
-        await asyncio.sleep(1)
         msg = 'You can learn more about me by pressing /info. ' \
-              'Or you can just go ahead and /join.'
+              'Or you can just go ahead and start your portfolio by clicking /join.'
         await message.answer(text=msg, reply_markup=kb_start)
 
-        # save user info in user DB
+        # save user info in users DB
         await save_user_info(**{
             'user_id': message.from_user.id,
             'user_first_name': message.from_user.first_name,
@@ -109,6 +110,10 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
 
     await state.finish()
 
+
+# TODO: when imported wallet address should be removed from dialogue in some time
+# @log_ux(btn='/import', state='asset_quantity')
+# async def cmd_portfolio(message: types.Message) -> None:
 
 # async def cmd_portfolio(message: types.Message) -> None:
 
