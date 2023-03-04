@@ -112,8 +112,10 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
 
 
 # TODO: when imported wallet address should be removed from dialogue in some time
-# @log_ux(btn='/import', state='asset_quantity')
-# async def cmd_portfolio(message: types.Message) -> None:
+@log_ux(btn='/import')
+async def cmd_import(message: types.Message) -> None:
+    msg = 'Wallet balance import is not supported in Lite version :('
+    await message.answer(text=msg)
 
 # async def cmd_portfolio(message: types.Message) -> None:
 
