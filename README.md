@@ -2,4 +2,4 @@
 
     ├── LICENSE
     ├── README.md                   <- The top-level README
-    ├── assets_tracker_bot          <- Assets tracker project with Telegram UI
+    ├── smart_portfolio_tracker         <- Assets tracker project with Telegram UI
