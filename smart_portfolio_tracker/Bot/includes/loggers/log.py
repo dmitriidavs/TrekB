@@ -1,3 +1,9 @@
+"""
+TrekB | Smart Portfolio Tracker
+:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
+:license: BSD-3-Clause, see LICENSE for more details
+"""
+
 from functools import wraps
 
 from time import perf_counter

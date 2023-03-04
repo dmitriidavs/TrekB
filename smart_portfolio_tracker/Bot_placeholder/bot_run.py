@@ -1,3 +1,9 @@
+"""
+TrekB | Smart Portfolio Tracker
+:copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)
+:license: BSD-3-Clause, see LICENSE for more details
+"""
+
 from aiogram.utils import executor
 
 from utils import on_startup, on_shutdown
