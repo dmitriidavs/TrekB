@@ -2,11 +2,12 @@ from sqlite3 import Error as UsersDBError
 
 from creds import USERS_DB_CONN
 from cache import cache
+from includes.loggers.log import bench_query
 from includes.queries.users_db_queries import *
 from includes.DBMSconnection import DBMSCreateConnection
 
 
-async def user_exists(user_id: int) -> int:
+async def user_exists(user_id: int) -> bool:
     """Check if user exists in users DB"""
 
     # check cache if user exists in users DB
@@ -20,7 +21,7 @@ async def user_exists(user_id: int) -> int:
                     SQL_USER_EXISTS.format(user_id=user_id)
                 )
                 response = response.fetchone()[0]
-                # save response in cache
+                # save response in cache    # TODO: add expiry time
                 await cache.set(name='user_exists:' + str(user_id),
                                 value=response)
                 return response
@@ -28,13 +29,13 @@ async def user_exists(user_id: int) -> int:
                 raise error
             finally:
                 await conn.session.close()
-    # use cache val
+    # use cached val
     else:
         return bool(c_response)
 
 
 async def user_has_portfolio(user_id: int) -> bool:
-    """Check if user has already got a portfolio running"""
+    """Check if user has already got a portfolio"""
 
     # # check cache if user has portfolio
     # cached_resp = int(await cache.get(name='user_has_portfolio:' + str(user_id)))
