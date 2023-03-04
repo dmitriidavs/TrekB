@@ -11,7 +11,6 @@ class DBMSCreateConnection:
     async def __aenter__(self):
         engine = create_async_engine(self.connection_str)
         self.session = AsyncSession(bind=engine)
-
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):

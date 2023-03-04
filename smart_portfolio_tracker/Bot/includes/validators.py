@@ -16,11 +16,8 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_fsm_storage_type: str
     bot_api_token: str
     users_db_conn: str
-    util_db_conn: str
     util_db_host: str
     util_db_port: int
-    util_db_answers_db: int
-    util_db_fsm_db: int
 
     @classmethod
     @validator('bot_arch_type')

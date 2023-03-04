@@ -1,5 +1,6 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
+# TODO: optimize: one-time keyboard creation
 
 start_1 = KeyboardButton('/info')
 start_2 = KeyboardButton('/join')
