@@ -11,5 +11,22 @@ def validate_env_vars(env_vars: dict) -> dict:
         raise TypeError(err.json())
 
 
-# def validate_ticker_symbol(text: str) -> bool:
-#
+async def validate_asset_name(ticker: str) -> bool:
+    """Check if ticker symbol is valid"""
+    # TODO: add caching
+    # TODO: add real validation xD
+
+    if ticker == 'err':     # test
+        return False
+    else:
+        return True
+
+
+async def validate_asset_quantity(quan: str) -> bool:
+    """Check if asset quantity can be converted to float"""
+
+    try:
+        float(quan)
+        return True
+    except ValueError:
+        return False
