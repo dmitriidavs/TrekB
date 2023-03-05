@@ -150,6 +150,7 @@ async def cmd_portfolio(message: types.Message) -> None:
 async def cmd_flushit(message: types.Message) -> None:
     """/flushit command handler for clearing portfolio"""
 
+    # TODO: clear portfolio in 2 fsm steps
     pass
 
 
