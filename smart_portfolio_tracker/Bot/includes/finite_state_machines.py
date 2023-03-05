@@ -9,3 +9,6 @@ class FSMManualAdd(StatesGroup):
 # class FSMImportWallet(StatesGroup):
 #     blockchain: State()
 #     wallet: State()
+
+
+# class FSMFlushIt(StatesGroup):
