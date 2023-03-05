@@ -30,3 +30,20 @@ INSERT INTO users_info (
     '{user_username}', '{user_language_code}', {user_is_premium}
 );
 """
+
+SQL_ADD_ASSET_TO_PORTFOLIO = """
+INSERT INTO portfolio (
+    user_id,
+    asset_id,
+    quantity
+) VALUES (
+    {user_id},
+    (
+        SELECT
+            asset_id
+        FROM assets
+        WHERE ticker_symbol = '{asset_name}'
+    ),
+    {asset_quantity}
+);
+"""
