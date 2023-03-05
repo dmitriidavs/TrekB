@@ -21,7 +21,7 @@ async def cmd_start(message: types.Message) -> None:
             msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
                   'You can hit:\n' \
                   '/portfolio - to manage it\n' \
-                  '/delete - to start again'
+                  '/flushit - to start again'
             await message.answer(text=msg, reply_markup=kb_start_active)
         # if no portfolio: activate /join cmd
         else:
@@ -144,6 +144,13 @@ async def cmd_portfolio(message: types.Message) -> None:
     # if no portfolio: activate /join cmd
     else:
         await cmd_join(message)
+
+
+@log_ux(btn='/flushit')
+async def cmd_flushit(message: types.Message) -> None:
+    """/flushit command handler for clearing portfolio"""
+
+    pass
 
 
 def register_handlers(disp: Dispatcher) -> None:

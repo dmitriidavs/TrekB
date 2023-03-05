@@ -5,7 +5,7 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 start_1 = KeyboardButton('/info')
 start_2 = KeyboardButton('/join')
 start_active_1 = KeyboardButton('/portfolio')
-start_active_2 = KeyboardButton('/delete')
+start_active_2 = KeyboardButton('/flushit')
 
 kb_start = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_start.row(start_1, start_2)
