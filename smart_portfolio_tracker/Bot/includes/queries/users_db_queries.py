@@ -47,3 +47,9 @@ INSERT INTO portfolio (
     {asset_quantity}
 );
 """
+
+SQL_UPDATE_USER_HAS_PORTFOLIO = """
+UPDATE users
+SET has_portfolio = {has_portfolio}
+WHERE user_id = {user_id}
+"""
