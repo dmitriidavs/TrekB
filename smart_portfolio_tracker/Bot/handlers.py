@@ -4,12 +4,12 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
 
 from utils import *
+from validation import validate_asset_name, validate_asset_quantity
 from includes.keyboards import *
 from includes.finite_state_machines import *
 from includes.loggers.log import log_ux
 
 
-# TODO: move interim dialogue states & bot answers to MongoDB (or Redis?)
 @log_ux(btn='/start')
 async def cmd_start(message: types.Message) -> None:
     """/start command handler"""
@@ -87,13 +87,17 @@ async def add_asset_name(message: types.Message, state: FSMContext) -> None:
     Validating and saving name of an asset
     """
 
-    # TODO: add asset_name validation
-    async with state.proxy() as data:
-        # add asset name to fsm storage
-        data["asset_name"] = message.text
-    await FSMManualAdd.next()
-    msg = 'Now send me the quantity.'
-    await message.answer(text=msg)
+    if await validate_asset_name(message.text):
+        async with state.proxy() as data:
+            # add asset name to fsm storage
+            data["asset_name"] = message.text.upper()
+        # switch to next fsm state
+        await FSMManualAdd.next()
+        msg = 'Good. Now send me the quantity.'
+        await message.answer(text=msg)
+    else:
+        msg = f'Can\'t find asset reference. Please try again.'
+        await message.answer(text=msg)
 
 
 @log_ux(btn='/add', state='asset_quantity')
@@ -103,17 +107,22 @@ async def add_asset_quantity(message: types.Message, state: FSMContext) -> None:
     Validating and saving quantity of an asset
     """
 
-    # TODO: add asset_quantity validation
-    async with state.proxy() as data:
-        # add asset quantity to fsm storage
-        data["asset_quantity"] = float(message.text)
-        # send OK - asset added reply message
-        msg = f'Added {data["asset_quantity"]} {data["asset_name"]} to your portfolio.'
-        await message.answer(text=msg, reply_markup=kb_manual)
-        # # add asset to portfolio table in DB
-        # await add_asset_to_portfolio()
-
-    await state.finish()
+    if await validate_asset_quantity(message.text):
+        async with state.proxy() as data:
+            # add asset quantity to fsm storage
+            data["asset_quantity"] = float(message.text)
+            # send OK reply message
+            msg = f'OK. Added {data["asset_quantity"]} {data["asset_name"]} to your portfolio.'
+            await message.answer(text=msg, reply_markup=kb_manual)
+            # add asset to portfolio table in DB
+            await add_asset_to_portfolio(user_id=message.from_user.id,
+                                         asset_name=data["asset_name"],
+                                         asset_quantity=data["asset_quantity"])
+            # finish fsm states
+            await state.finish()
+    else:
+        msg = f'Failed to interpret value. Please try again.'
+        await message.answer(text=msg)
 
 
 # TODO: when imported wallet address should be removed from dialogue in some time
