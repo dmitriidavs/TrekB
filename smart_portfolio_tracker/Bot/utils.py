@@ -86,3 +86,18 @@ async def save_user_info(user_id: int, user_first_name: str, user_last_name: str
     # update user_exists key
     await cache.set(name='user_exists:' + str(user_id),
                     value=1)
+
+
+async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: str) -> None:
+    """Add new entry to user's portfolio"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            await conn.session.execute(SQL_ADD_ASSET_TO_PORTFOLIO.format(user_id=user_id,
+                                                                         asset_name=asset_name,
+                                                                         asset_quantity=asset_quantity))
+            await conn.session.commit()
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
