@@ -104,7 +104,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
         else:
             # check cache if user adds asset for the first time
             c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
-            if c_response is None or c_response == 0:
+            if c_response == 0:
                 try:
                     # update has_portfolio in users
                     await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO.format(user_id=user_id,
