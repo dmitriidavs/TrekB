@@ -37,33 +37,34 @@ async def user_exists(user_id: int) -> bool:
 async def user_has_portfolio(user_id: int) -> bool:
     """Check if user has already got a portfolio"""
 
-    # # check cache if user has portfolio
-    # cached_resp = int(await cache.get(name='user_has_portfolio:' + str(user_id)))
-    # if not cached_resp:
-    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
-        try:
-            # check users DB if user has portfolio
-            response = await conn.session.execute(
-                SQL_USER_HAS_PORTFOLIO.format(user_id=user_id)
-            )
-            response = response.fetchone()[0]
-            # # save answer in cache
-            # await cache.set(name='user_has_portfolio:' + str(user_id),
-            #                 value=1)
-            return response
-        except UsersDBError as error:
-            raise error
-        finally:
-            await conn.session.close()
-    # else:
-    #     return bool(cached_resp)
+    # check cache if user has portfolio
+    c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
+    # if cache not set (activated only on first /start, then key is updated through /add & /flushit cmds)
+    if c_response is None:
+        async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+            try:
+                # check users DB if user has portfolio
+                response = await conn.session.execute(
+                    SQL_USER_HAS_PORTFOLIO.format(user_id=user_id)
+                )
+                response = response.fetchone()[0]
+                # save answer in cache
+                await cache.set(name='user_has_portfolio:' + str(user_id),
+                                value=response)
+                return response
+            except UsersDBError as error:
+                raise error
+            finally:
+                await conn.session.close()
+    else:
+        return bool(c_response)
 
 
 # TODO?: add upsert
 async def save_user_info(user_id: int, user_first_name: str, user_last_name: str,
                          user_username: str, user_language_code: str,
                          user_is_premium: bool) -> None:
-    """Save user info at first contact"""
+    """Save user info at first dialogue contact"""
 
     queries = (
         SQL_ADD_NEW_USER.format(user_id=user_id),
@@ -93,11 +94,30 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
+            # add new asset
             await conn.session.execute(SQL_ADD_ASSET_TO_PORTFOLIO.format(user_id=user_id,
                                                                          asset_name=asset_name,
                                                                          asset_quantity=asset_quantity))
             await conn.session.commit()
         except UsersDBError as error:
             raise error
+        else:
+            # check cache if user adds asset for the first time
+            c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
+            if c_response is None or c_response == 0:
+                try:
+                    # update has_portfolio in users
+                    await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO.format(user_id=user_id,
+                                                                                    has_portfolio=True))
+                    await conn.session.commit()
+                except UsersDBError as error:
+                    raise error
+                else:
+                    # update user_has_portfolio key
+                    await cache.set(name='user_has_portfolio:' + str(user_id),
+                                    value=1)
         finally:
             await conn.session.close()
+
+
+# TODO: in /flushit portfolio request set user_has_portfolio = 0
