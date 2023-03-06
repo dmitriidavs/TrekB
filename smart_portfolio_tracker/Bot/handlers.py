@@ -2,11 +2,12 @@ import asyncio
 
 from aiogram import types, Dispatcher
 from aiogram.dispatcher import FSMContext
+from typing import Union
 
 from utils import *
 from validation import validate_asset_name, validate_asset_quantity
 from includes.keyboards import *
-from includes.finite_state_machines import *
+from includes.finite_state_machines import FSMManualAdd
 from includes.loggers.log import log_ux
 
 
@@ -135,23 +136,40 @@ async def cmd_import(message: types.Message) -> None:
 
 
 @log_ux(btn='/portfolio')
-async def cmd_portfolio(message: types.Message) -> None:
+async def cmd_portfolio(request: Union[types.Message, types.CallbackQuery]) -> None:
     """/portfolio command handler for showing all the assets"""
 
     # if user already has a portfolio
-    if await user_has_portfolio(message.from_user.id):
-        pass
+    if await user_has_portfolio(request.from_user.id):
+        msg = 'Portfolio:'
+        if type(request) == types.Message:
+            await request.answer(text=msg)
+        elif type(request) == types.CallbackQuery:
+            await request.message.answer(text=msg)
+            await request.answer()
     # if no portfolio: activate /join cmd
     else:
-        await cmd_join(message)
+        await cmd_join(request)
 
 
 @log_ux(btn='/flushit')
 async def cmd_flushit(message: types.Message) -> None:
     """/flushit command handler for clearing portfolio"""
 
-    # TODO: clear portfolio in 2 fsm steps
-    pass
+    await message.answer(text='You\'re about to delete your portfolio. Are you sure?', reply_markup=kb_flushit)
+
+
+async def clbck_flushit_yes(callback: types.CallbackQuery) -> None:
+    """/flushit :yes: callback deletes user's portfolio"""
+
+    await callback.message.answer(text='Okey, deleting')
+    await callback.answer()
+
+
+async def clbck_flushit_back(callback: types.CallbackQuery) -> None:
+    """/flushit :no or back: callback brings user back to portfolio"""
+
+    await cmd_portfolio(callback)
 
 
 def register_handlers(disp: Dispatcher) -> None:
@@ -163,4 +181,8 @@ def register_handlers(disp: Dispatcher) -> None:
     disp.register_message_handler(cmd_manual_add, commands=['add'], state=None)
     disp.register_message_handler(add_asset_name, state=FSMManualAdd.asset_name)
     disp.register_message_handler(add_asset_quantity, state=FSMManualAdd.asset_quantity)
-    # disp.register_message_handler(cmd_portfolio, commands=['portfolio'])
+    disp.register_message_handler(cmd_portfolio, commands=['portfolio'])
+
+    disp.register_message_handler(cmd_flushit, commands=['flushit'])
+    disp.register_callback_query_handler(clbck_flushit_yes, text='flushit_yes')
+    disp.register_callback_query_handler(clbck_flushit_back, text='flushit_back')
