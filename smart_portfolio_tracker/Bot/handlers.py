@@ -16,9 +16,9 @@ async def cmd_start(message: types.Message) -> None:
 
     # if user is already in users DB
     if await user_exists(message.from_user.id):
-        # if user already has a portfolio
+        # if user has already got a portfolio
         if await user_has_portfolio(message.from_user.id):
-            msg = f'Hey, {message.from_user.first_name}, you already have a portfolio!\n' \
+            msg = f'{message.from_user.first_name}, you already have a portfolio!\n' \
                   'You can hit:\n' \
                   '/portfolio - to manage it\n' \
                   '/flushit - to start again'
@@ -65,8 +65,8 @@ async def cmd_join(message: types.Message) -> None:
     await message.answer(text=msg)
     await asyncio.sleep(0.5)
     msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
-          '/add - add assets by hand\n' \
-          '/import - import crypto wallet balance'
+          '/add - add your assets by hand\n' \
+          '/import - import your crypto wallet balance'
     await message.answer(text=msg, reply_markup=kb_join)
 
 
