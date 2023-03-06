@@ -1,4 +1,7 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import (
+    ReplyKeyboardMarkup, KeyboardButton,
+    InlineKeyboardMarkup, InlineKeyboardButton
+)
 
 # TODO: optimize: one-time keyboard creation
 
@@ -23,3 +26,8 @@ manual_2 = KeyboardButton('/portfolio')
 
 kb_manual = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
 kb_manual.add(manual_1).add(manual_2)
+
+kb_flushit = InlineKeyboardMarkup()
+kb_flushit.add(InlineKeyboardButton('Nope, nevermind', callback_data='flushit_back'))
+kb_flushit.add(InlineKeyboardButton('Yes, delete my portfolio', callback_data='flushit_yes'))
+kb_flushit.row(InlineKeyboardButton('« Back to Portfolio', callback_data='flushit_back'))
