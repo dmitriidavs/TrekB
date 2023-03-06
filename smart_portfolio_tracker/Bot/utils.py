@@ -8,7 +8,12 @@ from includes.DBMSconnection import DBMSCreateConnection
 
 
 async def user_exists(user_id: int) -> bool:
-    """Check if user exists in users DB"""
+    """
+    Check if user exists in users DB
+    --------------------------------
+    DB queried on initial contact only, then
+    cache gets set in func: save_user_info
+    """
 
     # check cache if user exists in users DB
     c_response = await cache.get(name='user_exists:' + str(user_id))
@@ -34,12 +39,17 @@ async def user_exists(user_id: int) -> bool:
         return bool(c_response)
 
 
-async def user_has_portfolio(user_id: int) -> bool:
-    """Check if user has already got a portfolio"""
+async def user_has_portfolio(user_id: int) -> int:
+    """
+    Check if user has already got a portfolio
+    -----------------------------------------
+    Activated only on first /start, then cache key user_has_portfolio
+    is updated through /add & /flushit cmds
+    """
 
     # check cache if user has portfolio
     c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
-    # if cache not set (activated only on first /start, then key is updated through /add & /flushit cmds)
+    # if cache not set
     if c_response is None:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
@@ -57,10 +67,10 @@ async def user_has_portfolio(user_id: int) -> bool:
             finally:
                 await conn.session.close()
     else:
-        return bool(c_response)
+        return int(c_response)
 
 
-# TODO?: add upsert
+# TODO: add upsert?
 async def save_user_info(user_id: int, user_first_name: str, user_last_name: str,
                          user_username: str, user_language_code: str,
                          user_is_premium: bool) -> None:
@@ -104,7 +114,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
         else:
             # check cache if user adds asset for the first time
             c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
-            if c_response == 0:
+            if c_response is None or int(c_response) == 0:
                 try:
                     # update has_portfolio in users
                     await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO.format(user_id=user_id,
