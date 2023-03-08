@@ -22,7 +22,7 @@ async def cmd_start(message: types.Message) -> None:
             msg = f'{message.from_user.first_name}, you already have a portfolio!\n' \
                   'You can hit:\n' \
                   '/portfolio - to manage it\n' \
-                  '/flushit - to start again'
+                  '/flushit - to remove it'
             await message.answer(text=msg, reply_markup=kb_start_active)
         # if no portfolio: activate /join cmd
         else:
@@ -156,19 +156,25 @@ async def cmd_portfolio(request: Union[types.Message, types.CallbackQuery]) -> N
 async def cmd_flushit(message: types.Message) -> None:
     """/flushit command handler for clearing portfolio"""
 
-    await message.answer(text='You\'re about to delete your portfolio. Are you sure?', reply_markup=kb_flushit)
+    await message.answer(text='You\'re about to delete your portfolio. Are you sure?',
+                         reply_markup=get_flushit_kb())
 
 
+@log_ux(btn='/flushit', clbck='yes')
 async def clbck_flushit_yes(callback: types.CallbackQuery) -> None:
     """/flushit :yes: callback deletes user's portfolio"""
 
-    await callback.message.answer(text='Okey, deleting')
+    records_num = await delete_portfolio(user_id=callback.from_user.id)
+    msg = f'Okey, removed your portfolio, {records_num} records in total.'
+    await callback.message.answer(text=msg, reply_markup=kb_start)
     await callback.answer()
 
 
+@log_ux(btn='/flushit', clbck='no')
 async def clbck_flushit_back(callback: types.CallbackQuery) -> None:
-    """/flushit :no or back: callback brings user back to portfolio"""
+    """/flushit :no: callback brings user back to portfolio"""
 
+    # TODO: add remove prev bot's msg with callbacks
     await cmd_portfolio(callback)
 
 
@@ -185,4 +191,4 @@ def register_handlers(disp: Dispatcher) -> None:
 
     disp.register_message_handler(cmd_flushit, commands=['flushit'])
     disp.register_callback_query_handler(clbck_flushit_yes, text='flushit_yes')
-    disp.register_callback_query_handler(clbck_flushit_back, text='flushit_back')
+    disp.register_callback_query_handler(clbck_flushit_back, text='flushit_no')
