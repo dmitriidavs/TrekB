@@ -20,7 +20,7 @@ def bench_query(func: Callable[..., Any]) -> Callable[..., Any]:
     return wrapper
 
 
-def log_ux(btn: str, state: Optional[str] = None) -> Callable[..., Any]:
+def log_ux(btn: str, state: Optional[str] = None, clbck: Optional[str] = None) -> Callable[..., Any]:
     """Logs user actions"""
     
     def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -28,7 +28,8 @@ def log_ux(btn: str, state: Optional[str] = None) -> Callable[..., Any]:
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             result = func(*args, **kwargs)
             basic_log.info(f'User @{args[0]["from"]["username"]} clicked \'{btn}\'' +
-                           (f' -> \'{state}\'' if state is not None else ''))
+                           (f' -> State: \'{state}\'' if state is not None else '') +
+                           (f' -> Callback: \'{clbck}\'' if clbck is not None else ''))
             return result
         return wrapper
     return decorator
