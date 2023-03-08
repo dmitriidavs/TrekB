@@ -54,8 +54,17 @@ SET has_portfolio = {has_portfolio}
 WHERE user_id = {user_id}
 """
 
-# pg: CTE + returning * -> count(*)
 SQL_DELETE_PORTFOLIO = """
 DELETE FROM portfolio
 WHERE user_id = {user_id}
 """
+
+# # pg way
+# SQL_DELETE_PORTFOLIO = """
+# WITH deleted AS (
+#     DELETE FROM portfolio
+#     WHERE user_id = {user_id}
+#     RETURNING *
+# )
+# SELECT COUNT(*) FROM deleted;
+# """
