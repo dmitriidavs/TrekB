@@ -62,7 +62,7 @@ async def cmd_info(message: types.Message) -> None:
 async def cmd_join(message: types.Message) -> None:
     """/join command handler"""
 
-    msg = 'All right, let\'s set you up!'
+    msg = 'Let\'s set you up!'
     await message.answer(text=msg)
     await asyncio.sleep(0.5)
     msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
@@ -156,8 +156,16 @@ async def cmd_portfolio(request: Union[types.Message, types.CallbackQuery]) -> N
 async def cmd_flushit(message: types.Message) -> None:
     """/flushit command handler for clearing portfolio"""
 
-    await message.answer(text='You\'re about to delete your portfolio. Are you sure?',
-                         reply_markup=get_flushit_kb())
+    # if user already has a portfolio
+    if await user_has_portfolio(message.from_user.id):
+        msg = 'You\'re about to delete your portfolio. Are you sure?'
+        await message.answer(text=msg,
+                             reply_markup=get_flushit_kb())
+    # if no portfolio: activate /join cmd
+    else:
+        msg = 'You don\'t have a portfolio yet!'
+        await message.answer(text=msg)
+        await cmd_join(message)
 
 
 @log_ux(btn='/flushit', clbck='yes')
