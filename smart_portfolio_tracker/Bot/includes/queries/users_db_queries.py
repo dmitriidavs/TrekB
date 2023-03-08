@@ -48,8 +48,14 @@ INSERT INTO portfolio (
 );
 """
 
-SQL_UPDATE_USER_HAS_PORTFOLIO = """
+SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG = """
 UPDATE users
 SET has_portfolio = {has_portfolio}
+WHERE user_id = {user_id}
+"""
+
+# pg: CTE + returning * -> count(*)
+SQL_DELETE_PORTFOLIO = """
+DELETE FROM portfolio
 WHERE user_id = {user_id}
 """
