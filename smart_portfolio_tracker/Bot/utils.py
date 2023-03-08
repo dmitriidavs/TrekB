@@ -116,9 +116,9 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
             if c_response is None or int(c_response) == 0:
                 try:
-                    # update has_portfolio in users
-                    await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO.format(user_id=user_id,
-                                                                                    has_portfolio=True))
+                    # update has_portfolio flag in users
+                    await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG.format(user_id=user_id,
+                                                                                         has_portfolio=True))
                     await conn.session.commit()
                 except UsersDBError as error:
                     raise error
@@ -130,4 +130,31 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             await conn.session.close()
 
 
-# TODO: in /flushit portfolio request set user_has_portfolio = 0
+async def delete_portfolio(user_id: int) -> int:
+    """Delete user's portfolio & update has_portfolio flags"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            # delete portfolio returning number of deleted records
+            await conn.session.execute(SQL_DELETE_PORTFOLIO.format(user_id=user_id))
+            # TODO: to be changed in pg
+            response = await conn.session.execute("""SELECT CHANGES()""")
+            response = response.fetchone()[0]
+        except UsersDBError as error:
+            raise error
+        else:
+            try:
+                # update has_portfolio in users
+                await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG.format(user_id=user_id,
+                                                                                     has_portfolio=False))
+                await conn.session.commit()
+            except UsersDBError as error:
+                raise error
+            else:
+                # update user_has_portfolio key
+                await cache.set(name='user_has_portfolio:' + str(user_id),
+                                value=0)
+        finally:
+            await conn.session.close()
+
+    return response
