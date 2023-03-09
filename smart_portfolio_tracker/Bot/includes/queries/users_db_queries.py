@@ -68,3 +68,28 @@ WHERE user_id = {user_id}
 # )
 # SELECT COUNT(*) FROM deleted;
 # """
+
+SQL_SELECT_ASSETS_OUTER = """
+SELECT
+    p.asset_id,
+	ticker_symbol,
+    SUM(quantity)
+FROM portfolio AS p
+INNER JOIN assets AS a
+	ON a.asset_id = p.asset_id
+WHERE user_id = {user_id}
+GROUP BY user_id, p.asset_id;
+"""
+
+SQL_SELECT_ASSETS_INNER = """
+SELECT
+    p.asset_id,
+    ticker_symbol,
+    quantity,
+    added_at
+FROM portfolio AS p
+INNER JOIN assets AS a
+	ON a.asset_id = p.asset_id
+WHERE user_id = {user_id} AND p.asset_id = {asset_id}
+ORDER BY added_at;
+"""
