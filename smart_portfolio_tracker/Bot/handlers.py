@@ -1,12 +1,12 @@
 import asyncio
 
-from aiogram import types, Dispatcher
+from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
-from typing import Union
 
 from utils import *
 from validation import validate_asset_name, validate_asset_quantity
 from includes.keyboards import *
+from inline import get_flushit_kb
 from includes.finite_state_machines import FSMManualAdd
 from includes.loggers.log import log_ux
 
@@ -136,20 +136,21 @@ async def cmd_import(message: types.Message) -> None:
 
 
 @log_ux(btn='/portfolio')
-async def cmd_portfolio(request: Union[types.Message, types.CallbackQuery]) -> None:
+async def cmd_portfolio(message: Union[types.Message, types.CallbackQuery]) -> None:
     """/portfolio command handler for showing all the assets"""
 
     # if user already has a portfolio
-    if await user_has_portfolio(request.from_user.id):
+    if await user_has_portfolio(message.from_user.id):
         msg = 'Portfolio:'
-        if type(request) == types.Message:
-            await request.answer(text=msg)
-        elif type(request) == types.CallbackQuery:
-            await request.message.answer(text=msg)
-            await request.answer()
+        if type(message) == types.Message:
+            await message.answer(text=msg)
+            await get_portfolio(message)
+        elif type(message) == types.CallbackQuery:
+            await message.message.answer(text=msg)
+            await message.answer()
     # if no portfolio: activate /join cmd
     else:
-        await cmd_join(request)
+        await cmd_join(message)
 
 
 @log_ux(btn='/flushit')
