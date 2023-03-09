@@ -22,6 +22,7 @@ via simple Telegram interfaces. **Try it out yourself:**\
     ├── VM                      <- VM based solution
     ├── Cloud                   <- Cloud based solution
     ├── Lite                    <- Quick-start solution with some basic features 👨‍💻
+    ├── Misc                    <- Miscellaneous secondary objects
     └── Research                <- Some research on maths, statistics & metrics logic
 
 <div align="center">
