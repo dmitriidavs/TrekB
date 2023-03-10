@@ -67,6 +67,8 @@ Tags: `tag1`
 
 ### <ins> Database Component </ins>
 
+### <ins> Data Pipelines </ins>
+
 ### <ins> Docker Layers & Networking </ins>
 
 ### <ins> CI/CD Component </ins>
