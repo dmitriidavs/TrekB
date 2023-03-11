@@ -7,3 +7,7 @@ set USERS_DB_CONN=sqlite+aiosqlite:///path/to/db/<db_name>.db
 
 set UTIL_DB_HOST=localhost
 set UTIL_DB_PORT=6379
+
+set LOG_FOLDER_PATH=logs
+set LOG_HOST=
+set LOG_PORT=
