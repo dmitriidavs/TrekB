@@ -1,6 +1,6 @@
 import os
 
-from validation import validate_env_vars
+from .validation import validate_env_vars
 
 
 env_vars = {
@@ -13,7 +13,7 @@ env_vars = {
     'util_db_port': os.environ.get('UTIL_DB_PORT'),
 }
 
-# verify correctness of environment variables
+# verify environment variables
 env_vars = validate_env_vars(env_vars)
 # create variables from env_vars keys in upper case
 for key, val in env_vars.items():

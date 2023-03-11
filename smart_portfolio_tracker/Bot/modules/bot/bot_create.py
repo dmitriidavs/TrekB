@@ -1,5 +1,5 @@
-from bot import CoreBot
-from creds import (
+from .bot import CoreBot
+from ..creds import (
     BOT_API_TOKEN, BOT_FSM_STORAGE_TYPE,
     UTIL_DB_HOST, UTIL_DB_PORT
 )

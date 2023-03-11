@@ -1,24 +1,6 @@
-from random import sample as random_sample
-
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 # from aiogram.utils.callback_data import CallbackData
 #
-# from utils import get_assets_outer, get_assets_inner
-
-
-flushit_clbcks = (
-    InlineKeyboardButton('No, back to portfolio', callback_data='flushit_no'),
-    InlineKeyboardButton('Nope, nevermind', callback_data='flushit_no'),
-    InlineKeyboardButton('Yes, delete my portfolio', callback_data='flushit_yes')
-)
-
-
-def get_flushit_kb() -> InlineKeyboardMarkup:
-    kb_flushit = InlineKeyboardMarkup()
-    for clbck in random_sample(flushit_clbcks, len(flushit_clbcks)):
-        kb_flushit.add(clbck)
-
-    return kb_flushit
+# from ..database.logic_portfolio import get_assets_outer, get_assets_inner
 
 
 # portfolio_cd = CallbackData('get_portfolio', 'level', 'user_id', 'asset_id', 'added_at')

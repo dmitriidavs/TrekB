@@ -2,14 +2,13 @@ from aiogram.bot.api import check_token
 from aiogram.utils.exceptions import ValidationError as AioValidErr
 from pydantic import BaseModel, validator
 
-# TODO: validation not async :(
-
 
 class EnvVarsValidTypes:
     implemented_arch_types = ['Lite']
     implemented_fsm_storage_types = ['memory', 'redis']
 
 
+# TODO: validation not async :(
 class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_arch_type: str
     bot_address: str
@@ -51,4 +50,4 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
         except AioValidErr:
             raise AioValidErr('Error in BOT_API_TOKEN! Invalid token.')
 
-    # TODO: add redis conn validation
+    # TODO: add redis & users db conn validation

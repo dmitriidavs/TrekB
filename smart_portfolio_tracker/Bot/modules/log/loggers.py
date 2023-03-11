@@ -1,9 +1,8 @@
 from functools import wraps
-
 from time import perf_counter
 from typing import Callable, Any, Optional
 
-from includes.loggers.log_config import basic_log
+from .log_config import basic_log
 
 
 def bench_query(func: Callable[..., Any]) -> Callable[..., Any]:
