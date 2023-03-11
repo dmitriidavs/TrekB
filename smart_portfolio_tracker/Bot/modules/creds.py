@@ -11,6 +11,9 @@ env_vars = {
     'users_db_conn': os.environ.get('USERS_DB_CONN'),
     'util_db_host': os.environ.get('UTIL_DB_HOST'),
     'util_db_port': os.environ.get('UTIL_DB_PORT'),
+    'log_folder_path': os.environ.get('LOG_FOLDER_PATH'),
+    'log_host': os.environ.get('LOG_HOST'),
+    'log_port': os.environ.get('LOG_PORT'),
 }
 
 # verify environment variables
