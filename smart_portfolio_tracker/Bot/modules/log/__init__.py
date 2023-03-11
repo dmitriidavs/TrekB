@@ -1,4 +1,4 @@
-__all__ = ['log_config', 'loggers',
+__all__ = ['loggers',
            'basic_log']
 
 import logging
