@@ -1,7 +1,7 @@
 from sqlite3 import Error as UsersDBError
 
 from .queries_user import *
-from .DBMSconnection import DBMSCreateConnection
+from . import DBMSCreateConnection
 from ..creds import USERS_DB_CONN
 from ..cache import cache
 
