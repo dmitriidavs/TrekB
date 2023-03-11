@@ -6,7 +6,7 @@ TrekB | Smart Portfolio Tracker
 
 from aiogram.utils import executor
 
-from modules.bot.bot_create import dispatcher
+from modules.bot import dispatcher
 from modules.handlers import reg_hndlrs_user, reg_hndlrs_portfolio
 from modules.callbacks import reg_cllbcks_portfolio
 from modules.bot.bot_ctx import on_startup, on_shutdown
