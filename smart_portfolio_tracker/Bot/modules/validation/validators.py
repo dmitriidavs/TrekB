@@ -1,3 +1,5 @@
+from typing import Optional
+
 from aiogram.bot.api import check_token
 from aiogram.utils.exceptions import ValidationError as AioValidErr
 from pydantic import BaseModel, validator
@@ -8,7 +10,6 @@ class EnvVarsValidTypes:
     implemented_fsm_storage_types = ['memory', 'redis']
 
 
-# TODO: validation not async :(
 class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_arch_type: str
     bot_address: str
@@ -17,6 +18,9 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     users_db_conn: str
     util_db_host: str
     util_db_port: int
+    log_folder_path: str
+    log_host: Optional[str]
+    log_port: Optional[int]
 
     @classmethod
     @validator('bot_arch_type')

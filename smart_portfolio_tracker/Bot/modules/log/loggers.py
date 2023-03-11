@@ -2,7 +2,7 @@ from functools import wraps
 from time import perf_counter
 from typing import Callable, Any, Optional
 
-from . import basic_log
+from . import logger
 
 
 def bench_query(func: Callable[..., Any]) -> Callable[..., Any]:
@@ -14,7 +14,7 @@ def bench_query(func: Callable[..., Any]) -> Callable[..., Any]:
         result = func(*args, **kwargs)
         end_time = perf_counter()
         run_time = end_time - start_time
-        basic_log.info(f'Query [{func.__name__}] executed in {run_time:.2f} sec')
+        logger.info(f'Query [{func.__name__}] executed in {run_time:.2f} sec')
         return result
     return wrapper
 
@@ -26,9 +26,9 @@ def log_ux(btn: str, state: Optional[str] = None, clbck: Optional[str] = None) -
         @wraps(func)
         def wrapper(*args: Any, **kwargs: Any) -> Any:
             result = func(*args, **kwargs)
-            basic_log.info(f'User @{args[0]["from"]["username"]} clicked \'{btn}\'' +
-                           (f' -> State: \'{state}\'' if state is not None else '') +
-                           (f' -> Callback: \'{clbck}\'' if clbck is not None else ''))
+            logger.info(f'User @{args[0]["from"]["username"]} clicked \'{btn}\'' +
+                        (f' -> State: \'{state}\'' if state is not None else '') +
+                        (f' -> Callback: \'{clbck}\'' if clbck is not None else ''))
             return result
         return wrapper
     return decorator
