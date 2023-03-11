@@ -2,7 +2,7 @@ from sqlite3 import Error as UsersDBError
 
 from .queries_portfolio import *
 from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
-from .DBMSconnection import DBMSCreateConnection
+from . import DBMSCreateConnection
 from ..creds import USERS_DB_CONN
 from ..cache import cache
 
