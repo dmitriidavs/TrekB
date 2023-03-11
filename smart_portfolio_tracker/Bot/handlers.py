@@ -142,12 +142,14 @@ async def cmd_portfolio(message: Union[types.Message, types.CallbackQuery]) -> N
     # if user already has a portfolio
     if await user_has_portfolio(message.from_user.id):
         msg = 'Portfolio:'
-        if type(message) == types.Message:
-            await message.answer(text=msg)
-            await get_portfolio(message)
-        elif type(message) == types.CallbackQuery:
-            await message.message.answer(text=msg)
-            await message.answer()
+        await message.answer(text=msg)
+
+        # if type(message) == types.Message:
+        #     await message.answer(text=msg)
+        #     await get_portfolio(message)
+        # elif type(message) == types.CallbackQuery:
+        #     await message.message.answer(text=msg)
+        #     await message.answer()
     # if no portfolio: activate /join cmd
     else:
         await cmd_join(message)
