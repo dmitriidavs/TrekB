@@ -6,10 +6,15 @@ from aiogram.dispatcher import FSMContext
 from .fsm import FSMManualAdd
 from .handlers_user import hndlr_join
 from ..database.logic_user import user_has_portfolio
-from ..database.logic_portfolio import add_asset_to_portfolio
+from ..database.logic_portfolio import add_asset_to_portfolio, delete_portfolio
 from ..validation import validate_asset_name, validate_asset_quantity
-from ..keyboards.reply import kb_manual
+from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
+from ..keyboards.callback import (
+    assets_outer_keyboard,
+    assets_inner_keyboard
+    #, edit_asset_keyboard
+)
 from ..log.loggers import log_ux
 
 
@@ -19,18 +24,76 @@ async def hndlr_portfolio(message: Union[Message, CallbackQuery]) -> None:
 
     # if user already has a portfolio
     if await user_has_portfolio(message.from_user.id):
-        msg = 'Portfolio:'
-        await message.answer(text=msg)
-
-        # if type(message) == Message:
-        #     await message.answer(text=msg)
-        #     await get_portfolio(message)
-        # elif type(message) == CallbackQuery:
-        #     await message.message.answer(text=msg)
-        #     await message.answer()
+        await list_portfolio(message)
     # if no portfolio: activate /join cmd
     else:
         await hndlr_join(message)
+
+
+@log_ux(btn='/flushit', clbck='yes')
+async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
+    """/flushit -> yes: callback deletes user's portfolio"""
+
+    records_num = await delete_portfolio(user_id=callback.from_user.id)
+    msg = f'Okey, removed your portfolio, {records_num} records in total.'
+    await callback.message.answer(text=msg, reply_markup=kb_start)
+    await callback.answer()
+
+
+@log_ux(btn='/flushit', clbck='no')
+async def cllbck_flushit_back(callback: CallbackQuery) -> None:
+    """/flushit -> no: callback brings user back to portfolio"""
+
+    await callback.message.edit_text(text='', reply_markup=None)
+    await hndlr_portfolio(callback)
+
+
+@log_ux(btn='/list_portfolio')
+async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> None:
+    """List user's portfolio"""
+
+    markup = await assets_outer_keyboard(message.from_user.id)
+    if isinstance(message, Message):
+        await message.answer(text='Portfolio:', reply_markup=markup)
+    elif isinstance(message, CallbackQuery):
+        callback = message
+        await callback.message.edit_text(text='Portfolio:', reply_markup=markup)
+
+
+@log_ux(btn='/portfolio', clbck='asset_history')
+async def list_asset_history(callback: CallbackQuery, asset_id: int, **kwargs) -> None:
+    """/portfolio -> asset: list user's asset history"""
+
+    markup = await assets_inner_keyboard(callback.message.from_user.id, asset_id)
+    await callback.message.edit_text(text='History:', reply_markup=markup)
+
+
+# @log_ux(btn='/portfolio', clbck='asset_edit')
+# async def edit_asset(callback: CallbackQuery, asset_id: int, added_at: str) -> None:
+#     """/portfolio -> asset -> asset record: edit user's asset history"""
+#
+#     markup = await edit_asset_keyboard(callback.message.from_user.id, asset_id, added_at)
+#     await callback.message.edit_text(text='Edit:', reply_markup=markup)
+
+
+async def navigate(callback: CallbackQuery, cllbck_data: dict) -> None:
+    """Enable portfolio navigation"""
+
+    curr_level = cllbck_data["level"]
+    user_id = cllbck_data["user_id"]
+    asset_id = cllbck_data["asset_id"]
+    added_at = cllbck_data["added_at"]
+
+    levels = {
+        0: list_portfolio,
+        1: list_asset_history
+    }
+
+    curr_level_function = levels[curr_level]
+    await curr_level_function(callback,
+                              user_id=user_id,
+                              asset_id=asset_id,
+                              added_at=added_at)
 
 
 @log_ux(btn='/flushit')
