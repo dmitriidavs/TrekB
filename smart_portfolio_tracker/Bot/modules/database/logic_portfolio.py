@@ -68,43 +68,35 @@ async def delete_portfolio(user_id: int) -> int:
     return response
 
 
-# async def get_portfolio(message: Union[types.Message, types.CallbackQuery]):
-#     """Get user's portfolio"""
-#
-#     # markup = await assets_keyboard()
-#     markup = await get_assets_inner(user_id=message.from_user.id, asset_id=0)
-#     print(markup)
-#
-#
-# async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
-#     """Get all user's assets: sum of each record"""
-#
-#     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
-#         try:
-#             response = await conn.session.execute(SQL_SELECT_ASSETS_OUTER.format(user_id=user_id))
-#             response = response.fetchall()
-#             return response
-#         except UsersDBError as error:
-#             raise error
-#         finally:
-#             await conn.session.close()
-#
-#
-# async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, str, float, str]]:
-#     """Get user's asset info"""
-#
-#     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
-#         try:
-#             response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
-#                                                                                  asset_id=asset_id))
-#             response = response.fetchall()
-#             return response
-#         except UsersDBError as error:
-#             raise error
-#         finally:
-#             await conn.session.close()
-#
-#
+async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
+    """Get all user's assets: sum of each record"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            response = await conn.session.execute(SQL_SELECT_ASSETS_OUTER.format(user_id=user_id))
+            response = response.fetchall()
+            return response
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
+
+
+async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, str, float, str]]:
+    """Get user's asset info"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
+                                                                                 asset_id=asset_id))
+            response = response.fetchall()
+            return response
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
+
+
 # # TODO:
 # async def update_asset_record(col: str, user_id: int, asset_id: int) -> str:
 #     """Get user's asset info"""
