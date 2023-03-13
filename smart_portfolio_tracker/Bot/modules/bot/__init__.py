@@ -1,11 +1,7 @@
-__all__ = ['bot', 'bot_ctx',
-           'bot', 'dispatcher']
+__all__ = ['bot', 'bot_ctx']
 
 from .bot import CoreBot
-from ..creds import (
-    BOT_API_TOKEN, BOT_FSM_STORAGE_TYPE,
-    UTIL_DB_HOST, UTIL_DB_PORT
-)
+from ..creds import BOT_API_TOKEN, BOT_FSM_STORAGE_TYPE, UTIL_DB_HOST, UTIL_DB_PORT
 
 
 Bot = CoreBot(
@@ -15,4 +11,4 @@ Bot = CoreBot(
     storage_type=BOT_FSM_STORAGE_TYPE
 )
 bot = Bot.bot
-dispatcher = Bot.dispatcher
+dp = Bot.dispatcher
