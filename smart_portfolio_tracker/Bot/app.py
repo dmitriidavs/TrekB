@@ -6,18 +6,15 @@ TrekB | Smart Portfolio Tracker
 
 from aiogram.utils import executor
 
-from modules.bot import dispatcher
+from modules.bot import dp
 from modules.handlers import reg_hndlrs_user, reg_hndlrs_portfolio
-from modules.callbacks import reg_cllbcks_portfolio
 from modules.bot.bot_ctx import on_startup, on_shutdown
 
-
 if __name__ == '__main__':
-    # register handlers & callbacks
-    reg_hndlrs_user(dispatcher)
-    reg_hndlrs_portfolio(dispatcher)
-    reg_cllbcks_portfolio(dispatcher)
+    # register handlers
+    reg_hndlrs_user(dp)
+    reg_hndlrs_portfolio(dp)
 
     # TODO: move to webhook
     # start polling
-    executor.start_polling(dispatcher, skip_updates=True, on_startup=on_startup, on_shutdown=on_shutdown)
+    executor.start_polling(dp, skip_updates=True, on_startup=on_startup, on_shutdown=on_shutdown)
