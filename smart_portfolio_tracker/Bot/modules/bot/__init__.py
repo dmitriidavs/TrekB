@@ -1,6 +1,7 @@
-__all__ = ['bot', 'bot_ctx']
+__all__ = ['corebot', 'bot_ctx',
+           'bot', 'dp']
 
-from .bot import CoreBot
+from .corebot import CoreBot
 from ..creds import BOT_API_TOKEN, BOT_FSM_STORAGE_TYPE, UTIL_DB_HOST, UTIL_DB_PORT
 
 
