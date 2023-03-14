@@ -10,6 +10,7 @@ from modules.bot import dp
 from modules.handlers import reg_hndlrs_user, reg_hndlrs_portfolio
 from modules.bot.bot_ctx import on_startup, on_shutdown
 
+
 if __name__ == '__main__':
     # register handlers
     reg_hndlrs_user(dp)
