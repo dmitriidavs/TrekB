@@ -32,6 +32,7 @@ WHERE user_id = {user_id}
 
 SQL_SELECT_ASSETS_OUTER = """
 SELECT
+    p.asset_id,
     ticker_symbol,
     SUM(quantity)
 FROM portfolio AS p
