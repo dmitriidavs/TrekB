@@ -82,7 +82,7 @@ async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
             await conn.session.close()
 
 
-async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, str, float, str]]:
+async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float, str]]:
     """Get user's asset info"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
