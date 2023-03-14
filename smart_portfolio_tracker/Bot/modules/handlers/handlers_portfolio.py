@@ -69,7 +69,7 @@ async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> No
 async def list_asset_history(callback: CallbackQuery, asset_id: int, **kwargs) -> None:
     """/portfolio -> asset: list user's asset history"""
 
-    markup = await assets_inner_keyboard(callback.message.from_user.id, asset_id)
+    markup = await assets_inner_keyboard(callback.from_user.id, asset_id)
     await callback.message.edit_text(text='History:', reply_markup=markup)
 
 
@@ -82,17 +82,17 @@ async def list_asset_history(callback: CallbackQuery, asset_id: int, **kwargs) -
 
 
 @dp.callback_query_handler(portfolio_cd.filter())
-async def navigate(callback: CallbackQuery, cllbck_data: dict) -> None:
+async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
     """Enable portfolio navigation"""
 
-    curr_level = cllbck_data["level"]
-    user_id = cllbck_data["user_id"]
-    asset_id = cllbck_data["asset_id"]
-    added_at = cllbck_data["added_at"]
+    curr_level = callback_data["level"]
+    user_id = callback_data["user_id"]
+    asset_id = callback_data["asset_id"]
+    added_at = callback_data["added_at"]
 
     levels = {
-        0: list_portfolio,
-        1: list_asset_history
+        '0': list_portfolio,
+        '1': list_asset_history
     }
 
     curr_level_function = levels[curr_level]
@@ -131,7 +131,7 @@ async def hndlr_manual_add(message: Message) -> None:
 
 
 @log_ux(btn='/add', state='asset_name')
-@dp.message_handler(commands=['add'], state=FSMManualAdd.asset_name)
+@dp.message_handler(state=FSMManualAdd.asset_name)
 async def stt_asset_name(message: Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_name:
@@ -152,7 +152,7 @@ async def stt_asset_name(message: Message, state: FSMContext) -> None:
 
 
 @log_ux(btn='/add', state='asset_quantity')
-@dp.message_handler(commands=['add'], state=FSMManualAdd.asset_quantity)
+@dp.message_handler(state=FSMManualAdd.asset_quantity)
 async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_quantity:
