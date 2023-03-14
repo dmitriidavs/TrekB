@@ -2,6 +2,7 @@ from aiogram.utils.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from ..database.logic_portfolio import get_assets_outer, get_assets_inner
+from ..parse.html import *
 
 
 portfolio_cd = CallbackData('list_portfolio', 'level', 'user_id', 'asset_id', 'added_at')
@@ -26,7 +27,8 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
         asset_id = asset[0]
         ticker_symbol = asset[1]
         quantity_sum = asset[2]
-        button_text = f'{ticker_symbol}: {quantity_sum}'
+        # button_text = f'{ticker_symbol}: {quantity_sum}'
+        button_text = HTML_PORTFOLIO.format(token=ticker_symbol, quantity=quantity_sum)
         cllbck_data = create_cllbck_data(level=curr_level+1,
                                          user_id=user_id,
                                          asset_id=asset_id)
