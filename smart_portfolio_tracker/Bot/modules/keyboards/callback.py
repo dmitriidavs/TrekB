@@ -9,7 +9,7 @@ portfolio_cd = CallbackData('list_portfolio', 'level', 'user_id', 'asset_id', 'a
 # delete_record_cd = CallbackData('delete_record', 'user_id', 'asset_id', 'added_at')
 
 
-def create_cllbck_data(level: int, user_id: int, asset_id: int = 0, added_at: str = '0') -> str:
+def create_cllbck_data(level: int, user_id: int, asset_id: int = 0, added_at: str = '9999-12-31') -> str:
     return portfolio_cd.new(level=level, user_id=user_id,
                             asset_id=asset_id, added_at=added_at)
 
@@ -23,10 +23,13 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
     assets_outer = await get_assets_outer(user_id=user_id)
     # create a button for each asset in portfolio and add it to markup
     for asset in assets_outer:
-        ticker_symbol = asset[0]
-        quantity_sum = asset[1]
+        asset_id = asset[0]
+        ticker_symbol = asset[1]
+        quantity_sum = asset[2]
         button_text = f'{ticker_symbol}: {quantity_sum}'
-        cllbck_data = create_cllbck_data(level=curr_level+1, user_id=user_id)
+        cllbck_data = create_cllbck_data(level=curr_level+1,
+                                         user_id=user_id,
+                                         asset_id=asset_id)
         markup.add(
             InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
         )
@@ -45,18 +48,23 @@ async def assets_inner_keyboard(user_id: int, asset_id: int) -> InlineKeyboardMa
     # create a button for each asset's record in portfolio and add it to markup
     for asset_data in assets_inner:
         asset_id = asset_data[0]
+        # ticker_symbol = asset_data
         quantity = asset_data[1]
         added_dt = asset_data[2]
         button_text = f'{quantity}: {added_dt}'
-        cllbck_data = create_cllbck_data(level=curr_level + 1,
+        cllbck_data = create_cllbck_data(level=curr_level+1,
                                          user_id=user_id,
-                                         asset_id=asset_id)
+                                         asset_id=asset_id,
+                                         added_at=added_dt.replace(':', '-'))
         markup.add(
             InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
         )
     # add navigation buttons
     markup.row(
-        InlineKeyboardButton(text='« back', callback_data=create_cllbck_data(level=curr_level-1, user_id=user_id))
+        InlineKeyboardButton(text='« back', callback_data=create_cllbck_data(level=curr_level-1,
+                                                                             user_id=user_id)),
+        # InlineKeyboardButton(text='<'),
+        # InlineKeyboardButton(text='>')
     )
 
     return markup
