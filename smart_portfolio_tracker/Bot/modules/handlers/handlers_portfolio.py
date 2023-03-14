@@ -1,6 +1,6 @@
 from typing import Union
 
-from aiogram.types import Message, CallbackQuery
+from aiogram.types import Message, CallbackQuery, ParseMode
 from aiogram.dispatcher import FSMContext
 
 from .fsm import FSMManualAdd
@@ -17,6 +17,7 @@ from ..keyboards.callback import (
     assets_inner_keyboard
     #, edit_asset_keyboard
 )
+from ..parse.html import *
 from ..log.loggers import log_ux
 
 
@@ -59,10 +60,10 @@ async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> No
 
     markup = await assets_outer_keyboard(message.from_user.id)
     if isinstance(message, Message):
-        await message.answer(text='Portfolio:', reply_markup=markup)
+        await message.answer(text=HTML_PORTFOLIO_HEADER, reply_markup=markup, parse_mode=ParseMode.HTML)
     elif isinstance(message, CallbackQuery):
         callback = message
-        await callback.message.edit_text(text='Portfolio:', reply_markup=markup)
+        await callback.message.edit_text(text=HTML_PORTFOLIO_HEADER, reply_markup=markup, parse_mode=ParseMode.HTML)
 
 
 @log_ux(btn='/portfolio', clbck='asset_history')
@@ -164,7 +165,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
             # add asset quantity to fsm storage
             data["asset_quantity"] = float(message.text)
             # send OK reply message
-            msg = f'OK. Added {data["asset_quantity"]} {data["asset_name"]} to your portfolio.'
+            msg = f'+{data["asset_quantity"]} {data["asset_name"]} in your portfolio.'
             await message.answer(text=msg, reply_markup=kb_manual)
             # add asset to portfolio table in DB
             await add_asset_to_portfolio(user_id=message.from_user.id,
