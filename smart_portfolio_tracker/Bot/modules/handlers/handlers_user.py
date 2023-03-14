@@ -1,12 +1,14 @@
 from asyncio import sleep as aiosleep
 from aiogram.types import Message
 
+from ..bot import dp
 from ..database.logic_user import *
 from ..keyboards.reply import *
 from ..log.loggers import log_ux
 
 
 @log_ux(btn='/start')
+@dp.message_handler(commands=['start'])
 async def hndlr_start(message: Message) -> None:
     """/start command handler"""
 
@@ -43,6 +45,7 @@ async def hndlr_start(message: Message) -> None:
 
 
 @log_ux(btn='/info')
+@dp.message_handler(commands=['info'])
 async def hndlr_info(message: Message) -> None:
     """/info command handler"""
 
@@ -54,6 +57,7 @@ async def hndlr_info(message: Message) -> None:
 
 
 @log_ux(btn='/join')
+@dp.message_handler(commands=['join'])
 async def hndlr_join(message: Message) -> None:
     """/join command handler"""
 

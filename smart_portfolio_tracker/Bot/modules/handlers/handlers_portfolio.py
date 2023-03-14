@@ -5,12 +5,14 @@ from aiogram.dispatcher import FSMContext
 
 from .fsm import FSMManualAdd
 from .handlers_user import hndlr_join
+from ..bot import dp
 from ..database.logic_user import user_has_portfolio
 from ..database.logic_portfolio import add_asset_to_portfolio, delete_portfolio
 from ..validation import validate_asset_name, validate_asset_quantity
 from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
 from ..keyboards.callback import (
+    portfolio_cd,
     assets_outer_keyboard,
     assets_inner_keyboard
     #, edit_asset_keyboard
@@ -19,6 +21,7 @@ from ..log.loggers import log_ux
 
 
 @log_ux(btn='/portfolio')
+@dp.message_handler(commands=['portfolio'])
 async def hndlr_portfolio(message: Union[Message, CallbackQuery]) -> None:
     """/portfolio command handler for showing all the assets"""
 
@@ -31,6 +34,7 @@ async def hndlr_portfolio(message: Union[Message, CallbackQuery]) -> None:
 
 
 @log_ux(btn='/flushit', clbck='yes')
+@dp.callback_query_handler(text='flushit_yes')
 async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
     """/flushit -> yes: callback deletes user's portfolio"""
 
@@ -41,6 +45,7 @@ async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
 
 
 @log_ux(btn='/flushit', clbck='no')
+@dp.callback_query_handler(text='flushit_no')
 async def cllbck_flushit_back(callback: CallbackQuery) -> None:
     """/flushit -> no: callback brings user back to portfolio"""
 
@@ -76,6 +81,7 @@ async def list_asset_history(callback: CallbackQuery, asset_id: int, **kwargs) -
 #     await callback.message.edit_text(text='Edit:', reply_markup=markup)
 
 
+@dp.callback_query_handler(portfolio_cd.filter())
 async def navigate(callback: CallbackQuery, cllbck_data: dict) -> None:
     """Enable portfolio navigation"""
 
@@ -97,6 +103,7 @@ async def navigate(callback: CallbackQuery, cllbck_data: dict) -> None:
 
 
 @log_ux(btn='/flushit')
+@dp.message_handler(commands=['flushit'])
 async def hndlr_flushit(message: Message) -> None:
     """/flushit command handler for clearing portfolio"""
 
@@ -113,6 +120,7 @@ async def hndlr_flushit(message: Message) -> None:
 
 
 @log_ux(btn='/add')
+@dp.message_handler(commands=['add'], state=None)
 async def hndlr_manual_add(message: Message) -> None:
     """/add command handler: start FSMManualSetup"""
 
@@ -123,6 +131,7 @@ async def hndlr_manual_add(message: Message) -> None:
 
 
 @log_ux(btn='/add', state='asset_name')
+@dp.message_handler(commands=['add'], state=FSMManualAdd.asset_name)
 async def stt_asset_name(message: Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_name:
@@ -143,6 +152,7 @@ async def stt_asset_name(message: Message, state: FSMContext) -> None:
 
 
 @log_ux(btn='/add', state='asset_quantity')
+@dp.message_handler(commands=['add'], state=FSMManualAdd.asset_quantity)
 async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
     """
     FSMManualSetup.asset_quantity:
@@ -169,6 +179,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
 
 # TODO: when imported wallet address should be removed from dialogue in some time
 @log_ux(btn='/import')
+@dp.message_handler(commands=['import'])
 async def hndlr_import(message: Message) -> None:
     """/import command handler for crypto wallet balances"""
 
