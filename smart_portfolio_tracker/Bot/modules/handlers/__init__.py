@@ -5,7 +5,7 @@ from aiogram import Dispatcher
 
 from .handlers_user import *
 from .handlers_portfolio import *
-# from ..keyboards.callback import portfolio_cd
+from ..keyboards.callback import portfolio_cd
 
 
 def reg_hndlrs_user(disp: Dispatcher) -> None:
@@ -28,5 +28,5 @@ def reg_hndlrs_portfolio(disp: Dispatcher) -> None:
 
     disp.register_callback_query_handler(cllbck_flushit_yes, text='flushit_yes')
     disp.register_callback_query_handler(cllbck_flushit_back, text='flushit_no')
-    # disp.register_callback_query_handler(navigate, portfolio_cd.filter())
+    disp.register_callback_query_handler(navigate, portfolio_cd.filter(), state='*')
 
