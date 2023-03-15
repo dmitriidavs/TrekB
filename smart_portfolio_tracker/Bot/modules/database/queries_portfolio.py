@@ -17,7 +17,7 @@ INSERT INTO portfolio (
 
 SQL_DELETE_PORTFOLIO = """
 DELETE FROM portfolio
-WHERE user_id = {user_id}
+WHERE user_id = {user_id};
 """
 
 # # pg way
