@@ -44,4 +44,4 @@ INSERT OR IGNORE INTO assets VALUES
     (6, 'GOOGL', 'Google'),
     (7, 'GOLD', 'Gold');
 
--- PRAGMA foreign_keys = ON; as an additional command in Dockerfile
+PRAGMA foreign_keys = ON;
