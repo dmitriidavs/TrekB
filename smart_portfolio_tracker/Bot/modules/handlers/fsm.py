@@ -6,6 +6,14 @@ class FSMManualAdd(StatesGroup):
     asset_quantity = State()
 
 
+class FSMEditQuantity(StatesGroup):
+    asset_quantity = State()
+
+
+class FSMEditDate(StatesGroup):
+    asset_date = State()
+
+
 # class FSMImportWallet(StatesGroup):
 #     blockchain: State()
 #     wallet: State()
