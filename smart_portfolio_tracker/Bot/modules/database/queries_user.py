@@ -1,3 +1,7 @@
+SQL_TEST_USERS_DB_CONN = """
+SELECT 1;
+"""
+
 SQL_USER_EXISTS = """
 SELECT EXISTS (
     SELECT 1 FROM users
@@ -34,5 +38,5 @@ INSERT INTO users_info (
 SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG = """
 UPDATE users
 SET has_portfolio = {has_portfolio}
-WHERE user_id = {user_id}
+WHERE user_id = {user_id};
 """
