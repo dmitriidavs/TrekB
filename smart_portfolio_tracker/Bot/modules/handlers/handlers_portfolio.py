@@ -1,6 +1,6 @@
 from typing import Union
 
-from aiogram.types import Message, CallbackQuery, ParseMode
+from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher import FSMContext
 
 from .fsm import FSMManualAdd
@@ -14,10 +14,9 @@ from ..keyboards.inline import get_flushit_kb
 from ..keyboards.callback import (
     portfolio_cd,
     assets_outer_keyboard,
-    assets_inner_keyboard
-    #, edit_asset_keyboard
+    assets_inner_keyboard,
+    edit_asset_keyboard
 )
-from ..parse.html import *
 from ..log.loggers import log_ux
 
 
@@ -60,46 +59,79 @@ async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> No
 
     markup = await assets_outer_keyboard(message.from_user.id)
     if isinstance(message, Message):
-        await message.answer(text=HTML_PORTFOLIO_HEADER, reply_markup=markup, parse_mode=ParseMode.HTML)
+        await message.answer(text='Portfolio:', reply_markup=markup)
     elif isinstance(message, CallbackQuery):
         callback = message
-        await callback.message.edit_text(text=HTML_PORTFOLIO_HEADER, reply_markup=markup, parse_mode=ParseMode.HTML)
+        await callback.message.edit_text(text='Portfolio:', reply_markup=markup)
 
 
 @log_ux(btn='/portfolio', clbck='asset_history')
-async def list_asset_history(callback: CallbackQuery, asset_id: int, **kwargs) -> None:
+async def list_asset_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str, **kwargs) -> None:
     """/portfolio -> asset: list user's asset history"""
 
-    markup = await assets_inner_keyboard(callback.from_user.id, asset_id)
-    await callback.message.edit_text(text='History:', reply_markup=markup)
+    markup = await assets_inner_keyboard(callback.from_user.id, asset_id, ticker_symbol)
+    await callback.message.edit_text(text=f'{ticker_symbol} Activity:', reply_markup=markup)
 
 
-# @log_ux(btn='/portfolio', clbck='asset_edit')
-# async def edit_asset(callback: CallbackQuery, asset_id: int, added_at: str) -> None:
-#     """/portfolio -> asset -> asset record: edit user's asset history"""
-#
-#     markup = await edit_asset_keyboard(callback.message.from_user.id, asset_id, added_at)
-#     await callback.message.edit_text(text='Edit:', reply_markup=markup)
+@log_ux(btn='/portfolio', clbck='edit_asset')
+async def list_edit_asset(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                          quantity: float, added_at: str, **kwargs) -> None:
+    """/portfolio -> asset -> asset record: edit user's asset history"""
+
+    markup = await edit_asset_keyboard(callback.message.from_user.id, asset_id, ticker_symbol, quantity, added_at)
+    await callback.message.edit_text(text=f'Editing {ticker_symbol}:\n'
+                                          f'+{quantity} | {added_at.replace("+", ":")}',
+                                     reply_markup=markup)
+
+
+@log_ux(btn='/portfolio', clbck='edit_asset_quantity')
+async def edit_asset_quantity(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                              quantity: float, added_at: str, **kwargs) -> None:
+    """/portfolio -> asset -> edit quantity: updates user's asset quantity"""
+
+    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} on ' \
+          f'{added_at.replace("+", ":")}.\nWhat\'s the new quantity?'
+    await callback.message.edit_text(text=msg)
+    # TODO: state open
+
+
+@log_ux(btn='/portfolio', clbck='edit_asset_date')
+async def edit_asset_date(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                          quantity: float, added_at: str, **kwargs) -> None:
+    """/portfolio -> asset -> edit date: updates user's asset date"""
+
+    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} on ' \
+          f'{added_at.replace("+", ":")}.\nWhat\'s the new date?\n' \
+          f'Here is the format: YYYY-MM-DD hh:mm:ss'
+    await callback.message.edit_text(text=msg)
+    # TODO: state open
 
 
 @dp.callback_query_handler(portfolio_cd.filter())
 async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
-    """Enable portfolio navigation"""
+    """Assign functions for portfolio navigation"""
 
     curr_level = callback_data["level"]
     user_id = callback_data["user_id"]
     asset_id = callback_data["asset_id"]
+    ticker_symbol = callback_data["ticker_symbol"]
+    quantity = callback_data["quantity"]
     added_at = callback_data["added_at"]
 
     levels = {
         '0': list_portfolio,
-        '1': list_asset_history
+        '1': list_asset_history,
+        '2': list_edit_asset,
+        '3': edit_asset_quantity,
+        '4': edit_asset_date
     }
 
     curr_level_function = levels[curr_level]
     await curr_level_function(callback,
                               user_id=user_id,
                               asset_id=asset_id,
+                              ticker_symbol=ticker_symbol,
+                              quantity=quantity,
                               added_at=added_at)
 
 
