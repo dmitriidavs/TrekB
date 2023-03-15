@@ -49,5 +49,5 @@ SELECT
     added_at
 FROM portfolio
 WHERE user_id = {user_id} AND asset_id = {asset_id}
-ORDER BY added_at;
+ORDER BY added_at DESC;
 """
