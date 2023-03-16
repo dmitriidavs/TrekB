@@ -7,11 +7,11 @@ class FSMManualAdd(StatesGroup):
 
 
 class FSMEditQuantity(StatesGroup):
-    asset_quantity = State()
+    new_asset_quantity = State()
 
 
 class FSMEditDate(StatesGroup):
-    asset_date = State()
+    new_asset_date = State()
 
 
 # class FSMImportWallet(StatesGroup):
