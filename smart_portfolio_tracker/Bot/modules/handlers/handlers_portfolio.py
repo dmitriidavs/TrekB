@@ -85,15 +85,15 @@ async def list_edit_asset(callback: CallbackQuery, asset_id: int, ticker_symbol:
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_quantity')
-@dp.message_handler(state=None)
+@dp.message_handler(lambda message: 'Edit quantity' in message.text, state=None)
 async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
                                quantity: float, added_at: str, **kwargs) -> None:
     """/portfolio -> asset -> edit quantity: updates user's asset quantity"""
 
     # start new state
-    await FSMEditQuantity.asset_quantity.set()
+    await FSMEditQuantity.new_asset_quantity.set()
 
-    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} on ' \
+    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} added on ' \
           f'{added_at.replace("+", ":")}.\nWhat\'s the new quantity?'
     await callback.message.edit_text(text=msg)
 
@@ -102,7 +102,7 @@ async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_sy
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_quantity', state='asset_quantity')
-@dp.message_handler(state=FSMEditQuantity.asset_quantity)
+@dp.message_handler(lambda message: 'Edit date' in message.text, state=FSMEditQuantity.new_asset_quantity)
 async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     """
     FSMEditQuantity.asset_quantity:
@@ -130,7 +130,7 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
     """/portfolio -> asset -> edit date: updates user's asset date"""
 
     # start new state
-    await FSMEditDate.asset_date.set()
+    await FSMEditDate.new_asset_date.set()
 
     msg = f'Ok. Let\'s change {quantity} {ticker_symbol} on ' \
           f'{added_at.replace("+", ":")}.\n' \
@@ -142,7 +142,7 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_date', state='asset_date')
-@dp.message_handler(state=FSMEditDate.asset_date)
+@dp.message_handler(state=FSMEditDate.new_asset_date)
 async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
     """
     FSMEditQuantity.asset_quantity:
