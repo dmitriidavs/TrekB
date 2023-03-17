@@ -83,7 +83,7 @@ async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
 
 
 async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float, str]]:
-    """Get user's asset info"""
+    """Get user's asset activity history info"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
@@ -97,22 +97,36 @@ async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float
             await conn.session.close()
 
 
-# # TODO:
-# async def update_asset_record(col: str, user_id: int, asset_id: int) -> str:
-#     """Get user's asset info"""
-#
-#     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
-#         try:
-#             response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
-#                                                                                  asset_id=asset_id))
-#             response = response.fetchall()
-#             return response
-#         except UsersDBError as error:
-#             raise error
-#         finally:
-#             await conn.session.close()
-#
-#
+async def cache_set_asset_editing_data(data: dict) -> None:
+    await cache.hset(name='editing_data:' + str(data["user_id"]),
+                     mapping=data)
+
+
+async def cache_get_asset_editing_data(user_id: int) -> dict:
+    return await cache.hgetall(name='editing_data:' + str(user_id))
+
+
+async def cache_del_asset_editing_data(user_id: int) -> None:
+    await cache.delete('editing_data:' + str(user_id))
+
+
+async def update_asset_record_data(col: str, val: float, user_id: int, asset_id: int, added_at: str) -> None:
+    """Update user's asset info"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            await conn.session.execute(SQL_UPDATE_ASSET_RECORD.format(col=col,
+                                                                      val=val,
+                                                                      user_id=user_id,
+                                                                      asset_id=asset_id,
+                                                                      added_at=added_at))
+            await conn.session.commit()
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
+
+
 # # TODO:
 # async def delete_asset_record(col: str, user_id: int, asset_id: int) -> str:
 #     """Get user's asset info"""
