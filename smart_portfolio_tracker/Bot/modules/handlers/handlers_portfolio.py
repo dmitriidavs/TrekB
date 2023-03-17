@@ -8,7 +8,8 @@ from .handlers_user import hndlr_join
 from ..bot import dp
 from ..database.logic_user import user_has_portfolio
 from ..database.logic_portfolio import add_asset_to_portfolio, delete_portfolio
-from ..validation import validate_asset_name, validate_asset_quantity
+from ..validation import validate_asset_name, validate_text_is_float
+from ..validation.formatters import format_float_to_currency, format_dt
 from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
 from ..keyboards.callback import (
@@ -57,12 +58,14 @@ async def cllbck_flushit_back(callback: CallbackQuery) -> None:
 async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> None:
     """List user's portfolio"""
 
+    # remove reply keyboard & inline keyboard with portfolio callbacks
     markup = await assets_outer_keyboard(message.from_user.id)
+    msg = f'{message.from_user.first_name}\'s Portfolio:'
     if isinstance(message, Message):
-        await message.answer(text='Portfolio:', reply_markup=markup)
+        await message.answer(text=msg, reply_markup=markup)
     elif isinstance(message, CallbackQuery):
         callback = message
-        await callback.message.edit_text(text='Portfolio:', reply_markup=markup)
+        await callback.message.edit_text(text=msg, reply_markup=markup)
 
 
 @log_ux(btn='/portfolio', clbck='asset_history')
@@ -79,8 +82,10 @@ async def list_edit_asset(callback: CallbackQuery, asset_id: int, ticker_symbol:
     """/portfolio -> asset -> asset record: edit user's asset history"""
 
     markup = await edit_asset_keyboard(callback.message.from_user.id, asset_id, ticker_symbol, quantity, added_at)
+    quantity_text = await format_float_to_currency(quantity, 6)
+    added_at_text = await format_dt(added_at.replace('+', ':'))
     msg = f'Editing {ticker_symbol}:\n' \
-          f'+{quantity} | {added_at.replace("+", ":")}'
+          f'+{quantity_text} | {added_at_text}'
     await callback.message.edit_text(text=msg, reply_markup=markup)
 
 
@@ -109,7 +114,7 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     Validating and editing quantity of an asset on particular date
     """
 
-    if await validate_asset_quantity(message.text):
+    if await validate_text_is_float(message.text):
         # send OK reply message
         msg = f'Good! {message.text} is the new quantity.'
         await message.answer(text=msg, reply_markup=kb_manual)
@@ -132,7 +137,7 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
     # start new state
     await FSMEditDate.new_asset_date.set()
 
-    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} on ' \
+    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} added on ' \
           f'{added_at.replace("+", ":")}.\n' \
           f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss'
     await callback.message.edit_text(text=msg)
@@ -249,7 +254,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
     Validating and saving quantity of an asset
     """
 
-    if await validate_asset_quantity(message.text):
+    if await validate_text_is_float(message.text):
         async with state.proxy() as data:
             # add asset quantity to fsm storage
             data["asset_quantity"] = float(message.text)
