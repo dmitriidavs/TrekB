@@ -1,5 +1,5 @@
 from asyncio import sleep as aiosleep
-from aiogram.types import Message
+from aiogram.types import Message, ParseMode
 
 from ..bot import dp
 from ..database.logic_user import *
@@ -18,8 +18,11 @@ async def hndlr_start(message: Message) -> None:
         if await user_has_portfolio(message.from_user.id):
             msg = f'{message.from_user.first_name}, you already have a portfolio!\n' \
                   'You can hit:\n' \
-                  '/portfolio - to manage it\n' \
-                  '/flushit - to remove it'
+                  ' • /portfolio - to manage portfolio\n' \
+                  ' • /add - to add new assets\n' \
+                  ' • /import - to import wallet balance\n' \
+                  ' • /flushit - to remove portfolio\n' \
+                  ' • /help - to see all capabilities'
             await message.answer(text=msg, reply_markup=kb_start_active)
         # if no portfolio: activate /join cmd
         else:
@@ -67,4 +70,21 @@ async def hndlr_join(message: Message) -> None:
     msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
           '/add - add your assets by hand\n' \
           '/import - import your crypto wallet balance'
-    await message.answer(text=msg, reply_markup=kb_join)
+    await message.answer(text=msg, reply_markup=kb_add)
+
+
+@log_ux(btn='/help')
+@dp.message_handler(commands=['help'])
+async def hndlr_help(message: Message) -> None:
+    """/help command handler"""
+
+    msg = '_PORTFOLIO COMMANDS:_\n' \
+          ' • /portfolio - manage portfolio\n' \
+          ' • /add - add new assets\n' \
+          ' • /import - import wallet balance\n' \
+          ' • /flushit - remove portfolio\n' \
+          '_GENERAL COMMANDS:_\n' \
+          ' • /help - opens this section\n' \
+          ' • /info - check technical stuff\n'
+
+    await message.answer(text=msg, parse_mode=ParseMode.MARKDOWN)
