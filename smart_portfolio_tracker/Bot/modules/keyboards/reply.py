@@ -1,22 +1,28 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 # TODO: optimize: one-time keyboard creation
-start_1 = KeyboardButton('/info')
-start_2 = KeyboardButton('/join')
-start_active_1 = KeyboardButton('/portfolio')
-start_active_2 = KeyboardButton('/flushit')
+btn_info = KeyboardButton('/info')
+btn_help = KeyboardButton('/help')
+btn_join = KeyboardButton('/join')
+btn_portfolio = KeyboardButton('/portfolio')
+btn_flushit = KeyboardButton('/flushit')
+btn_add = KeyboardButton('/add')
+btn_import = KeyboardButton('/import')
+
 
 kb_start = ReplyKeyboardMarkup(resize_keyboard=True)
-kb_start.row(start_1, start_2)
-kb_start_active = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-kb_start_active.row(start_active_1, start_active_2)
+kb_start.row(btn_info, btn_join)
 
-join_1 = KeyboardButton('/add')
-join_2 = KeyboardButton('/import')
-kb_join = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-kb_join.row(join_1, join_2)
+kb_start_active = ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+kb_start_active. \
+    insert(btn_portfolio). \
+    insert(btn_add). \
+    insert(btn_import). \
+    insert(btn_flushit). \
+    insert(btn_help)
 
-manual_1 = KeyboardButton('/add')
-manual_2 = KeyboardButton('/portfolio')
-kb_manual = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
-kb_manual.row(manual_1, manual_2)
+kb_add = ReplyKeyboardMarkup(resize_keyboard=True, one_time_keyboard=True)
+kb_add.row(btn_add, btn_import)
+
+kb_manual = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_manual.row(btn_add, btn_portfolio)
