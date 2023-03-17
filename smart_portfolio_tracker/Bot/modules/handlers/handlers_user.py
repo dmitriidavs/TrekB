@@ -85,5 +85,5 @@ async def hndlr_help(message: Message) -> None:
           ' • /flushit - remove portfolio\n' \
           '_GENERAL COMMANDS:_\n' \
           ' • /help - opens this section\n' \
-          ' • /info - check technical stuff\n'
+          ' • /info - check technical stuff'
     await message.answer(text=msg, parse_mode=ParseMode.MARKDOWN)
