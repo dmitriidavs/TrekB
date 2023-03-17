@@ -86,5 +86,4 @@ async def hndlr_help(message: Message) -> None:
           '_GENERAL COMMANDS:_\n' \
           ' • /help - opens this section\n' \
           ' • /info - check technical stuff\n'
-
     await message.answer(text=msg, parse_mode=ParseMode.MARKDOWN)
