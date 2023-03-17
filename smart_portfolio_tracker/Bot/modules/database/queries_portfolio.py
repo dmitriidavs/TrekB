@@ -51,3 +51,9 @@ FROM portfolio
 WHERE user_id = {user_id} AND asset_id = {asset_id}
 ORDER BY added_at DESC;
 """
+
+SQL_UPDATE_ASSET_RECORD = """
+UPDATE portfolio
+SET {col} = '{val}'
+WHERE user_id = {user_id} AND asset_id = {asset_id} AND added_at = '{added_at}';
+"""
