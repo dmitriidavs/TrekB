@@ -1,5 +1,6 @@
-__all__ = ['validators',
-           'validate_env_vars', 'validate_asset_name', 'validate_asset_quantity']
+__all__ = ['validators', 'formatters',
+           'validate_env_vars', 'validate_asset_name',
+           'validate_text_is_float', 'validate_float_is_not_int']
 
 from pydantic import ValidationError
 
@@ -25,11 +26,11 @@ async def validate_asset_name(ticker: str) -> bool:
         return True
 
 
-async def validate_asset_quantity(quan: str) -> bool:
-    """Check if asset quantity can be converted to float"""
+async def validate_text_is_float(text: str) -> bool:
+    """Check if text can be converted to float"""
 
     try:
-        float(quan)
+        float(text)
         return True
     except ValueError:
         return False
