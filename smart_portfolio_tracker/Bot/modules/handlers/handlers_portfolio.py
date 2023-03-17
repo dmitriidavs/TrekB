@@ -7,8 +7,15 @@ from .fsm import FSMManualAdd, FSMEditQuantity, FSMEditDate
 from .handlers_user import hndlr_join
 from ..bot import dp
 from ..database.logic_user import user_has_portfolio
-from ..database.logic_portfolio import add_asset_to_portfolio, delete_portfolio
-from ..validation import validate_asset_name, validate_text_is_float
+from ..database.logic_portfolio import (
+    add_asset_to_portfolio,
+    delete_portfolio,
+    cache_set_asset_editing_data,
+    cache_get_asset_editing_data,
+    cache_del_asset_editing_data,
+    update_asset_record_data
+)
+from ..validation import validate_asset_name, validate_text_is_float, validate_date_format
 from ..validation.formatters import format_float_to_currency, format_dt
 from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
@@ -102,12 +109,16 @@ async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_sy
           f'{added_at.replace("+", ":")}.\nWhat\'s the new quantity?'
     await callback.message.edit_text(text=msg)
 
-    # TODO: cache SQL query data for editing quantity
-    # await cache_set_editing_asset_data()
+    # set cache data for editing
+    await cache_set_asset_editing_data({
+        'user_id': callback.from_user.id,
+        'asset_id': asset_id,
+        'added_at': added_at
+    })
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_quantity', state='asset_quantity')
-@dp.message_handler(lambda message: 'Edit date' in message.text, state=FSMEditQuantity.new_asset_quantity)
+@dp.message_handler(state=FSMEditQuantity.new_asset_quantity)
 async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     """
     FSMEditQuantity.asset_quantity:
@@ -115,14 +126,23 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     """
 
     if await validate_text_is_float(message.text):
+        # get editing data from cache
+        c_editing_data = await cache_get_asset_editing_data(message.from_user.id)
+        # delete cached editing data
+        await cache_del_asset_editing_data(message.from_user.id)
+
+        # update asset quanity in portfolio table
+        await update_asset_record_data(col='quantity',
+                                       val=message.text,
+                                       user_id=int(c_editing_data[b"user_id"]),
+                                       asset_id=int(c_editing_data[b"asset_id"]),
+                                       added_at=c_editing_data[b"added_at"].decode("utf-8").replace('+', ':'))
+
         # send OK reply message
         msg = f'Good! {message.text} is the new quantity.'
         await message.answer(text=msg, reply_markup=kb_manual)
-        # update asset quanity in portfolio table
-        # await add_asset_to_portfolio(user_id=callback.from_user.id,
-        #                              asset_name=data["asset_name"],
-        #                              asset_quantity=data["asset_quantity"])
-        # finish fsm states
+
+        # finish fsm state
         await state.finish()
     else:
         msg = f'Failed to interpret value. Please try again.'
@@ -130,6 +150,7 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_date')
+@dp.message_handler(lambda message: 'Edit date' in message.text, state=None)
 async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
                            quantity: float, added_at: str, **kwargs) -> None:
     """/portfolio -> asset -> edit date: updates user's asset date"""
@@ -142,8 +163,12 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
           f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss'
     await callback.message.edit_text(text=msg)
 
-    # TODO: cache SQL query data for editing date
-    # await cache_set_editing_asset_data()
+    # set cache data for editing
+    await cache_set_asset_editing_data({
+        'user_id': callback.from_user.id,
+        'asset_id': asset_id,
+        'added_at': added_at
+    })
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset_date', state='asset_date')
@@ -154,19 +179,28 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
     Validating and editing date of an asset record on particular date
     """
 
-    # if await validate_date_format(message.text):
-    # send OK reply message
-    msg = f'Good! {message.text} is the new date.'
-    await message.answer(text=msg, reply_markup=kb_manual)
-    # update asset quanity in portfolio table
-    # await add_asset_to_portfolio(user_id=callback.from_user.id,
-    #                              asset_name=data["asset_name"],
-    #                              asset_quantity=data["asset_quantity"])
-    # finish fsm states
-    await state.finish()
-    # else:
-    #     msg = f'Failed to interpret value. Please try again.'
-    #     await message.answer(text=msg)
+    if await validate_date_format(message.text):
+        # get editing data from cache
+        c_editing_data = await cache_get_asset_editing_data(message.from_user.id)
+        # delete cached editing data
+        await cache_del_asset_editing_data(message.from_user.id)
+
+        # update asset quanity in portfolio table
+        await update_asset_record_data(col='added_at',
+                                       val=message.text,
+                                       user_id=int(c_editing_data[b"user_id"]),
+                                       asset_id=int(c_editing_data[b"asset_id"]),
+                                       added_at=c_editing_data[b"added_at"].decode("utf-8").replace('+', ':'))
+
+        # send OK reply message
+        msg = f'Good! {message.text} is the new date.'
+        await message.answer(text=msg, reply_markup=kb_manual)
+
+        # finish fsm states
+        await state.finish()
+    else:
+        msg = f'Failed to interpret value. Please try again.'
+        await message.answer(text=msg)
 
 
 @dp.callback_query_handler(portfolio_cd.filter())
