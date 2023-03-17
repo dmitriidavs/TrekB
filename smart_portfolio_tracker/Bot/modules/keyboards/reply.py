@@ -1,6 +1,5 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
-# TODO: optimize: one-time keyboard creation
 btn_info = KeyboardButton('/info')
 btn_help = KeyboardButton('/help')
 btn_join = KeyboardButton('/join')
@@ -8,6 +7,7 @@ btn_portfolio = KeyboardButton('/portfolio')
 btn_flushit = KeyboardButton('/flushit')
 btn_add = KeyboardButton('/add')
 btn_import = KeyboardButton('/import')
+btn_back = KeyboardButton('/back')
 
 
 kb_start = ReplyKeyboardMarkup(resize_keyboard=True)
