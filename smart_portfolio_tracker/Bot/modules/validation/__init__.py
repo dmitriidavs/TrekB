@@ -1,6 +1,9 @@
 __all__ = ['validators', 'formatters',
            'validate_env_vars', 'validate_asset_name',
-           'validate_text_is_float', 'validate_float_is_not_int']
+           'validate_text_is_float', 'validate_date_format']
+
+
+import datetime as dt
 
 from pydantic import ValidationError
 
@@ -19,7 +22,7 @@ async def validate_asset_name(ticker: str) -> bool:
     """Check if ticker symbol is valid"""
 
     # TODO: add caching
-    # TODO: add real validation xD
+    # TODO: add real validation checking list of trackable currencies in DB
     if ticker == 'err':     # test
         return False
     else:
@@ -31,6 +34,16 @@ async def validate_text_is_float(text: str) -> bool:
 
     try:
         float(text)
+        return True
+    except ValueError:
+        return False
+
+
+async def validate_date_format(text: str) -> bool:
+    """Check if date follows suggested format"""
+
+    try:
+        dt.datetime.strptime(text, '%Y-%m-%d %H:%M:%S')
         return True
     except ValueError:
         return False
