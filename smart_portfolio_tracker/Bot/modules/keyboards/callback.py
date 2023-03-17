@@ -2,6 +2,7 @@ from aiogram.utils.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from ..database.logic_portfolio import get_assets_outer, get_assets_inner
+from ..validation.formatters import format_float_to_currency, format_dt
 
 
 portfolio_cd = CallbackData('list_portfolio', 'level', 'user_id', 'asset_id',
@@ -18,7 +19,7 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
     """Create user's portfolio inline keyboard"""
 
     curr_level = 0
-    markup = InlineKeyboardMarkup()
+    markup = InlineKeyboardMarkup(row_width=2)
 
     assets_outer = await get_assets_outer(user_id=user_id)
     # create a button for each asset in portfolio and add it to markup
@@ -26,10 +27,13 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
         asset_id = asset[0]
         ticker_symbol = asset[1]
         quantity_sum = asset[2]
-        button_text = '{quantity:.4f}{token:^10s}'.format(token=ticker_symbol, quantity=quantity_sum)
+        # format quanity sum as currency
+        quantity_sum_text = await format_float_to_currency(quantity_sum, 4)
+        # create callback data & add button
+        button_text = f'{quantity_sum_text}   {ticker_symbol}'
         cllbck_data = create_cllbck_data(level=curr_level+1, user_id=user_id,
                                          asset_id=asset_id, ticker_symbol=ticker_symbol)
-        markup.add(
+        markup.insert(
             InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
         )
 
@@ -47,14 +51,18 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
     for asset_data in assets_inner:
         asset_id = asset_data[0]
         quantity = asset_data[1]
-        added_dt = asset_data[2]
-        button_text = f'+{quantity} | {added_dt}'
+        added_at = asset_data[2]
+        # format quanity sum as currency & added_at as date
+        quantity_text = await format_float_to_currency(quantity, 6)
+        added_at_text = await format_dt(added_at)
+        # create callback data & add button
+        button_text = f'+{quantity_text} | {added_at_text}'
         cllbck_data = create_cllbck_data(level=curr_level+1,
                                          user_id=user_id,
                                          asset_id=asset_id,
                                          ticker_symbol=ticker_symbol,
                                          quantity=quantity,
-                                         added_at=added_dt.replace(':', '+'))
+                                         added_at=added_at.replace(':', '+'))
         markup.add(
             InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
         )
