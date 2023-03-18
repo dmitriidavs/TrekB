@@ -10,7 +10,7 @@ flushit_cllbck_bttns = (
 )
 
 
-def get_flushit_kb() -> InlineKeyboardMarkup:
+async def get_flushit_kb() -> InlineKeyboardMarkup:
     """/flushit: returns keyboard with random button order"""
 
     kb_flushit = InlineKeyboardMarkup()

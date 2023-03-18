@@ -23,7 +23,8 @@ from ..keyboards.callback import (
     portfolio_cd,
     assets_outer_keyboard,
     assets_inner_keyboard,
-    edit_asset_keyboard
+    edit_asset_keyboard,
+    # delete_asset_record_keyboard,
 )
 from ..log.loggers import log_ux
 
@@ -57,7 +58,6 @@ async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
 async def cllbck_flushit_back(callback: CallbackQuery) -> None:
     """/flushit -> no: callback brings user back to portfolio"""
 
-    await callback.message.edit_text(text='', reply_markup=None)
     await hndlr_portfolio(callback)
 
 
@@ -203,6 +203,21 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
         await message.answer(text=msg)
 
 
+# @log_ux(btn='/portfolio', clbck='delete_record')
+# @dp.message_handler(lambda message: 'Delete record' in message.text)
+# async def delete_record(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+#                         quantity: float, added_at: str, **kwargs) -> None:
+#     """/portfolio -> asset -> delete record: deletes user's asset record"""
+#
+#     markup = await delete_asset_record_keyboard(callback.message.from_user.id, asset_id, added_at)
+#     quantity_text = await format_float_to_currency(quantity, 6)
+#     added_at_text = await format_dt(added_at.replace('+', ':'))
+#     msg = f'You\'re about to delete {ticker_symbol} record:\n' \
+#           f'+{quantity_text} | {added_at_text}. Are you sure?'
+#     await callback.message.edit_text(text=msg, reply_markup=markup)
+
+
+# TODO: add caching
 @dp.callback_query_handler(portfolio_cd.filter())
 async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
     """Assign functions for portfolio navigation"""
@@ -219,7 +234,8 @@ async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
         '1': list_asset_history,
         '2': list_edit_asset,
         '3': edit_record_quantity,
-        '4': edit_record_date
+        '4': edit_record_date,
+        # '5': delete_record,
     }
 
     curr_level_function = levels[curr_level]
@@ -240,7 +256,7 @@ async def hndlr_flushit(message: Message) -> None:
     if await user_has_portfolio(message.from_user.id):
         msg = 'You\'re about to delete your portfolio. Are you sure?'
         await message.answer(text=msg,
-                             reply_markup=get_flushit_kb())
+                             reply_markup=await get_flushit_kb())
     # if no portfolio: activate /join cmd
     else:
         msg = 'You don\'t have a portfolio yet!'
