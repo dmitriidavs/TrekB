@@ -28,7 +28,7 @@ via simple Telegram interfaces. **Try it out yourself:**\
 <div align="center">
 
 [About](#about) •
-[Roadmap](#roadmap) •
+[Capabilities](#capabilities) •
 [Architecture](#architecture) •
 [Scaling](#scaling) •
 [Takeaways](#takeaways)
@@ -39,13 +39,13 @@ via simple Telegram interfaces. **Try it out yourself:**\
 
 To be updated ...
 
-## Roadmap
+## Capabilities
     
-<ins>Implemented Capabilities</ins>
+<ins>Implemented</ins>
 
-    • [LITE]: 17 Mar 2023 - add, edit & delete individual asset records in portfolio
+    • [LITE]: add, edit & delete individual asset records in portfolio
     
-<ins>Upcoming Stage 1 Capabilities</ins>
+<ins>Upcoming</ins>
 
     • [VM]: improved portfolio navigation
     • [VM]: import crypto wallet balance & history into portfolio
