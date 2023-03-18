@@ -28,8 +28,9 @@ via simple Telegram interfaces. **Try it out yourself:**\
 <div align="center">
 
 [About](#about) •
-[Features](#features) •
+[Capabilities](#capabilities) •
 [Architecture](#architecture) •
+[Scaling](#scaling) •
 [Takeaways](#takeaways)
 
 </div>
@@ -38,57 +39,87 @@ via simple Telegram interfaces. **Try it out yourself:**\
 
 To be updated ...
 
-## Features
+## Capabilities
+    
+<ins>Implemented</ins>
 
-• ~~overkill~~ scalable architecture
+    • [LITE]: add, edit & delete individual asset records in portfolio
+    
+<ins>To Be Implemented</ins>
 
-•
-
-•
+    • [VM]: import crypto wallet balance into portfolio
+    • [VM]:
+    • [VM]:
 
 ## Architecture
 
-### **VM**
+### [LITE]
 
-Initial version of the project based on virtualization and containerization techniques.
+MVP version of the project which enables users to manage their asset portfolios.
 
-### <ins> High-level Overview </ins>
+<ins>Tech Features</ins>
+
+    • asynchronous I/O
+    • DB keeps users' info & handles portfolio management
+    • Redis caching is used to optimize DB* querying
+    • users' input data is validated with pydantic
+    • DB* querying performance & users' actions are logged to either CLI, local folder or logging service
+    
+      * DB - transactional DB (SQLite in [LITE] & PostgreSQL in [VM])
+    
+<ins>High-Level Overview</ins>
+
+<ins>Telegram Component</ins>
+
+<ins>Database Component</ins>
+
+<ins>Screenshots</ins>
+
+Stack: `SQLite`, `Redis`, `Python`, `SQL`, `Docker`
+
+---
+
+### [VM]
+
+Main version of the projects which enables users to gain insights on their portfolios.
+
+<ins>Tech Features</ins>
+
+    Everything from [LITE] plus:
+    • 
+
+<ins>High-Level Overview</ins>
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
 
 Stack: `PostgreSQL`, `SQLite [Lite]`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
-### <ins> Telegram Component </ins>
+<ins>Telegram Component</ins>
 
 ![Telegram Component](Misc/pics/arch_tg.png?raw=true "Telegram Component")
 
 Tags: `tag1`
 
-### <ins> Database Component </ins>
+<ins>Database Component</ins>
 
-### <ins> Data Pipelines </ins>
+<ins>Data Pipelines</ins>
 
-### <ins> Docker Layers & Networking </ins>
+<ins>Docker Layers & Networking</ins>
 
-### <ins> CI/CD Component </ins>
+<ins>CI/CD Component</ins>
 
 ---
 
-### **Cloud**
+### [CLOUD]
 
 A migration of VM based solution to AWS cloud architecture.
 
 Stack: `- AWS? Azure? - Excel!`, `Python`, `SQL`
 
----
+## Scaling
 
-### **Lite**
-
-An easily deployable version of the project mainly for
-local interface testing purposes.
-
-Stack: `SQLite`, `Python`, `SQL`
+To be updateted ...
 
 ## Takeaways
 
