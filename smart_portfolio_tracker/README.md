@@ -31,7 +31,8 @@ via simple Telegram interfaces. **Try it out yourself:**\
 [Capabilities](#capabilities) •
 [Architecture](#architecture) •
 [Scaling](#scaling) •
-[Takeaways](#takeaways)
+[Takeaways](#takeaways) •
+[Links](#links)
 
 </div>
 
@@ -123,6 +124,23 @@ To be updateted ...
 ## Takeaways
 
 To be updateted ...
+
+## Links
+
+Libraries:
+[`aiogram`](https://github.com/aiogram/aiogram),
+[`asyncio`](https://github.com/python/asyncio),
+[`aiosqlite`](https://github.com/omnilib/aiosqlite),
+[`SQLAlchemy`](https://github.com/sqlalchemy/sqlalchemy),
+[`pydantic`](https://github.com/pydantic/pydantic),
+[`redis`](https://github.com/redis/redis),
+[`aioredis`](https://github.com/aio-libs/aioredis-py)
+
+Projects:
+[`SQLite`](https://sqlite.org/index.html),
+[`Redis`](https://redis.io/)
+
+
 
 <div align="center">
 
