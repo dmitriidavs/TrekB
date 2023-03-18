@@ -145,6 +145,6 @@ Projects:
 
 <div align="center">
 
-Designed & Developed by: [@dmitriidavs](https://t.me/dmitriidavs)
+Designed & Developed by: [@dmitriidavs](https://www.linkedin.com/in/dmitriidavs/)
 
 </div>
