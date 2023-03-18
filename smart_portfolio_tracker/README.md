@@ -69,9 +69,7 @@ MVP version of the project which enables users to manage their asset portfolios.
     
 <ins>High-Level Overview</ins>
 
-<ins>Telegram Component</ins>
-
-<ins>Database Component</ins>
+![LITE Architecture](Misc/pics/lite_arch_high_lvl.png?raw=true "LITE Architecture")
 
 <ins>Screenshots</ins>
 
