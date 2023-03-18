@@ -19,9 +19,9 @@ via simple Telegram interfaces. **Try it out yourself:**\
     ├── README.md               <- Project README
     ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
     ├── Bot_placeholder         <- Interim "front-end" runner while Bot is in DEV ✔️
-    ├── VM                      <- VM based solution
-    ├── Cloud                   <- Cloud based solution
-    ├── Lite                    <- Quick-start solution with some basic features 👨‍💻
+    ├── VM                      <- Primary solution with core features
+    ├── Cloud                   <- Cloud migrated primary solution
+    ├── Lite                    <- MVP solution with some basic features 👨‍💻
     ├── Misc                    <- Miscellaneous secondary objects
     └── Research                <- Some research on maths, statistics & metrics logic
 
