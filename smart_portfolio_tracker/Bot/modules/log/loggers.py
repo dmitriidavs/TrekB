@@ -14,7 +14,7 @@ def bench_query(func: Callable[..., Any]) -> Callable[..., Any]:
         result = func(*args, **kwargs)
         end_time = perf_counter()
         run_time = end_time - start_time
-        logger.info(f'Query [{func.__name__}] executed in {run_time:.2f} sec')
+        logger.info(f'Query [{func.__name__}] executed in {run_time:.6f} sec')
         return result
     return wrapper
 
