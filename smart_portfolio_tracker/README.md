@@ -4,7 +4,7 @@
 ### *Smart Portfolio Tracker*
 
 A bot powered by modern data engineering and infrastructure solutions,\
-designed to allow easy performance tracking of your preferred assets\
+designed to allow easy performance tracking of your digital assets\
 via simple Telegram interfaces. **Try it out yourself:**\
 [ COMING VERY SOON xD ]
 
