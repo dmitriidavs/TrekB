@@ -7,14 +7,16 @@ from ..database.logic_portfolio import get_assets_outer, get_assets_inner
 from ..validation.formatters import format_float_to_currency, format_dt
 
 
-portfolio_cd = CallbackData('list_portfolio', 'level', 'user_id', 'asset_id',
-                            'ticker_symbol', 'quantity', 'added_at')
+portfolio_cd = CallbackData('list_portfolio', 'level', 'sub_level',
+                            'user_id', 'asset_id', 'ticker_symbol',
+                            'quantity', 'added_at')
 
 
-def create_cllbck_data(level: int, user_id: int, asset_id: int = 0, ticker_symbol: str = '_ticker',
-                       quantity: float = 0, added_at: str = '_datetime') -> str:
-    return portfolio_cd.new(level=level, user_id=user_id, asset_id=asset_id, ticker_symbol=ticker_symbol,
-                            quantity=quantity, added_at=added_at)
+def create_cllbck_data(level: int, user_id: int, sub_level: int = -1,
+                       asset_id: int = -1, ticker_symbol: str = '_ticker_err',
+                       quantity: float = -1, added_at: str = '_dt_err') -> str:
+    return portfolio_cd.new(level=level, sub_level=sub_level, user_id=user_id, asset_id=asset_id,
+                            ticker_symbol=ticker_symbol, quantity=quantity, added_at=added_at)
 
 
 async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
@@ -36,7 +38,8 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
         cllbck_data = create_cllbck_data(level=curr_level+1, user_id=user_id,
                                          asset_id=asset_id, ticker_symbol=ticker_symbol)
         markup.insert(
-            InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
+            InlineKeyboardButton(text=button_text,
+                                 callback_data=cllbck_data)
         )
 
     return markup
@@ -55,7 +58,7 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
         quantity = asset_data[1]
         added_at = asset_data[2]
         # format quanity sum as currency & added_at as date
-        quantity_text = await format_float_to_currency(quantity, 6)
+        quantity_text = await format_float_to_currency(quantity, 4)
         added_at_text = await format_dt(added_at)
         # create callback data & add button
         button_text = f'+{quantity_text} | {added_at_text}'
@@ -66,11 +69,13 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
                                          quantity=quantity,
                                          added_at=added_at.replace(':', '+'))
         markup.add(
-            InlineKeyboardButton(text=button_text, callback_data=cllbck_data)
+            InlineKeyboardButton(text=button_text,
+                                 callback_data=cllbck_data)
         )
     markup.add(
-        InlineKeyboardButton(text='« back', callback_data=create_cllbck_data(level=curr_level-1,
-                                                                             user_id=user_id))
+        InlineKeyboardButton(text='« back',
+                             callback_data=create_cllbck_data(level=curr_level-1,
+                                                              user_id=user_id))
     )
 
     return markup
@@ -81,20 +86,25 @@ async def edit_asset_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
     """Edit user's asset history inline keyboard"""
 
     curr_level = 2
+    sub_level = -1
     markup = InlineKeyboardMarkup()
     markup.row(
-        InlineKeyboardButton(text='Edit quantity', callback_data=create_cllbck_data(level=curr_level+1,
-                                                                                    user_id=user_id,
-                                                                                    asset_id=asset_id,
-                                                                                    ticker_symbol=ticker_symbol,
-                                                                                    quantity=quantity,
-                                                                                    added_at=added_at)),
-        InlineKeyboardButton(text='Edit date', callback_data=create_cllbck_data(level=curr_level+2,
-                                                                                user_id=user_id,
-                                                                                asset_id=asset_id,
-                                                                                ticker_symbol=ticker_symbol,
-                                                                                quantity=quantity,
-                                                                                added_at=added_at))
+        InlineKeyboardButton(text='Edit quantity',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              sub_level=sub_level+1,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol,
+                                                              quantity=quantity,
+                                                              added_at=added_at)),
+        InlineKeyboardButton(text='Edit date',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              sub_level=sub_level+2,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol,
+                                                              quantity=quantity,
+                                                              added_at=added_at))
     ).add(
         # InlineKeyboardButton(text='Delete record', callback_data=create_cllbck_data(level=curr_level+3,
         #                                                                             user_id=user_id,
