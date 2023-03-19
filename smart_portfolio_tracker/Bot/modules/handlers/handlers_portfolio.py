@@ -42,25 +42,6 @@ async def hndlr_portfolio(message: Union[Message, CallbackQuery]) -> None:
         await hndlr_join(message)
 
 
-@log_ux(btn='/flushit', clbck='yes')
-@dp.callback_query_handler(text='flushit_yes')
-async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
-    """/flushit -> yes: callback deletes user's portfolio"""
-
-    records_num = await delete_portfolio(user_id=callback.from_user.id)
-    msg = f'Okey, removed your portfolio, {records_num} records in total.'
-    await callback.message.answer(text=msg, reply_markup=kb_start)
-    await callback.answer()
-
-
-@log_ux(btn='/flushit', clbck='no')
-@dp.callback_query_handler(text='flushit_no')
-async def cllbck_flushit_back(callback: CallbackQuery) -> None:
-    """/flushit -> no: callback brings user back to portfolio"""
-
-    await hndlr_portfolio(callback)
-
-
 @log_ux(btn='/list_portfolio')
 async def list_portfolio(message: Union[Message, CallbackQuery], **kwargs) -> None:
     """List user's portfolio"""
@@ -84,8 +65,8 @@ async def list_asset_history(callback: CallbackQuery, asset_id: int, ticker_symb
 
 
 @log_ux(btn='/portfolio', clbck='edit_asset')
-async def list_edit_asset(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
-                          quantity: float, added_at: str, **kwargs) -> None:
+async def list_asset_editing(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                             quantity: float, added_at: str, **kwargs) -> None:
     """/portfolio -> asset -> asset record: edit user's asset history"""
 
     markup = await edit_asset_keyboard(callback.message.from_user.id, asset_id, ticker_symbol, quantity, added_at)
@@ -223,6 +204,7 @@ async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
     """Assign functions for portfolio navigation"""
 
     curr_level = callback_data["level"]
+    sub_level = callback_data["sub_level"]
     user_id = callback_data["user_id"]
     asset_id = callback_data["asset_id"]
     ticker_symbol = callback_data["ticker_symbol"]
@@ -230,15 +212,22 @@ async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
     added_at = callback_data["added_at"]
 
     levels = {
-        '0': list_portfolio,
-        '1': list_asset_history,
-        '2': list_edit_asset,
-        '3': edit_record_quantity,
-        '4': edit_record_date,
+        '0': {
+            'main': list_portfolio
+        },
+        '1': {
+            'main': list_asset_history
+        },
+        '2': {
+            'main': list_asset_editing,
+            '0': edit_record_quantity,
+            '1': edit_record_date
+        },
         # '5': delete_record,
     }
 
-    curr_level_function = levels[curr_level]
+    # main func is activated if sub_level is not provided
+    curr_level_function = levels[curr_level]['main'] if sub_level == '-1' else levels[curr_level][sub_level]
     await curr_level_function(callback,
                               user_id=user_id,
                               asset_id=asset_id,
@@ -262,6 +251,25 @@ async def hndlr_flushit(message: Message) -> None:
         msg = 'You don\'t have a portfolio yet!'
         await message.answer(text=msg)
         await hndlr_join(message)
+
+
+@log_ux(btn='/flushit', clbck='yes')
+@dp.callback_query_handler(text='flushit_yes')
+async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
+    """/flushit -> yes: callback deletes user's portfolio"""
+
+    records_num = await delete_portfolio(user_id=callback.from_user.id)
+    msg = f'Okey, removed your portfolio, {records_num} records in total.'
+    await callback.message.answer(text=msg, reply_markup=kb_start)
+    await callback.answer()
+
+
+@log_ux(btn='/flushit', clbck='no')
+@dp.callback_query_handler(text='flushit_no')
+async def cllbck_flushit_back(callback: CallbackQuery) -> None:
+    """/flushit -> no: callback brings user back to portfolio"""
+
+    await hndlr_portfolio(callback)
 
 
 @log_ux(btn='/add')
