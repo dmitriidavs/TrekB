@@ -127,17 +127,16 @@ async def update_asset_record_data(col: str, val: float, user_id: int, asset_id:
             await conn.session.close()
 
 
-# # TODO:
-# async def delete_asset_record(col: str, user_id: int, asset_id: int) -> str:
-#     """Get user's asset info"""
-#
-#     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
-#         try:
-#             response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
-#                                                                                  asset_id=asset_id))
-#             response = response.fetchall()
-#             return response
-#         except UsersDBError as error:
-#             raise error
-#         finally:
-#             await conn.session.close()
+async def delete_asset_record(user_id: int, asset_id: int, added_at: str) -> None:
+    """Delete user's asset record"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            await conn.session.execute(SQL_DELETE_ASSET_RECORD.format(user_id=user_id,
+                                                                      asset_id=asset_id,
+                                                                      added_at=added_at))
+            await conn.session.commit()
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
