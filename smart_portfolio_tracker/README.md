@@ -60,7 +60,7 @@ MVP version of the project which enables users to manage their asset portfolios.
 <ins>Tech Features</ins>
 
     • asynchronous I/O
-    • DB keeps users' info & handles portfolio management
+    • DB* keeps users' info & handles portfolio management
     • Redis caching is used to optimize DB* querying
     • users' input data is validated with pydantic
     • DB* querying performance & users' actions are logged to either CLI, local folder or logging service
