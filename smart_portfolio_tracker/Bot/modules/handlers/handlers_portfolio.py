@@ -12,6 +12,7 @@ from ..database.logic_portfolio import (
     ticker_symbol_is_valid,
     add_asset_to_portfolio,
     delete_portfolio,
+    delete_asset_from_portfolio,
     cache_set_asset_editing_data,
     cache_get_asset_editing_data,
     cache_del_asset_editing_data,
@@ -33,7 +34,7 @@ from ..keyboards.callback import (
     assets_outer_keyboard,
     assets_inner_keyboard,
     edit_asset_keyboard,
-    # delete_asset_record_keyboard,
+    delete_asset_history_keyboard
 )
 from ..log.loggers import log_ux
 
@@ -203,18 +204,25 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
         await message.answer(text=msg)
 
 
-# @log_ux(btn='/portfolio', clbck='delete_record')
-# @dp.message_handler(lambda message: 'Delete record' in message.text)
-# async def delete_record(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
-#                         quantity: float, added_at: str, **kwargs) -> None:
-#     """/portfolio -> asset -> delete record: deletes user's asset record"""
-#
-#     markup = await delete_asset_record_keyboard(callback.message.from_user.id, asset_id, added_at)
-#     quantity_text = await format_float_to_currency(quantity, 6)
-#     added_at_text = await format_dt(added_at.replace('+', ':'))
-#     msg = f'You\'re about to delete {ticker_symbol} record:\n' \
-#           f'+{quantity_text} | {added_at_text}. Are you sure?'
-#     await callback.message.edit_text(text=msg, reply_markup=markup)
+@log_ux(btn='/portfolio', clbck='pre_delete_asset')
+@dp.message_handler(lambda message: message.text == 'X delete')
+async def list_delete_asset_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str, **kwargs) -> None:
+    """/portfolio -> asset -> delete data: asks if user wants to delete asset data"""
+
+    markup = await delete_asset_history_keyboard(callback.message.from_user.id, asset_id, ticker_symbol)
+    msg = f'You\'re about to delete all {ticker_symbol} data. Are you sure?'
+    await callback.message.edit_text(text=msg, reply_markup=markup)
+
+
+@log_ux(btn='/portfolio', clbck='delete_asset')
+@dp.message_handler(lambda message: message.text == 'Yes, delete asset data')
+async def delete_asset_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str, **kwargs) -> None:
+    """/portfolio -> asset -> delete data: yes"""
+
+    await delete_asset_from_portfolio(callback.from_user.id, asset_id)
+    msg = f'{ticker_symbol} deleted'
+    await callback.answer(text=msg)
+    await list_portfolio(callback)
 
 
 # TODO: add caching
@@ -232,17 +240,19 @@ async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
 
     levels = {
         '0': {
-            'main': list_portfolio
+            'main': list_portfolio,
         },
         '1': {
-            'main': list_asset_history
+            'main': list_asset_history,
+            '0': list_delete_asset_history,
+            '1': delete_asset_history
         },
         '2': {
             'main': list_asset_editing,
             '0': edit_record_quantity,
-            '1': edit_record_date
+            '1': edit_record_date,
+            # '2': delete_record_history,
         },
-        # '5': delete_record,
     }
 
     # main func is activated if sub_level is not provided
@@ -297,7 +307,7 @@ async def hndlr_manual_add(message: Message) -> None:
     """/add command handler: start FSMManualSetup"""
 
     await FSMManualAdd.asset_name.set()
-    msg = 'OK. Send me the ticker symbol.\n' \
+    msg = 'OK. Send me the ticker symbol. ' \
           'Check out all of the supported assets ' \
           '<a href="https://telegra.ph/TrekB-Supported-Assets-03-23">here</a>.'
     await message.answer(text=msg, reply_markup=kb_back, parse_mode=ParseMode.HTML)
