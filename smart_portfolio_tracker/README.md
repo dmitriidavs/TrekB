@@ -17,8 +17,9 @@ via simple Telegram interfaces. **Try it out yourself:**\
 ## Repository Organization:
 
     ├── README.md               <- Project README
-    ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
-    ├── Bot_placeholder         <- Interim "front-end" runner while Bot is in DEV ✔️
+    ├── Bot                     <- Core Telegram "front-end" component of the project
+        ├── branch: main            <- Primary runner 👨‍💻
+        └── branch: placeholder     <- Interim runner while main is in DEV ✔️
     ├── VM                      <- Primary solution with core features
     ├── Cloud                   <- Cloud migrated primary solution
     ├── Lite                    <- MVP solution with some basic features 👨‍💻
