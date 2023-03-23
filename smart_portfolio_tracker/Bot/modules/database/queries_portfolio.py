@@ -65,6 +65,11 @@ SET {col} = '{val}'
 WHERE user_id = {user_id} AND asset_id = {asset_id} AND added_at = '{added_at}';
 """
 
+SQL_DELETE_ASSET = """
+DELETE FROM portfolio
+WHERE user_id = {user_id} AND asset_id = {asset_id};
+"""
+
 SQL_DELETE_ASSET_RECORD = """
 DELETE FROM portfolio
 WHERE user_id = {user_id} AND asset_id = {asset_id} AND added_at = '{added_at}';
