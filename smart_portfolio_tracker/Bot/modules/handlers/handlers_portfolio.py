@@ -22,7 +22,11 @@ from ..validation import (
     validate_date_format
 )
 from ..validation.formatters import format_float_to_currency, format_dt
-from ..keyboards.reply import kb_manual, kb_start
+from ..keyboards.reply import (
+    kb_manual,
+    kb_start,
+    kb_back
+)
 from ..keyboards.inline import get_flushit_kb
 from ..keyboards.callback import (
     portfolio_cd,
@@ -32,6 +36,16 @@ from ..keyboards.callback import (
     # delete_asset_record_keyboard,
 )
 from ..log.loggers import log_ux
+
+
+@dp.message_handler(commands=['back'], state='*')
+async def hndlr_back(message: Message, state: FSMContext) -> None:
+    """/back command handler for backing out of states"""
+
+    curr_state = await state.get_state()
+    if curr_state is not None:
+        await state.finish()
+        await message.answer(text='OK', reply_markup=kb_manual)
 
 
 @log_ux(btn='/portfolio')
@@ -91,7 +105,7 @@ async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_sy
     # start new state
     await FSMEditQuantity.new_asset_quantity.set()
 
-    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} added on ' \
+    msg = f'OK. Let\'s change {quantity} {ticker_symbol} added on ' \
           f'{added_at.replace("+", ":")}.\nWhat\'s the new quantity?'
     await callback.message.edit_text(text=msg)
 
@@ -131,7 +145,7 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
         # finish fsm state
         await state.finish()
     else:
-        msg = f'Failed to interpret value. Please try again.'
+        msg = f'Failed to interpret value. Please try again or go /back.'
         await message.answer(text=msg)
 
 
@@ -144,7 +158,7 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
     # start new state
     await FSMEditDate.new_asset_date.set()
 
-    msg = f'Ok. Let\'s change {quantity} {ticker_symbol} added on ' \
+    msg = f'OK. Let\'s change {quantity} {ticker_symbol} added on ' \
           f'{added_at.replace("+", ":")}.\n' \
           f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss'
     await callback.message.edit_text(text=msg)
@@ -185,7 +199,7 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
         # finish fsm states
         await state.finish()
     else:
-        msg = f'Failed to interpret value. Please try again.'
+        msg = f'Failed to interpret value. Please try again or go /back.'
         await message.answer(text=msg)
 
 
@@ -264,7 +278,7 @@ async def cllbck_flushit_yes(callback: CallbackQuery) -> None:
     """/flushit -> yes: callback deletes user's portfolio"""
 
     records_num = await delete_portfolio(user_id=callback.from_user.id)
-    msg = f'Okey, removed your portfolio, {records_num} records in total.'
+    msg = f'OK, removed your portfolio, {records_num} records in total.'
     await callback.message.answer(text=msg, reply_markup=kb_start)
     await callback.answer()
 
@@ -286,7 +300,7 @@ async def hndlr_manual_add(message: Message) -> None:
     msg = 'OK. Send me the ticker symbol.\n' \
           'Check out all of the supported assets ' \
           '<a href="https://telegra.ph/TrekB-Supported-Assets-03-23">here</a>.'
-    await message.answer(text=msg, parse_mode=ParseMode.HTML)
+    await message.answer(text=msg, reply_markup=kb_back, parse_mode=ParseMode.HTML)
 
 
 @log_ux(btn='/add', state='asset_name')
@@ -306,7 +320,7 @@ async def stt_asset_name(message: Message, state: FSMContext) -> None:
         msg = 'Good. Now send me the quantity.'
         await message.answer(text=msg)
     else:
-        msg = f'Can\'t find asset reference. Please try again.'
+        msg = f'Can\'t find asset reference. Please try again or go /back.'
         await message.answer(text=msg)
 
 
@@ -332,7 +346,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
             # finish fsm states
             await state.finish()
     else:
-        msg = f'Failed to interpret value. Please try again.'
+        msg = f'Failed to interpret value. Please try again or go /back.'
         await message.answer(text=msg)
 
 
