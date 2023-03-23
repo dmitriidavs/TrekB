@@ -9,6 +9,7 @@ from .handlers_user import hndlr_join
 from ..bot import dp
 from ..database.logic_user import user_has_portfolio
 from ..database.logic_portfolio import (
+    ticker_symbol_is_valid,
     add_asset_to_portfolio,
     delete_portfolio,
     cache_set_asset_editing_data,
@@ -16,7 +17,10 @@ from ..database.logic_portfolio import (
     cache_del_asset_editing_data,
     update_asset_record_data
 )
-from ..validation import validate_ticker_symbol, validate_text_is_float, validate_date_format
+from ..validation import (
+    validate_text_is_positive_float,
+    validate_date_format
+)
 from ..validation.formatters import format_float_to_currency, format_dt
 from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
@@ -107,7 +111,7 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     Validating and editing quantity of an asset on particular date
     """
 
-    if await validate_text_is_float(message.text):
+    if await validate_text_is_positive_float(message.text):
         # get editing data from cache
         c_editing_data = await cache_get_asset_editing_data(message.from_user.id)
         # delete cached editing data
@@ -293,7 +297,7 @@ async def stt_asset_name(message: Message, state: FSMContext) -> None:
     Validating and saving name of an asset
     """
 
-    if await validate_ticker_symbol(message.text):
+    if await ticker_symbol_is_valid(message.text.replace(' ', '').upper()):
         async with state.proxy() as data:
             # add asset name to fsm storage
             data["asset_name"] = message.text.upper()
@@ -314,7 +318,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
     Validating and saving quantity of an asset
     """
 
-    if await validate_text_is_float(message.text):
+    if await validate_text_is_positive_float(message.text):
         async with state.proxy() as data:
             # add asset quantity to fsm storage
             data["asset_quantity"] = float(message.text)
