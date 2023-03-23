@@ -77,7 +77,7 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
         InlineKeyboardButton(text='« back',
                              callback_data=create_cllbck_data(level=curr_level-1,
                                                               user_id=user_id)),
-        InlineKeyboardButton(text='X delete',
+        InlineKeyboardButton(text='× delete',
                              callback_data=create_cllbck_data(level=curr_level,
                                                               sub_level=sub_level+1,
                                                               asset_id=asset_id,
@@ -113,12 +113,13 @@ async def edit_asset_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
                                                               quantity=quantity,
                                                               added_at=added_at))
     ).add(
-        # InlineKeyboardButton(text='Delete record', callback_data=create_cllbck_data(level=curr_level+3,
-        #                                                                             user_id=user_id,
-        #                                                                             asset_id=asset_id,
-        #                                                                             ticker_symbol=ticker_symbol,
-        #                                                                             quantity=quantity,
-        #                                                                             added_at=added_at))
+        InlineKeyboardButton(text='× delete record', callback_data=create_cllbck_data(level=curr_level,
+                                                                                      sub_level=sub_level+3,
+                                                                                      user_id=user_id,
+                                                                                      asset_id=asset_id,
+                                                                                      ticker_symbol=ticker_symbol,
+                                                                                      quantity=quantity,
+                                                                                      added_at=added_at))
     ).add(
         InlineKeyboardButton(text='« back', callback_data=create_cllbck_data(level=curr_level-1,
                                                                              user_id=user_id,
@@ -129,13 +130,13 @@ async def edit_asset_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
 
 
 async def delete_asset_history_keyboard(user_id: int, asset_id: int, ticker_symbol: str) -> InlineKeyboardMarkup:
-    """Delete user's asset record inline keyboard with buttons in random order"""
+    """Delete user's asset inline keyboard with buttons in random order"""
 
     curr_level = 1
     sub_level = 0
     markup = InlineKeyboardMarkup()
 
-    delete_record_cllbck_bttns = (
+    delete_asset_cllbck_bttns = (
         InlineKeyboardButton(text='No, back to activity',
                              callback_data=create_cllbck_data(level=curr_level,
                                                               user_id=user_id,
@@ -143,12 +144,47 @@ async def delete_asset_history_keyboard(user_id: int, asset_id: int, ticker_symb
                                                               ticker_symbol=ticker_symbol)),
         InlineKeyboardButton(text='Yes, delete asset data',
                              callback_data=create_cllbck_data(level=curr_level,
-                                                              sub_level=sub_level + 1,
+                                                              sub_level=sub_level+1,
                                                               user_id=user_id,
                                                               asset_id=asset_id,
                                                               ticker_symbol=ticker_symbol)),
         InlineKeyboardButton(text='Nope, back to portfolio',
                              callback_data=create_cllbck_data(level=curr_level-1,
+                                                              user_id=user_id))
+    )
+
+    for clbck in sample(delete_asset_cllbck_bttns, len(delete_asset_cllbck_bttns)):
+        markup.add(clbck)
+
+    return markup
+
+
+async def delete_record_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
+                                 quantity: float, added_at: str) -> InlineKeyboardMarkup:
+    """Delete user's asset record inline keyboard with buttons in random order"""
+
+    curr_level = 2
+    sub_level = 2
+    markup = InlineKeyboardMarkup()
+
+    delete_record_cllbck_bttns = (
+        InlineKeyboardButton(text='No, back to record',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol,
+                                                              quantity=quantity,
+                                                              added_at=added_at)),
+        InlineKeyboardButton(text='Yes, delete record data',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              sub_level=sub_level+1,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol,
+                                                              quantity=quantity,
+                                                              added_at=added_at)),
+        InlineKeyboardButton(text='Nope, back to portfolio',
+                             callback_data=create_cllbck_data(level=curr_level-2,
                                                               user_id=user_id))
     )
 
