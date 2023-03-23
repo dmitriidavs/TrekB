@@ -1,5 +1,5 @@
 __all__ = ['validators', 'formatters',
-           'validate_env_vars', 'validate_asset_name',
+           'validate_env_vars', 'validate_ticker_symbol',
            'validate_text_is_float', 'validate_date_format']
 
 
@@ -18,11 +18,10 @@ def validate_env_vars(env_vars: dict) -> dict:
         raise TypeError(err.json())
 
 
-async def validate_asset_name(ticker: str) -> bool:
+async def validate_ticker_symbol(ticker: str) -> bool:
     """Check if ticker symbol is valid"""
 
     # TODO: add caching
-    # TODO: add real validation checking list of trackable currencies in DB
     if ticker == 'err':     # test
         return False
     else:
