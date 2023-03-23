@@ -1,3 +1,0 @@
-## Setup & Run:
-
-    # some code
