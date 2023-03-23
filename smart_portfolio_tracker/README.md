@@ -18,11 +18,10 @@ via simple Telegram interfaces. **Try it out yourself:**\
 
     ├── README.md               <- Project README
     ├── Bot                     <- Core Telegram "front-end" component of the project
-        ├── branch: main            <- Primary runner 👨‍💻
+        ├── branch: main            <- MVP runner with some basic features 👨‍💻
         └── branch: placeholder     <- Interim runner while main is in DEV ✔️
     ├── VM                      <- Primary solution with core features
     ├── Cloud                   <- Cloud migrated primary solution
-    ├── Lite                    <- MVP solution with some basic features 👨‍💻
     ├── Misc                    <- Miscellaneous secondary objects
     └── Research                <- Some research on maths, statistics & metrics logic
 
