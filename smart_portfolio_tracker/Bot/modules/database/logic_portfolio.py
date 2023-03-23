@@ -7,6 +7,20 @@ from ..creds import USERS_DB_CONN
 from ..cache import cache
 
 
+async def ticker_symbol_is_valid(ticker: str) -> bool:
+    """Check if ticker symbol exists in DB"""
+
+    # TODO: add caching
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            response = await conn.session.execute(SQL_ASSET_IS_SUPPORTED.format(ticker=ticker))
+            return response.fetchone()[0]
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
+
+
 async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: str) -> None:
     """Add new entry to user's portfolio"""
 
@@ -62,10 +76,9 @@ async def delete_portfolio(user_id: int) -> int:
                 # update user_has_portfolio key
                 await cache.set(name='user_has_portfolio:' + str(user_id),
                                 value=0)
+                return response
         finally:
             await conn.session.close()
-
-    return response
 
 
 async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
@@ -74,8 +87,7 @@ async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             response = await conn.session.execute(SQL_SELECT_ASSETS_OUTER.format(user_id=user_id))
-            response = response.fetchall()
-            return response
+            return response.fetchall()
         except UsersDBError as error:
             raise error
         finally:
@@ -89,8 +101,7 @@ async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float
         try:
             response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
                                                                                  asset_id=asset_id))
-            response = response.fetchall()
-            return response
+            return response.fetchall()
         except UsersDBError as error:
             raise error
         finally:
