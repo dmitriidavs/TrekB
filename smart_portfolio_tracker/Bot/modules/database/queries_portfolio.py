@@ -1,3 +1,10 @@
+SQL_ASSET_IS_SUPPORTED = """
+SELECT EXISTS (
+    SELECT 1 FROM assets
+    WHERE ticker_symbol = '{ticker}'
+);
+"""
+
 SQL_ADD_ASSET_TO_PORTFOLIO = """
 INSERT INTO portfolio (
     user_id,
