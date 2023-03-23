@@ -81,6 +81,20 @@ async def delete_portfolio(user_id: int) -> int:
             await conn.session.close()
 
 
+async def delete_asset_from_portfolio(user_id: int, asset_id: int) -> None:
+    """Delete user's asset data"""
+
+    async with DBMSCreateConnection(USERS_DB_CONN) as conn:
+        try:
+            await conn.session.execute(SQL_DELETE_ASSET.format(user_id=user_id,
+                                                               asset_id=asset_id))
+            await conn.session.commit()
+        except UsersDBError as error:
+            raise error
+        finally:
+            await conn.session.close()
+
+
 async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
     """Get all user's assets: sum of each record"""
 
