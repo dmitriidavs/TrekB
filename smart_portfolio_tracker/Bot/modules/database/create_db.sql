@@ -40,8 +40,6 @@ INSERT OR IGNORE INTO assets VALUES
     (2, 'BNB', 'BNB'),
     (3, 'XRP', 'Ripple'),
     (4, 'ADA', 'Cardano'),
-    (5, 'MSFT', 'Microsoft'),
-    (6, 'GOOGL', 'Google'),
-    (7, 'GOLD', 'Gold');
+    (5, 'LTC', 'Litecoin')
 
 PRAGMA foreign_keys = ON;
