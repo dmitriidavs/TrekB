@@ -2,6 +2,7 @@ from typing import Union
 
 from aiogram.types import Message, CallbackQuery
 from aiogram.dispatcher import FSMContext
+from aiogram.types.message import ParseMode
 
 from .fsm import FSMManualAdd, FSMEditQuantity, FSMEditDate
 from .handlers_user import hndlr_join
@@ -15,7 +16,7 @@ from ..database.logic_portfolio import (
     cache_del_asset_editing_data,
     update_asset_record_data
 )
-from ..validation import validate_asset_name, validate_text_is_float, validate_date_format
+from ..validation import validate_ticker_symbol, validate_text_is_float, validate_date_format
 from ..validation.formatters import format_float_to_currency, format_dt
 from ..keyboards.reply import kb_manual, kb_start
 from ..keyboards.inline import get_flushit_kb
@@ -278,9 +279,10 @@ async def hndlr_manual_add(message: Message) -> None:
     """/add command handler: start FSMManualSetup"""
 
     await FSMManualAdd.asset_name.set()
-    msg = 'OK. Send me the ticker symbol of an asset.\n' \
-          'E.g.: BTC (Bitcoin) | MSFT (Microsoft)'
-    await message.answer(text=msg)
+    msg = 'OK. Send me the ticker symbol.\n' \
+          'Check out all of the supported assets ' \
+          '<a href="https://telegra.ph/TrekB-Supported-Assets-03-23">here</a>.'
+    await message.answer(text=msg, parse_mode=ParseMode.HTML)
 
 
 @log_ux(btn='/add', state='asset_name')
@@ -291,7 +293,7 @@ async def stt_asset_name(message: Message, state: FSMContext) -> None:
     Validating and saving name of an asset
     """
 
-    if await validate_asset_name(message.text):
+    if await validate_ticker_symbol(message.text):
         async with state.proxy() as data:
             # add asset name to fsm storage
             data["asset_name"] = message.text.upper()
