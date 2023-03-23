@@ -13,6 +13,7 @@ from ..database.logic_portfolio import (
     add_asset_to_portfolio,
     delete_portfolio,
     delete_asset_from_portfolio,
+    delete_record_from_portfolio,
     cache_set_asset_editing_data,
     cache_get_asset_editing_data,
     cache_del_asset_editing_data,
@@ -34,7 +35,8 @@ from ..keyboards.callback import (
     assets_outer_keyboard,
     assets_inner_keyboard,
     edit_asset_keyboard,
-    delete_asset_history_keyboard
+    delete_asset_history_keyboard,
+    delete_record_keyboard
 )
 from ..log.loggers import log_ux
 
@@ -204,13 +206,13 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
         await message.answer(text=msg)
 
 
-@log_ux(btn='/portfolio', clbck='pre_delete_asset')
-@dp.message_handler(lambda message: message.text == 'X delete')
+@log_ux(btn='/portfolio', clbck='list_delete_asset')
+@dp.message_handler(lambda message: message.text == '× delete')
 async def list_delete_asset_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str, **kwargs) -> None:
-    """/portfolio -> asset -> delete data: asks if user wants to delete asset data"""
+    """/portfolio -> asset -> delete data: ask if user wants to delete asset data"""
 
     markup = await delete_asset_history_keyboard(callback.message.from_user.id, asset_id, ticker_symbol)
-    msg = f'You\'re about to delete all {ticker_symbol} data. Are you sure?'
+    msg = f'You\'re about to delete all of the {ticker_symbol} history. Are you sure?'
     await callback.message.edit_text(text=msg, reply_markup=markup)
 
 
@@ -223,6 +225,31 @@ async def delete_asset_history(callback: CallbackQuery, asset_id: int, ticker_sy
     msg = f'{ticker_symbol} deleted'
     await callback.answer(text=msg)
     await list_portfolio(callback)
+
+
+@log_ux(btn='/portfolio', clbck='list_delete_record')
+@dp.message_handler(lambda message: message.text == '× delete record')
+async def list_delete_record_from_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                                          quantity: float, added_at: str, **kwargs) -> None:
+    """/portfolio -> asset -> record -> delete data: ask if user wants to delete record data"""
+
+    markup = await delete_record_keyboard(callback.message.from_user.id, asset_id,
+                                          ticker_symbol, quantity, added_at)
+    msg = f'You\'re about to delete {quantity} {ticker_symbol} ' \
+          f'added on {added_at.replace("+", ":")}. Are you sure?'
+    await callback.message.edit_text(text=msg, reply_markup=markup)
+
+
+@log_ux(btn='/portfolio', clbck='delete_asset')
+@dp.message_handler(lambda message: message.text == 'Yes, delete record data')
+async def delete_record_from_history(callback: CallbackQuery, asset_id: int, ticker_symbol: str,
+                                     quantity: float, added_at: str, **kwargs) -> None:
+    """/portfolio -> asset -> record -> delete data: yes"""
+
+    await delete_record_from_portfolio(callback.from_user.id, asset_id, added_at.replace('+', ':'))
+    msg = f'-{quantity} {ticker_symbol} | {added_at.replace("+", ":")}'
+    await callback.answer(text=msg)
+    await list_asset_history(callback, asset_id, ticker_symbol)
 
 
 # TODO: add caching
@@ -251,8 +278,9 @@ async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
             'main': list_asset_editing,
             '0': edit_record_quantity,
             '1': edit_record_date,
-            # '2': delete_record_history,
-        },
+            '2': list_delete_record_from_history,
+            '3': delete_record_from_history
+        }
     }
 
     # main func is activated if sub_level is not provided
