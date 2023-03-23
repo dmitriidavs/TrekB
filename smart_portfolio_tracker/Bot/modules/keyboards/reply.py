@@ -26,3 +26,6 @@ kb_add.row(btn_add, btn_import)
 
 kb_manual = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_manual.row(btn_add, btn_portfolio)
+
+kb_back = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_back.add(btn_back)
