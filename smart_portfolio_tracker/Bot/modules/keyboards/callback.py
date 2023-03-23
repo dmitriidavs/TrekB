@@ -49,6 +49,7 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
     """Create user's asset history inline keyboard"""
 
     curr_level = 1
+    sub_level = -1
     markup = InlineKeyboardMarkup()
 
     assets_inner = await get_assets_inner(user_id=user_id, asset_id=asset_id)
@@ -72,9 +73,15 @@ async def assets_inner_keyboard(user_id: int, asset_id: int, ticker_symbol: str)
             InlineKeyboardButton(text=button_text,
                                  callback_data=cllbck_data)
         )
-    markup.add(
+    markup.row(
         InlineKeyboardButton(text='« back',
                              callback_data=create_cllbck_data(level=curr_level-1,
+                                                              user_id=user_id)),
+        InlineKeyboardButton(text='X delete',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              sub_level=sub_level+1,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol,
                                                               user_id=user_id))
     )
 
@@ -121,28 +128,31 @@ async def edit_asset_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
     return markup
 
 
-# async def delete_asset_record_keyboard(user_id: int, asset_id: int, ticker_symbol: str,
-#                                        quantity: float, added_at: str) -> InlineKeyboardMarkup:
-#     """Delete user's asset record inline keyboard with buttons in random order"""
-#
-#     curr_level = 5
-#     markup = InlineKeyboardMarkup()
-#
-#     delete_record_cllbck_bttns = (
-#         InlineKeyboardButton(text='No, back to records',
-#                              callback_data=create_cllbck_data(level=curr_level-4,
-#                                                               user_id=user_id,
-#                                                               ticker_symbol=ticker_symbol,
-#                                                               asset_id=asset_id)),
-#         InlineKeyboardButton(text='Nope, back to portfolio',
-#                              callback_data=create_cllbck_data(level=curr_level-5,
-#                                                               user_id=user_id,
-#                                                               ticker_symbol=ticker_symbol,
-#                                                               asset_id=asset_id)),
-#         InlineKeyboardButton(text='Yes, delete the record', callback_data='Delete record')
-#     )
-#
-#     for clbck in sample(delete_record_cllbck_bttns, len(delete_record_cllbck_bttns)):
-#         markup.add(clbck)
-#
-#     return markup
+async def delete_asset_history_keyboard(user_id: int, asset_id: int, ticker_symbol: str) -> InlineKeyboardMarkup:
+    """Delete user's asset record inline keyboard with buttons in random order"""
+
+    curr_level = 1
+    sub_level = 0
+    markup = InlineKeyboardMarkup()
+
+    delete_record_cllbck_bttns = (
+        InlineKeyboardButton(text='No, back to activity',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol)),
+        InlineKeyboardButton(text='Yes, delete asset data',
+                             callback_data=create_cllbck_data(level=curr_level,
+                                                              sub_level=sub_level + 1,
+                                                              user_id=user_id,
+                                                              asset_id=asset_id,
+                                                              ticker_symbol=ticker_symbol)),
+        InlineKeyboardButton(text='Nope, back to portfolio',
+                             callback_data=create_cllbck_data(level=curr_level-1,
+                                                              user_id=user_id))
+    )
+
+    for clbck in sample(delete_record_cllbck_bttns, len(delete_record_cllbck_bttns)):
+        markup.add(clbck)
+
+    return markup
