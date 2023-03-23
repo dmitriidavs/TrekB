@@ -70,7 +70,7 @@ DELETE FROM portfolio
 WHERE user_id = {user_id} AND asset_id = {asset_id};
 """
 
-SQL_DELETE_ASSET_RECORD = """
+SQL_DELETE_RECORD = """
 DELETE FROM portfolio
 WHERE user_id = {user_id} AND asset_id = {asset_id} AND added_at = '{added_at}';
 """
