@@ -90,7 +90,7 @@ Main version of the projects which enables users to gain insights on their portf
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
 
-Stack: `PostgreSQL`, `SQLite [Lite]`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
+Stack: `PostgreSQL`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
 <ins>Telegram Component</ins>
@@ -108,16 +108,6 @@ Tags: `tag1`
 <ins>CI/CD Component</ins>
 
 ---
-
-### [CLOUD]
-
-A migration of VM based solution to AWS cloud architecture.
-
-Stack: `- AWS? Azure? - Excel!`, `Python`, `SQL`
-
-## Scaling
-
-To be updateted ...
 
 ## Takeaways
 
