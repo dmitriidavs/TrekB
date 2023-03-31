@@ -88,22 +88,20 @@ Main version of the projects which enables users to gain insights on their portf
 
 <ins>High-Level Overview</ins>
 
-![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "VM Architecture")
+![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "High-Level Architecture")
 
 Stack: `PostgreSQL`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
 `Python`, `SQL`
 
-<ins>Telegram Component</ins>
+<ins>Data Pipelines</ins>
 
-![Telegram Component](Misc/pics/arch_tg.png?raw=true "Telegram Component")
+![Data Pipelines](Misc/pics/data_pipelines.png?raw=true "Data Pipelines")
 
 Tags: `tag1`
 
-<ins>Database Component</ins>
+<ins>DB Tables</ins>
 
-<ins>Data Pipelines</ins>
-
-<ins>Docker Layers & Networking</ins>
+<ins>Docker Layers</ins>
 
 <ins>CI/CD Component</ins>
 
