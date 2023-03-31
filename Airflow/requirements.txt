@@ -1,0 +1,5 @@
+psycopg2==2.9.3
+SQLAlchemy==1.4.41
+boto3==1.26.104
+awswrangler==2.18.0
+web3==6.0.0
