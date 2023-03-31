@@ -20,10 +20,8 @@ via simple Telegram interfaces. **Try it out yourself:**\
     ├── Bot                     <- Core Telegram "front-end" component of the project
         ├── branch: main            <- MVP runner with some basic features 👨‍💻
         └── branch: placeholder     <- Interim runner while main is in DEV ✔️
-    ├── VM                      <- Primary solution with core features
-    ├── Cloud                   <- Cloud migrated primary solution
-    ├── Misc                    <- Miscellaneous secondary objects
-    └── Research                <- Some research on maths, statistics & metrics logic
+    ├── Airflow                 <- Airflow dags
+    └── Misc                    <- Miscellaneous secondary objects
 
 <div align="center">
 
