@@ -2,7 +2,7 @@
 version: '3'
 x-airflow-common:
   &airflow-common
-  image: ${AIRFLOW_IMAGE_NAME:-airflow-trekb:0.0.1}
+  image: ${AIRFLOW_IMAGE_NAME:-airflow-trekb-2.3.4:0.0.1}
   environment:
     &airflow-common-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
