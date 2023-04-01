@@ -14,15 +14,6 @@ WHERE user_id = {user_id};
 
 SQL_ADD_NEW_USER = """
 INSERT INTO users (
-    user_id
-)
-VALUES (
-    {user_id}
-);
-"""
-
-SQL_ADD_NEW_USER_INFO = """
-INSERT INTO users_info (
     user_id, first_name, last_name,
     username, language_code, is_premium
 ) VALUES (
