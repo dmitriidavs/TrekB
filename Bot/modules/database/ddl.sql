@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS users (
     update_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
--- TODO: move to SCD2
+-- TODO: should be synced as SCD2 in OLAP
 CREATE TABLE IF NOT EXISTS portfolio (
     user_id integer NOT NULL,
     asset_id int2 NOT NULL,
