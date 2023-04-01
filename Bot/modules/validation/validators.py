@@ -16,8 +16,10 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     bot_fsm_storage_type: str
     bot_api_token: str
     users_db_conn: str
-    util_db_host: str
-    util_db_port: int
+    cache_host: str
+    cache_port: int
+    broker_host: str
+    broker_port: int
     log_folder_path: str
     log_host: Optional[str]
     log_port: Optional[int]
