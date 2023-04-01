@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from sqlite3 import Error as UsersDBError
 
 from .queries_portfolio import *
@@ -13,7 +14,8 @@ async def ticker_symbol_is_valid(ticker: str) -> bool:
     # TODO: add caching
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            response = await conn.session.execute(SQL_ASSET_IS_SUPPORTED.format(ticker=ticker))
+            response = await conn.session.execute(text(SQL_ASSET_IS_SUPPORTED),
+                                                  {'ticker': ticker})
             return response.fetchone()[0]
         except UsersDBError as error:
             raise error
@@ -27,9 +29,10 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             # add new asset
-            await conn.session.execute(SQL_ADD_ASSET_TO_PORTFOLIO.format(user_id=user_id,
-                                                                         asset_name=asset_name,
-                                                                         asset_quantity=asset_quantity))
+            await conn.session.execute(text(SQL_ADD_ASSET_TO_PORTFOLIO),
+                                       {'user_id': user_id,
+                                        'asset_name': asset_name,
+                                        'asset_quantity': asset_quantity})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
@@ -39,8 +42,9 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             if c_response is None or int(c_response) == 0:
                 try:
                     # update has_portfolio flag in users
-                    await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG.format(user_id=user_id,
-                                                                                         has_portfolio=True))
+                    await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
+                                               {'user_id': user_id,
+                                                'has_portfolio': True})
                     await conn.session.commit()
                 except UsersDBError as error:
                     raise error
@@ -58,7 +62,8 @@ async def delete_portfolio(user_id: int) -> int:
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             # delete portfolio returning number of deleted records
-            await conn.session.execute(SQL_DELETE_PORTFOLIO.format(user_id=user_id))
+            await conn.session.execute(text(SQL_DELETE_PORTFOLIO),
+                                       {'user_id': user_id})
             # TODO: to be changed in pg
             response = await conn.session.execute("""SELECT CHANGES()""")
             response = response.fetchone()[0]
@@ -67,8 +72,9 @@ async def delete_portfolio(user_id: int) -> int:
         else:
             try:
                 # update has_portfolio in users
-                await conn.session.execute(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG.format(user_id=user_id,
-                                                                                     has_portfolio=False))
+                await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
+                                           {'user_id': user_id,
+                                            'has_portfolio': False})
                 await conn.session.commit()
             except UsersDBError as error:
                 raise error
@@ -86,8 +92,9 @@ async def delete_asset_from_portfolio(user_id: int, asset_id: int) -> None:
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            await conn.session.execute(SQL_DELETE_ASSET.format(user_id=user_id,
-                                                               asset_id=asset_id))
+            await conn.session.execute(text(SQL_DELETE_ASSET),
+                                       {'user_id': user_id,
+                                        'asset_id': asset_id})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
@@ -100,9 +107,10 @@ async def delete_record_from_portfolio(user_id: int, asset_id: int, added_at: st
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            await conn.session.execute(SQL_DELETE_RECORD.format(user_id=user_id,
-                                                                asset_id=asset_id,
-                                                                added_at=added_at))
+            await conn.session.execute(text(SQL_DELETE_RECORD),
+                                       {'user_id': user_id,
+                                        'asset_id': asset_id,
+                                        'added_at': added_at})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
@@ -115,7 +123,8 @@ async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            response = await conn.session.execute(SQL_SELECT_ASSETS_OUTER.format(user_id=user_id))
+            response = await conn.session.execute(text(SQL_SELECT_ASSETS_OUTER),
+                                                  {'user_id': user_id})
             return response.fetchall()
         except UsersDBError as error:
             raise error
@@ -128,8 +137,9 @@ async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            response = await conn.session.execute(SQL_SELECT_ASSETS_INNER.format(user_id=user_id,
-                                                                                 asset_id=asset_id))
+            response = await conn.session.execute(text(SQL_SELECT_ASSETS_INNER),
+                                                  {'user_id': user_id,
+                                                   'asset_id': asset_id})
             return response.fetchall()
         except UsersDBError as error:
             raise error
@@ -155,11 +165,11 @@ async def update_asset_record_data(col: str, val: float, user_id: int, asset_id:
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            await conn.session.execute(SQL_UPDATE_ASSET_RECORD.format(col=col,
-                                                                      val=val,
-                                                                      user_id=user_id,
-                                                                      asset_id=asset_id,
-                                                                      added_at=added_at))
+            await conn.session.execute(text(SQL_UPDATE_ASSET_RECORD.format(col=col)),
+                                       {'val': val,
+                                        'user_id': user_id,
+                                        'asset_id': asset_id,
+                                        'added_at': added_at})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
@@ -172,9 +182,10 @@ async def delete_asset_record(user_id: int, asset_id: int, added_at: str) -> Non
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            await conn.session.execute(SQL_DELETE_ASSET_RECORD.format(user_id=user_id,
-                                                                      asset_id=asset_id,
-                                                                      added_at=added_at))
+            await conn.session.execute(text(SQL_DELETE_RECORD),
+                                       {'user_id': user_id,
+                                        'asset_id': asset_id,
+                                        'added_at': added_at})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
