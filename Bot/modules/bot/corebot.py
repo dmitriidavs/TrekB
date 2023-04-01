@@ -8,11 +8,11 @@ class CoreBot:
 
     def __init__(self,
                  api_token: str, storage_type: str,
-                 util_db_host: str, util_db_port: int):
+                 cache_host: str, cache_port: int):
         self.storage_type = storage_type
         self.api_token = api_token
-        self.util_db_host = util_db_host
-        self.util_db_port = util_db_port
+        self.cache_host = cache_host
+        self.cache_port = cache_port
         self.storage = None
         self.bot = self.set_bot()
         self.dispatcher = self.set_dispatcher()
@@ -24,8 +24,8 @@ class CoreBot:
         if self.storage_type == 'memory':
             self.storage = MemoryStorage()
         elif self.storage_type == 'redis':
-            self.storage = RedisStorage2(host=self.util_db_host,
-                                         port=self.util_db_port)
+            self.storage = RedisStorage2(host=self.cache_host,
+                                         port=self.cache_port)
 
         return Dispatcher(self.bot, storage=self.storage)
 
