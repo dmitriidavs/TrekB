@@ -7,19 +7,14 @@ CREATE TABLE IF NOT EXISTS assets (
 -- TODO: convert timestamp to datetimetz in pg
 CREATE TABLE IF NOT EXISTS users (
     user_id integer PRIMARY KEY,
-    has_portfolio boolean DEFAULT false,
-    registration_date timestamp DEFAULT CURRENT_TIMESTAMP,
-    update_date timestamp DEFAULT CURRENT_TIMESTAMP     -- should track log
-);
-
-CREATE TABLE IF NOT EXISTS users_info (
-    user_id integer PRIMARY KEY,
-    first_name varchar(30) NOT NULL,
-    last_name varchar(30) NULL,
-    username varchar(30) NULL,
+    first_name varchar NOT NULL,
+    last_name varchar NULL,
+    username varchar NULL,
     language_code varchar(2) NULL,
     is_premium boolean NOT NULL,
-    FOREIGN KEY(user_id) REFERENCES users(user_id)
+    has_portfolio boolean DEFAULT false NOT NULL,
+    registration_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    update_date timestamp DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
 
 -- TODO: move to SCD2
@@ -40,6 +35,6 @@ INSERT OR IGNORE INTO assets VALUES
     (2, 'BNB', 'BNB'),
     (3, 'XRP', 'Ripple'),
     (4, 'ADA', 'Cardano'),
-    (5, 'LTC', 'Litecoin')
+    (5, 'LTC', 'Litecoin');
 
 PRAGMA foreign_keys = ON;
