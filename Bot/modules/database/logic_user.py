@@ -1,3 +1,4 @@
+from sqlalchemy import text
 from sqlite3 import Error as UsersDBError
 
 from .queries_user import *
@@ -21,9 +22,8 @@ async def user_exists(user_id: int) -> bool:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
                 # check users DB if user exists
-                response = await conn.session.execute(
-                    SQL_USER_EXISTS.format(user_id=user_id)
-                )
+                response = await conn.session.execute(text(SQL_USER_EXISTS),
+                                                      {'user_id': user_id})
                 response = response.fetchone()[0]
                 # save response in cache    # TODO: add expiry time
                 await cache.set(name=f'user_exists:{user_id}',
@@ -53,9 +53,8 @@ async def user_has_portfolio(user_id: int) -> int:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
                 # check users DB if user has portfolio
-                response = await conn.session.execute(
-                    SQL_USER_HAS_PORTFOLIO.format(user_id=user_id)
-                )
+                response = await conn.session.execute(text(SQL_USER_HAS_PORTFOLIO),
+                                                      {'user_id': user_id})
                 response = response.fetchone()[0]
                 # save answer in cache
                 await cache.set(name=f'user_has_portfolio:{user_id}',
@@ -77,12 +76,13 @@ async def save_user_info(user_id: int, user_first_name: str, user_last_name: str
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
-            await conn.session.execute(SQL_ADD_NEW_USER.format(user_id=user_id,
-                                                               user_first_name=user_first_name,
-                                                               user_last_name=user_last_name,
-                                                               user_username=user_username,
-                                                               user_language_code=user_language_code,
-                                                               user_is_premium=user_is_premium))
+            await conn.session.execute(text(SQL_ADD_NEW_USER),
+                                       {'user_id': user_id,
+                                        'user_first_name': user_first_name,
+                                        'user_last_name': user_last_name,
+                                        'user_username': user_username,
+                                        'user_language_code': user_language_code,
+                                        'user_is_premium': user_is_premium})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
