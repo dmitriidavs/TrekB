@@ -14,16 +14,19 @@ from ..database.logic_portfolio import (
     delete_portfolio,
     delete_asset_from_portfolio,
     delete_record_from_portfolio,
-    cache_set_asset_editing_data,
-    cache_get_asset_editing_data,
-    cache_del_asset_editing_data,
+    broker_set_asset_editing_data,
+    broker_get_asset_editing_data,
+    broker_del_asset_editing_data,
     update_asset_record_data
 )
 from ..validation import (
     validate_text_is_positive_float,
     validate_date_format
 )
-from ..validation.formatters import format_float_to_currency, format_dt
+from ..validation.formatters import (
+    format_float_to_currency,
+    format_dt
+)
 from ..keyboards.reply import (
     kb_manual,
     kb_start,
@@ -112,8 +115,8 @@ async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_sy
           f'{added_at.replace("+", ":")}.\nWhat\'s the new quantity?'
     await callback.message.edit_text(text=msg)
 
-    # set cache data for editing
-    await cache_set_asset_editing_data({
+    # set data for editing in broker
+    await broker_set_asset_editing_data({
         'user_id': callback.from_user.id,
         'asset_id': asset_id,
         'added_at': added_at
@@ -130,16 +133,17 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
 
     if await validate_text_is_positive_float(message.text):
         # get editing data from cache
-        c_editing_data = await cache_get_asset_editing_data(message.from_user.id)
+        c_editing_data = await broker_get_asset_editing_data(message.from_user.id)
+        print(c_editing_data)
         # delete cached editing data
-        await cache_del_asset_editing_data(message.from_user.id)
+        await broker_del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='quantity',
                                        val=message.text,
-                                       user_id=int(c_editing_data[b"user_id"]),
-                                       asset_id=int(c_editing_data[b"asset_id"]),
-                                       added_at=c_editing_data[b"added_at"].decode("utf-8").replace('+', ':'))
+                                       user_id=c_editing_data["user_id"],
+                                       asset_id=c_editing_data["asset_id"],
+                                       added_at=c_editing_data["added_at"].replace('+', ':'))
 
         # send OK reply message
         msg = f'Good! {message.text} is the new quantity.'
@@ -166,8 +170,8 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
           f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss'
     await callback.message.edit_text(text=msg)
 
-    # set cache data for editing
-    await cache_set_asset_editing_data({
+    # set data for asset editing in broker
+    await broker_set_asset_editing_data({
         'user_id': callback.from_user.id,
         'asset_id': asset_id,
         'added_at': added_at
@@ -183,17 +187,17 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
     """
 
     if await validate_date_format(message.text):
-        # get editing data from cache
-        c_editing_data = await cache_get_asset_editing_data(message.from_user.id)
-        # delete cached editing data
-        await cache_del_asset_editing_data(message.from_user.id)
+        # get editing data from broker
+        c_editing_data = await broker_get_asset_editing_data(message.from_user.id)
+        # delete editing data from broker
+        await broker_del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='added_at',
                                        val=message.text,
-                                       user_id=int(c_editing_data[b"user_id"]),
-                                       asset_id=int(c_editing_data[b"asset_id"]),
-                                       added_at=c_editing_data[b"added_at"].decode("utf-8").replace('+', ':'))
+                                       user_id=c_editing_data["user_id"],
+                                       asset_id=c_editing_data["asset_id"],
+                                       added_at=c_editing_data["added_at"].replace('+', ':'))
 
         # send OK reply message
         msg = f'Good! {message.text} is the new date.'
