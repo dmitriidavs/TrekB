@@ -22,7 +22,7 @@ def gen_filename() -> str:
 logging.basicConfig(
     format='[%(levelname)s]: %(message)s - %(asctime)s',
     datefmt='%Y-%m-%d %H:%M:%S',
-    filename=gen_filename() if BOT_ARCH_TYPE == 'Lite' and create_log_dir() else None
+    # filename=gen_filename() if BOT_ARCH_TYPE == 'Lite' and create_log_dir() else None
 )
 
 logger = logging.getLogger(name='basic')
