@@ -6,6 +6,7 @@ from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
 from . import DBMSCreateConnection
 from ..creds import USERS_DB_CONN
 from ..cache import cache
+from ..broker import broker
 
 
 async def ticker_symbol_is_valid(ticker: str) -> bool:
@@ -147,17 +148,17 @@ async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float
             await conn.session.close()
 
 
-async def cache_set_asset_editing_data(data: dict) -> None:
-    await cache.hset(name='editing_data:' + str(data["user_id"]),
-                     mapping=data)
+async def broker_set_asset_editing_data(data: dict) -> None:
+    await broker.hset(name=f'asset_editing_data:{data["user_id"]}',
+                      mapping=data)
 
 
-async def cache_get_asset_editing_data(user_id: int) -> dict:
-    return await cache.hgetall(name='editing_data:' + str(user_id))
+async def broker_get_asset_editing_data(user_id: int) -> dict:
+    return await broker.hgetall(name=f'asset_editing_data:{user_id}')
 
 
-async def cache_del_asset_editing_data(user_id: int) -> None:
-    await cache.delete('editing_data:' + str(user_id))
+async def broker_del_asset_editing_data(user_id: int) -> None:
+    await broker.delete(f'asset_editing_data:{user_id}')
 
 
 async def update_asset_record_data(col: str, val: float, user_id: int, asset_id: int, added_at: str) -> None:
