@@ -14,11 +14,9 @@ from ..database.logic_portfolio import (
     delete_portfolio,
     delete_asset_from_portfolio,
     delete_record_from_portfolio,
-    broker_set_asset_editing_data,
-    broker_get_asset_editing_data,
-    broker_del_asset_editing_data,
     update_asset_record_data
 )
+from ..broker import broker
 from ..validation import (
     validate_text_is_positive_float,
     validate_date_format
@@ -116,7 +114,7 @@ async def edit_record_quantity(callback: CallbackQuery, asset_id: int, ticker_sy
     await callback.message.edit_text(text=msg)
 
     # set data for editing in broker
-    await broker_set_asset_editing_data({
+    await broker.set_asset_editing_data({
         'user_id': callback.from_user.id,
         'asset_id': asset_id,
         'added_at': added_at
@@ -133,10 +131,9 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
 
     if await validate_text_is_positive_float(message.text):
         # get editing data from cache
-        c_editing_data = await broker_get_asset_editing_data(message.from_user.id)
-        print(c_editing_data)
+        c_editing_data = await broker.get_asset_editing_data(message.from_user.id)
         # delete cached editing data
-        await broker_del_asset_editing_data(message.from_user.id)
+        await broker.del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='quantity',
@@ -171,7 +168,7 @@ async def edit_record_date(callback: CallbackQuery, asset_id: int, ticker_symbol
     await callback.message.edit_text(text=msg)
 
     # set data for asset editing in broker
-    await broker_set_asset_editing_data({
+    await broker.set_asset_editing_data({
         'user_id': callback.from_user.id,
         'asset_id': asset_id,
         'added_at': added_at
@@ -188,9 +185,9 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
 
     if await validate_date_format(message.text):
         # get editing data from broker
-        c_editing_data = await broker_get_asset_editing_data(message.from_user.id)
+        c_editing_data = await broker.get_asset_editing_data(message.from_user.id)
         # delete editing data from broker
-        await broker_del_asset_editing_data(message.from_user.id)
+        await broker.del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='added_at',
