@@ -5,6 +5,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from ..database.logic_portfolio import get_assets_outer, get_assets_inner
 from ..validation.formatters import format_float_to_currency, format_dt
+from ..broker import broker
 
 
 portfolio_cd = CallbackData('list_portfolio', 'level', 'sub_level',
