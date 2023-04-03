@@ -1,4 +1,4 @@
-__all__ = ['formatters', 'validators',
+__all__ = ['utils', 'formatters', 'validators',
            'validate_env_vars', 'validate_text_is_positive_float', 'validate_date_format']
 
 import datetime as dt
