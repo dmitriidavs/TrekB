@@ -7,7 +7,7 @@ from .validation.utils import gen_pointer
 class Broker(Redis):
     """
     Redis message broker
-    set_data, get_data, del_data: user has multiple choice
+    set_data, get_data, del_data: user has multiple choice (e.g. callback buttons)
     else: user in some FSM state
     """
 
