@@ -3,7 +3,7 @@ import os
 import xxhash
 
 
-def gen_pointer(p_len: int = 8) -> str:
+async def gen_pointer(p_len: int = 8) -> str:
     """Generate a random hash pointer for message broker to use as part of a key"""
 
     rand_bytes = os.urandom(p_len)
