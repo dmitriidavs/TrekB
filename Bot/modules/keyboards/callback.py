@@ -1,23 +1,20 @@
 from random import sample
+from types import MappingProxyType
 
 from aiogram.utils.callback_data import CallbackData
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 from ..database.logic_portfolio import get_assets_outer, get_assets_inner
 from ..validation.formatters import format_float_to_currency, format_dt
-from ..broker import broker
+from .. import broker
 
 
-portfolio_cd = CallbackData('list_portfolio', 'level', 'sub_level',
-                            'user_id', 'asset_id', 'ticker_symbol',
-                            'quantity', 'added_at')
+portfolio_cd = CallbackData('list_portfolio', 'level', 'sub_level', 'user_id', 'data')
 
 
 def create_cllbck_data(level: int, user_id: int, sub_level: int = -1,
-                       asset_id: int = -1, ticker_symbol: str = '_ticker_err',
-                       quantity: float = -1, added_at: str = '_dt_err') -> str:
-    return portfolio_cd.new(level=level, sub_level=sub_level, user_id=user_id, asset_id=asset_id,
-                            ticker_symbol=ticker_symbol, quantity=quantity, added_at=added_at)
+                       data: dict = MappingProxyType({'_data_err': -1})) -> str:
+    return portfolio_cd.new(level=level, sub_level=sub_level, user_id=user_id, data=data)
 
 
 async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
@@ -26,18 +23,19 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
     curr_level = 0
     markup = InlineKeyboardMarkup(row_width=2)
 
+    # request assets data from users DB
     assets_outer = await get_assets_outer(user_id=user_id)
+    # add broker message & get data w/pointers
+    assets_outer = broker.set_data(user_id=user_id,         # asset_id, ticker_symbol, quantity_sum
+                                   data=assets_outer)       # should be dict with pointer inside
     # create a button for each asset in portfolio and add it to markup
     for asset in assets_outer:
-        asset_id = asset[0]
-        ticker_symbol = asset[1]
-        quantity_sum = asset[2]
-        # format quanity sum as currency
-        quantity_sum_text = await format_float_to_currency(quantity_sum, 4)
-        # create callback data & add button
-        button_text = f'{quantity_sum_text}   {ticker_symbol}'
-        cllbck_data = create_cllbck_data(level=curr_level+1, user_id=user_id,
-                                         asset_id=asset_id, ticker_symbol=ticker_symbol)
+        # create button text
+        quantity_sum_text = await format_float_to_currency(asset[2], 4)
+        button_text = f'{quantity_sum_text}   {asset[1]}'
+        # create callback data
+        cllbck_data = create_cllbck_data(level=curr_level+1, user_id=user_id, data=assets_outer)
+        # add button
         markup.insert(
             InlineKeyboardButton(text=button_text,
                                  callback_data=cllbck_data)
