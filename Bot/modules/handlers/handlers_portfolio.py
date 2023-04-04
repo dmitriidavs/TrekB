@@ -16,7 +16,7 @@ from ..database.logic_portfolio import (
     delete_record_from_portfolio,
     update_asset_record_data
 )
-from ..broker import broker
+from .. import broker
 from ..validation import (
     validate_text_is_positive_float,
     validate_date_format
