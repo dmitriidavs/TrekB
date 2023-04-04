@@ -4,7 +4,7 @@ from sqlite3 import Error as UsersDBError
 from .queries_user import *
 from . import DBMSCreateConnection
 from ..creds import USERS_DB_CONN
-from ..cache import cache
+from .. import cache
 
 
 async def user_exists(user_id: int) -> bool:
