@@ -51,11 +51,14 @@ GROUP BY user_id, p.asset_id;
 
 SQL_SELECT_ASSETS_INNER = """
 SELECT
-    asset_id,
+    p.asset_id,
+    ticker_symbol,
     quantity,
     added_at
-FROM portfolio
-WHERE user_id = :user_id AND asset_id = :asset_id
+FROM portfolio AS p
+INNER JOIN assets AS a
+    ON a.asset_id = p.asset_id
+WHERE user_id = :user_id AND p.asset_id = :asset_id
 ORDER BY added_at DESC;
 """
 
