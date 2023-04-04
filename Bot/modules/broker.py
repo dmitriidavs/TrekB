@@ -24,28 +24,38 @@ class Broker(Redis):
         """
 
         if isinstance(data, tuple):
-            # start transaction
-            async with self.pipeline(transaction=True) as pipe:
-                result = []
-                for b_data in data[0]:
-                    # create dict from data & attributes tuples
-                    res_dict = {key: val for key, val in zip(data[1], b_data)}
-                    pointer = await gen_pointer()
-                    res_dict["pointer"] = pointer
-                    result.append(res_dict)
-                    # add hset command to the pipe
-                    await pipe.hset(name=f'{user_id}:{pointer}',
-                                    mapping=res_dict)
-                # execute transaction
-                await pipe.execute()
-                # return resulting dictionaries
-                return tuple(result)
+            return await self.multi_exec_hset(user_id, data)
         else:
-            pointer = await gen_pointer()
-            data["pointer"] = pointer
-            await self.hset(name=f'{user_id}:{pointer}',
-                            mapping=data)
-            return data
+            return await self.exec_hset(user_id, data)
+
+    async def exec_hset(self, user_id: int, data: dict) -> dict:
+        """hset"""
+
+        pointer = await gen_pointer()
+        data["pointer"] = pointer
+        await self.hset(name=f'{user_id}:{pointer}',
+                        mapping=data)
+        return data
+
+    async def multi_exec_hset(self, user_id: int, data: tuple[tuple]) -> tuple[dict]:
+        """multi/exec hset"""
+
+        # start transaction
+        async with self.pipeline(transaction=True) as pipe:
+            result = []
+            for b_data in data[0]:
+                # create dict from data & attributes tuples
+                res_dict = {key: val for key, val in zip(data[1], b_data)}
+                pointer = await gen_pointer()
+                res_dict["pointer"] = pointer
+                result.append(res_dict)
+                # add hset command to the pipe
+                await pipe.hset(name=f'{user_id}:{pointer}',
+                                mapping=res_dict)
+            # execute transaction
+            await pipe.execute()
+            # return resulting dictionaries
+            return tuple(result)
 
     async def get_data(self, user_id: int, pointer: str) -> dict:
         """hgetall"""
