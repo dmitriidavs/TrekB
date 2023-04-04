@@ -5,7 +5,7 @@ from .queries_portfolio import *
 from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
 from . import DBMSCreateConnection
 from ..creds import USERS_DB_CONN
-from ..cache import cache
+from .. import cache
 
 
 async def ticker_symbol_is_valid(ticker: str) -> bool:
@@ -38,7 +38,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             raise error
         else:
             # check cache if user adds asset for the first time
-            c_response = await cache.get(name='user_has_portfolio:' + str(user_id))
+            c_response = await cache.get(name=f'user_has_portfolio:{user_id}')
             if c_response is None or int(c_response) == 0:
                 try:
                     # update has_portfolio flag in users
@@ -50,7 +50,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
                     raise error
                 else:
                     # update user_has_portfolio key
-                    await cache.set(name='user_has_portfolio:' + str(user_id),
+                    await cache.set(name=f'user_has_portfolio:{user_id}',
                                     value=1)
         finally:
             await conn.session.close()
@@ -80,7 +80,7 @@ async def delete_portfolio(user_id: int) -> int:
                 raise error
             else:
                 # update user_has_portfolio key
-                await cache.set(name='user_has_portfolio:' + str(user_id),
+                await cache.set(name=f'user_has_portfolio:{user_id}',
                                 value=0)
                 return response
         finally:
