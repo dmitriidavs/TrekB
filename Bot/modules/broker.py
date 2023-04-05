@@ -3,9 +3,10 @@ from typing import Union
 from aioredis import Redis
 
 from .validation.utils import HashDict
+from .creds import BROKER_TTL
 
 
-# TODO: add broker TTL
+# TODO: set TTL for broker
 class Broker(Redis):
     """
     Redis based message broker
