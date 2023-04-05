@@ -2,10 +2,10 @@ from typing import Union
 
 from aioredis import Redis
 
-from .validation.utils import gen_pointer
+from .validation.utils import HashDict
 
 
-# TODO: implement check for duplicate data (prefix?)
+# TODO: add broker TTL
 class Broker(Redis):
     """
     Redis based message broker
@@ -31,11 +31,19 @@ class Broker(Redis):
     async def exec_hset(self, user_id: int, data: dict) -> dict:
         """hset"""
 
-        pointer = await gen_pointer()
-        data["pointer"] = pointer
-        await self.hset(name=f'{user_id}:{pointer}',
-                        mapping=data)
-        return data
+        # generate hash part of key from data dict
+        pointer = await HashDict.get_dict_hash(data)
+
+        # check if key is already in broker
+        if not await self.exists_data(user_id, pointer):
+            # set new key:val pair
+            data["pointer"] = pointer
+            await self.hset(name=f'{user_id}:{pointer}',
+                            mapping=data)
+            return data
+        else:
+            # get data using existing key
+            return await self.get_data(user_id, pointer)
 
     async def multi_exec_hset(self, user_id: int, data: tuple[tuple]) -> tuple[dict]:
         """multi/exec hset"""
@@ -45,26 +53,34 @@ class Broker(Redis):
             result = []
             for b_data in data[0]:
                 # create dict from data & attributes tuples
-                res_dict = {key: val for key, val in zip(data[1], b_data)}
-                pointer = await gen_pointer()
-                res_dict["pointer"] = pointer
-                result.append(res_dict)
-                # add hset command to the pipe
-                await pipe.hset(name=f'{user_id}:{pointer}',
-                                mapping=res_dict)
-            # execute transaction
+                data_dict = {key: val for key, val in zip(data[1], b_data)}
+
+                # generate hash part of key from data_dict
+                pointer = await HashDict.get_dict_hash(data_dict)
+
+                data_dict["pointer"] = pointer
+                result.append(data_dict)
+
+                # pipe hset if key not in broker
+                if not await self.exists_data(user_id, pointer):
+                    await pipe.hset(name=f'{user_id}:{pointer}',
+                                    mapping=data_dict)
+
+            # execute transaction if any tasks exist
             await pipe.execute()
             # return resulting dictionaries
             return tuple(result)
 
+    async def exists_data(self, user_id: int, pointer: str) -> bool:
+        """exists"""
+        return await self.exists(f'{user_id}:{pointer}')
+
     async def get_data(self, user_id: int, pointer: str) -> dict:
         """hgetall"""
-
         return await self.hgetall(name=f'{user_id}:{pointer}')
 
     async def del_data(self, user_id: int, pointer: str) -> None:
         """del"""
-
         await self.delete(f'{user_id}:{pointer}')
 
     async def set_asset_editing_data(self, data: dict) -> None:
