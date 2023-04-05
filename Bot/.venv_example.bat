@@ -1,3 +1,5 @@
+set TIMEZONE=Asia/Tbilisi
+
 set BOT_ARCH_TYPE=Lite
 set BOT_ADDRESS=@<your_tg_bot_name>
 set BOT_FSM_STORAGE_TYPE=<memory or redis>
@@ -10,6 +12,10 @@ set CACHE_PORT=6379
 
 set BROKER_HOST=localhost
 set BROKER_PORT=6380
+
+set CACHE_TTL=86400
+set FSM_TTL=21600
+set BROKER_TTL=3600
 
 set LOG_FOLDER_PATH=logs
 set LOG_HOST=
