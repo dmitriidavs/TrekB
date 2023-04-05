@@ -9,7 +9,8 @@ SQL_ADD_ASSET_TO_PORTFOLIO = """
 INSERT INTO portfolio (
     user_id,
     asset_id,
-    quantity
+    quantity,
+    added_at
 ) VALUES (
     :user_id,
     (
@@ -18,7 +19,8 @@ INSERT INTO portfolio (
         FROM assets
         WHERE ticker_symbol = :asset_name
     ),
-    :asset_quantity
+    :asset_quantity,
+    :added_at
 );
 """
 
