@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS portfolio (
     user_id integer NOT NULL,
     asset_id int2 NOT NULL,
     quantity float NOT NULL,
-    added_at timestamp DEFAULT CURRENT_TIMESTAMP,
+    added_at timestamp NOT NULL,
     PRIMARY KEY(user_id, asset_id, added_at),
     FOREIGN KEY(user_id) REFERENCES users(user_id),
     FOREIGN KEY(asset_id) REFERENCES assets(asset_id)
