@@ -33,17 +33,14 @@ class Broker(Redis):
 
         # generate hash part of key from data dict
         pointer = await HashDict.get_dict_hash(data)
+        data["pointer"] = pointer
 
-        # check if key is already in broker
+        # check if key not in broker
         if not await self.exists_data(user_id, pointer):
-            # set new key:val pair
-            data["pointer"] = pointer
             await self.hset(name=f'{user_id}:{pointer}',
                             mapping=data)
-            return data
-        else:
-            # get data using existing key
-            return await self.get_data(user_id, pointer)
+
+        return data
 
     async def multi_exec_hset(self, user_id: int, data: tuple[tuple]) -> tuple[dict]:
         """multi/exec hset"""
