@@ -2,6 +2,8 @@ from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
+from ..creds import FSM_TTL
+
 
 class CoreBot:
     """Core class for bot creation"""
@@ -25,7 +27,8 @@ class CoreBot:
             self.storage = MemoryStorage()
         elif self.storage_type == 'redis':
             self.storage = RedisStorage2(host=self.cache_host,
-                                         port=self.cache_port)
+                                         port=self.cache_port,
+                                         state_ttl=FSM_TTL)
 
         return Dispatcher(self.bot, storage=self.storage)
 
