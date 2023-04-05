@@ -1,10 +1,13 @@
+import datetime as dt
+import pytz
+
 from sqlalchemy import text
 from sqlite3 import Error as UsersDBError
 
 from .queries_portfolio import *
 from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
 from . import DBMSCreateConnection
-from ..creds import USERS_DB_CONN
+from ..creds import TIMEZONE, USERS_DB_CONN, CACHE_TTL
 from .. import cache
 
 
@@ -32,7 +35,10 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             await conn.session.execute(text(SQL_ADD_ASSET_TO_PORTFOLIO),
                                        {'user_id': user_id,
                                         'asset_name': asset_name,
-                                        'asset_quantity': asset_quantity})
+                                        'asset_quantity': asset_quantity,
+                                        'added_at': dt.datetime.now(
+                                            pytz.timezone(TIMEZONE)
+                                        ).strftime('%Y-%m-%d %H:%M:%S')})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
@@ -51,7 +57,8 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
                 else:
                     # update user_has_portfolio key
                     await cache.set(name=f'user_has_portfolio:{user_id}',
-                                    value=1)
+                                    value=1,
+                                    ex=CACHE_TTL)
         finally:
             await conn.session.close()
 
@@ -81,7 +88,8 @@ async def delete_portfolio(user_id: int) -> int:
             else:
                 # update user_has_portfolio key
                 await cache.set(name=f'user_has_portfolio:{user_id}',
-                                value=0)
+                                value=0,
+                                ex=CACHE_TTL)
                 return response
         finally:
             await conn.session.close()
