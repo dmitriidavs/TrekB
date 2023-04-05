@@ -1,3 +1,4 @@
+from pytz import all_timezones, exceptions
 from typing import Optional
 
 from aiogram.bot.api import check_token
@@ -11,6 +12,7 @@ class EnvVarsValidTypes:
 
 
 class EnvVars(EnvVarsValidTypes, BaseModel):
+    timezone: str
     bot_arch_type: str
     bot_address: str
     bot_fsm_storage_type: str
@@ -20,9 +22,22 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     cache_port: int
     broker_host: str
     broker_port: int
+    cache_ttl: int
+    fsm_ttl: int
+    broker_ttl: int
     log_folder_path: str
     log_host: Optional[str]
     log_port: Optional[int]
+
+    @validator('timezone')
+    @classmethod
+    def timezone_is_valid(cls, val: str) -> str:
+        """Validate that given timezone exists"""
+
+        if val not in all_timezones:
+            raise exceptions.UnknownTimeZoneError(f'Error in TIMEZONE! {val} is invalid')
+        else:
+            return val
 
     @validator('bot_arch_type')
     @classmethod
