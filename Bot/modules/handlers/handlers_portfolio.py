@@ -92,7 +92,7 @@ async def list_asset_editing(callback: CallbackQuery, broker_data: dict) -> None
     """/portfolio -> asset -> asset record: edit user's asset history"""
 
     markup = await edit_asset_keyboard(user_id=callback.from_user.id, broker_data=broker_data)
-    quantity_text = await format_float_to_currency(broker_data["quantity"], 6)
+    quantity_text = await format_float_to_currency(broker_data["quantity"], 4)
     added_at_text = await format_dt(broker_data["added_at"])
     msg = f'Editing {broker_data["ticker_symbol"]}:\n' \
           f'+{quantity_text} | {added_at_text}'
@@ -108,7 +108,8 @@ async def edit_record_quantity(callback: CallbackQuery, broker_data: dict) -> No
     await FSMEditQuantity.new_asset_quantity.set()
 
     msg = f'OK. Let\'s change {broker_data["quantity"]} {broker_data["ticker_symbol"]} added on ' \
-          f'{broker_data["added_at"]}.\nWhat\'s the new quantity?'
+          f'{broker_data["added_at"]}.\nWhat\'s the new quantity?\n' \
+          f'/back to cancel.'
     await callback.message.edit_text(text=msg)
 
     # set data for editing in broker
@@ -128,9 +129,9 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     """
 
     if await validate_text_is_positive_float(message.text):
-        # get editing data from cache
+        # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
-        # delete cached editing data
+        # delete broker editing data
         await broker.del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
@@ -161,7 +162,8 @@ async def edit_record_date(callback: CallbackQuery, broker_data: dict) -> None:
 
     msg = f'OK. Let\'s change {broker_data["quantity"]} {broker_data["ticker_symbol"]} added on ' \
           f'{broker_data["added_at"]}.\n' \
-          f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss'
+          f'Here is the format for the new date:\nYYYY-MM-DD hh:mm:ss\n' \
+          f'/back to cancel.'
     await callback.message.edit_text(text=msg)
 
     # set data for asset editing in broker
@@ -327,7 +329,7 @@ async def hndlr_manual_add(message: Message) -> None:
 
     await FSMManualAdd.asset_name.set()
     msg = 'OK. Send me the ticker symbol. ' \
-          'Check out all of the supported assets ' \
+          'Check out all of the supported assets for testing ' \
           '<a href="https://telegra.ph/TrekB-Supported-Assets-03-23">here</a>.'
     await message.answer(text=msg, reply_markup=kb_back, parse_mode=ParseMode.HTML)
 
