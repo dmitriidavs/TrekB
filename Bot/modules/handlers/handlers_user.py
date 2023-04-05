@@ -23,7 +23,7 @@ async def hndlr_start(message: Message) -> None:
                   ' • /import - to import wallet balance\n' \
                   ' • /flushit - to remove portfolio\n' \
                   ' • /help - to see all capabilities'
-            await message.answer(text=msg, reply_markup=kb_start_active)
+            await message.answer(text=msg, reply_markup=kb_manual)
         # if no portfolio: activate /join cmd
         else:
             await hndlr_join(message)
@@ -52,7 +52,7 @@ async def hndlr_start(message: Message) -> None:
 async def hndlr_info(message: Message) -> None:
     """/info command handler"""
 
-    msg = 'Here is my repo: https://github.com/dmitriidavs/__portefeuille__/tree/main/smart_portfolio_tracker'
+    msg = 'Here is my repo: https://github.com/dmitriidavs/TrekB'
     await message.answer(text=msg)
     await aiosleep(0.5)
     msg = '★ Don\'t forget to star the project ★'
@@ -84,6 +84,6 @@ async def hndlr_help(message: Message) -> None:
           ' • /import - import wallet balance\n' \
           ' • /flushit - remove portfolio\n' \
           '_GENERAL COMMANDS:_\n' \
-          ' • /help - opens this section\n' \
-          ' • /info - check technical stuff'
+          ' • /help - you\'re here\n' \
+          ' • /info - project information'
     await message.answer(text=msg, parse_mode=ParseMode.MARKDOWN)
