@@ -131,8 +131,6 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     if await validate_text_is_positive_float(message.text):
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
-        # delete broker editing data
-        await broker.del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='quantity',
@@ -185,8 +183,6 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
     if await validate_date_format(message.text):
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
-        # delete editing data from broker
-        await broker.del_asset_editing_data(message.from_user.id)
 
         # update asset quanity in portfolio table
         await update_asset_record_data(col='added_at',

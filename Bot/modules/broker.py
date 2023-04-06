@@ -99,7 +99,10 @@ class Broker(Redis):
             await pipe.execute()
 
     async def get_asset_editing_data(self, user_id: int) -> dict:
-        return await self.hgetall(name=f'asset_editing_data:{user_id}')
-
-    async def del_asset_editing_data(self, user_id: int) -> None:
-        await self.delete(f'asset_editing_data:{user_id}')
+        # pipe hgetall + del
+        async with self.pipeline(transaction=True) as pipe:
+            await pipe.hgetall(name=f'asset_editing_data:{user_id}')
+            await pipe.delete(f'asset_editing_data:{user_id}')
+            # execute transaction
+            result = await pipe.execute()
+            return result[0]
