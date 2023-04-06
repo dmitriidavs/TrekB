@@ -17,6 +17,7 @@ from ..database.logic_portfolio import (
     update_asset_record_data
 )
 from .. import broker
+from ..creds import SUPPORTED_ASSETS_LINK
 from ..validation import (
     validate_text_is_positive_float,
     validate_date_format
@@ -92,8 +93,8 @@ async def list_asset_editing(callback: CallbackQuery, broker_data: dict) -> None
     """/portfolio -> asset -> asset record: edit user's asset history"""
 
     markup = await edit_asset_keyboard(user_id=callback.from_user.id, broker_data=broker_data)
-    quantity_text = await format_float_to_currency(broker_data["quantity"], 4)
-    added_at_text = await format_dt(broker_data["added_at"])
+    quantity_text = format_float_to_currency(broker_data["quantity"], 4)
+    added_at_text = format_dt(broker_data["added_at"])
     msg = f'Editing {broker_data["ticker_symbol"]}:\n' \
           f'+{quantity_text} | {added_at_text}'
     await callback.message.edit_text(text=msg, reply_markup=markup)
@@ -128,7 +129,7 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
     Validating and editing quantity of an asset on particular date
     """
 
-    if await validate_text_is_positive_float(message.text):
+    if validate_text_is_positive_float(message.text):
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
 
@@ -180,7 +181,7 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
     Validating and editing date of an asset record on particular date
     """
 
-    if await validate_date_format(message.text):
+    if validate_date_format(message.text):
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
 
@@ -326,7 +327,7 @@ async def hndlr_manual_add(message: Message) -> None:
     await FSMManualAdd.asset_name.set()
     msg = 'OK. Send me the ticker symbol. ' \
           'Check out all of the supported assets for testing ' \
-          '<a href="https://telegra.ph/TrekB-Supported-Assets-03-23">here</a>.'
+          f'<a href="{SUPPORTED_ASSETS_LINK}">here</a>.'
     await message.answer(text=msg, reply_markup=kb_back, parse_mode=ParseMode.HTML)
 
 
@@ -359,7 +360,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
     Validating and saving quantity of an asset
     """
 
-    if await validate_text_is_positive_float(message.text):
+    if validate_text_is_positive_float(message.text):
         async with state.proxy() as data:
             # add asset quantity to fsm storage
             data["asset_quantity"] = float(message.text)

@@ -31,7 +31,7 @@ async def assets_outer_keyboard(user_id: int) -> InlineKeyboardMarkup:
     # create a button for each asset in portfolio and add it to markup
     for b_data in new_broker_data:
         # create button text
-        quantity_sum_text = await format_float_to_currency(b_data["quantity_sum"], 4)
+        quantity_sum_text = format_float_to_currency(b_data["quantity_sum"], 4)
         button_text = f'{quantity_sum_text}   {b_data["ticker_symbol"]}'
         # create callback data
         cllbck_data = create_cllbck_data(level=curr_level+1,
@@ -63,8 +63,8 @@ async def assets_inner_keyboard(user_id: int, broker_data: dict) -> InlineKeyboa
     # create a button for each asset's record in portfolio and add it to markup
     for b_data in new_broker_data:
         # format quanity sum as currency & added_at as date
-        quantity_text = await format_float_to_currency(b_data["quantity"], 4)
-        added_at_text = await format_dt(b_data["added_at"])
+        quantity_text = format_float_to_currency(b_data["quantity"], 4)
+        added_at_text = format_dt(b_data["added_at"])
         # create callback data & add button
         button_text = f'+{quantity_text} | {added_at_text}'
         cllbck_data = create_cllbck_data(level=curr_level+1,

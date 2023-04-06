@@ -3,7 +3,7 @@ from sqlite3 import Error as UsersDBError
 
 from .queries_user import *
 from . import DBMSCreateConnection
-from ..creds import USERS_DB_CONN, CACHE_TTL
+from ..creds import USERS_DB_CONN
 from .. import cache
 
 
@@ -16,19 +16,17 @@ async def user_exists(user_id: int) -> bool:
     """
 
     # check cache if user exists in users DB
-    c_response = await cache.get(name=f'user_exists:{user_id}')
+    c_response = await cache.get_data(key=f'user_exists:{user_id}')
     # if cache not set
     if c_response is None:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
                 # check users DB if user exists
-                response = await conn.session.execute(text(SQL_USER_EXISTS),
-                                                      {'user_id': user_id})
-                response = response.fetchone()[0]
+                response = (await conn.session.execute(text(SQL_USER_EXISTS),
+                                                       {'user_id': user_id})).fetchone()[0]
                 # save response in cache
-                await cache.set(name=f'user_exists:{user_id}',
-                                value=response,
-                                ex=CACHE_TTL)
+                await cache.set_data(key=f'user_exists:{user_id}',
+                                     value=response)
                 return response
             except UsersDBError as error:
                 raise error
@@ -48,19 +46,17 @@ async def user_has_portfolio(user_id: int) -> int:
     """
 
     # check cache if user has portfolio
-    c_response = await cache.get(name=f'user_has_portfolio:{user_id}')
+    c_response = await cache.get_data(key=f'user_has_portfolio:{user_id}')
     # if cache not set
     if c_response is None:
         async with DBMSCreateConnection(USERS_DB_CONN) as conn:
             try:
                 # check users DB if user has portfolio
-                response = await conn.session.execute(text(SQL_USER_HAS_PORTFOLIO),
-                                                      {'user_id': user_id})
-                response = response.fetchone()[0]
+                response = (await conn.session.execute(text(SQL_USER_HAS_PORTFOLIO),
+                                                       {'user_id': user_id})).fetchone()[0]
                 # save answer in cache
-                await cache.set(name=f'user_has_portfolio:{user_id}',
-                                value=response,
-                                ex=CACHE_TTL)
+                await cache.set_data(key=f'user_has_portfolio:{user_id}',
+                                     value=response)
                 return response
             except UsersDBError as error:
                 raise error
@@ -92,6 +88,5 @@ async def save_user_info(user_id: int, user_first_name: str, user_last_name: str
             await conn.session.close()
 
     # update user_exists key
-    await cache.set(name=f'user_exists:{user_id}',
-                    value=1,
-                    ex=CACHE_TTL)
+    await cache.set_data(key=f'user_exists:{user_id}',
+                         value=1)

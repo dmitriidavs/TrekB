@@ -16,7 +16,7 @@ def validate_env_vars(env_vars: dict) -> dict:
         raise TypeError(err.json())
 
 
-async def validate_text_is_positive_float(text: str) -> bool:
+def validate_text_is_positive_float(text: str) -> bool:
     """Check if text can be converted to float"""
 
     try:
@@ -26,7 +26,7 @@ async def validate_text_is_positive_float(text: str) -> bool:
         return False
 
 
-async def validate_date_format(text: str) -> bool:
+def validate_date_format(text: str) -> bool:
     """Check if date follows suggested format"""
 
     try:
