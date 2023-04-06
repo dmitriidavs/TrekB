@@ -8,6 +8,11 @@ from .creds import CACHE_TTL
 class Cache(Redis):
     """Redis based cache"""
 
+    def __init__(self, host: str, port: int, cache_ttl: int):
+        super().__init__(host=host,
+                         port=port)
+        self.cache_ttl = cache_ttl
+
     async def set_data(self, key: str, value: Union[int, float, str]) -> None:
         """set"""
         await self.set(name=key, value=value, ex=CACHE_TTL)
