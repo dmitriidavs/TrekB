@@ -17,10 +17,10 @@ via simple Telegram interfaces. **Try it out yourself:**\
 ## Repository Organization:
 
     ├── README.md               <- Project README
-    ├── Bot                     <- Core Telegram "front-end" component of the project
-        ├── branch: main            <- MVP runner with some basic features 👨‍💻
+    ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
+        ├── branch: main            <- MVP runner with some basic features ✔️
         └── branch: placeholder     <- Interim runner while main is in DEV ✔️
-    ├── Airflow                 <- Airflow dags, queries & setup
+    ├── Airflow                 <- Airflow dags, queries & setup 👨‍💻
     └── Misc                    <- Miscellaneous objects
 
 <div align="center">
