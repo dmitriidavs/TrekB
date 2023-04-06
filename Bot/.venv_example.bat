@@ -17,6 +17,10 @@ set CACHE_TTL=86400
 set FSM_TTL=21600
 set BROKER_TTL=3600
 
+set LOG_TYPE=<cli or file or service>
 set LOG_FOLDER_PATH=logs
 set LOG_HOST=
 set LOG_PORT=
+
+set PROJECT_LINK=https://github.com/dmitriidavs/TrekB
+SET SUPPORTED_ASSETS_LINK=https://telegra.ph/TrekB-Supported-Assets-03-23
