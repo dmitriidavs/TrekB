@@ -248,7 +248,6 @@ async def delete_record_from_history(callback: CallbackQuery, broker_data: dict)
     await list_asset_history(callback, broker_data)
 
 
-# TODO: add caching
 @dp.callback_query_handler(portfolio_cd.filter())
 async def navigate(callback: CallbackQuery, callback_data: dict) -> None:
     """Assign functions for portfolio navigation"""
