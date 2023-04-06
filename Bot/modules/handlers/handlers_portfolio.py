@@ -291,7 +291,7 @@ async def hndlr_flushit(message: Message) -> None:
     if await user_has_portfolio(message.from_user.id):
         msg = 'You\'re about to delete your portfolio. Are you sure?'
         await message.answer(text=msg,
-                             reply_markup=await get_flushit_kb())
+                             reply_markup=get_flushit_kb())
     # if no portfolio: activate /join cmd
     else:
         msg = 'You don\'t have a portfolio yet!'
