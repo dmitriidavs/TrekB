@@ -6,7 +6,6 @@ from .validation.utils import HashDict
 from .creds import BROKER_TTL
 
 
-# TODO: set TTL for broker
 class Broker(Redis):
     """
     Redis based message broker
@@ -38,17 +37,23 @@ class Broker(Redis):
 
         # check if key not in broker
         if not await self.exists_data(user_id, pointer):
-            await self.hset(name=f'{user_id}:{pointer}',
-                            mapping=data)
+            # pipe hset + set expiry time
+            async with self.pipeline(transaction=True) as pipe:
+                await pipe.hset(name=f'{user_id}:{pointer}',
+                                mapping=data)
+                await pipe.expire(name=f'{user_id}:{pointer}',
+                                  time=BROKER_TTL)
+                # execute transaction if any tasks exist
+                await pipe.execute()
 
         return data
 
     async def multi_exec_hset(self, user_id: int, data: tuple[tuple]) -> tuple[dict]:
         """multi/exec hset"""
 
+        result = []
         # start transaction
         async with self.pipeline(transaction=True) as pipe:
-            result = []
             for b_data in data[0]:
                 # create dict from data & attributes tuples
                 data_dict = {key: val for key, val in zip(data[1], b_data)}
@@ -59,10 +64,12 @@ class Broker(Redis):
                 data_dict["pointer"] = pointer
                 result.append(data_dict)
 
-                # pipe hset if key not in broker
+                # pipe hset + set expiry time if key not in broker
                 if not await self.exists_data(user_id, pointer):
                     await pipe.hset(name=f'{user_id}:{pointer}',
                                     mapping=data_dict)
+                    await pipe.expire(name=f'{user_id}:{pointer}',
+                                      time=BROKER_TTL)
 
             # execute transaction if any tasks exist
             await pipe.execute()
@@ -82,8 +89,14 @@ class Broker(Redis):
         await self.delete(f'{user_id}:{pointer}')
 
     async def set_asset_editing_data(self, data: dict) -> None:
-        await self.hset(name=f'asset_editing_data:{data["user_id"]}',
-                        mapping=data)
+        # pipe hset + set expiry time
+        async with self.pipeline(transaction=True) as pipe:
+            await pipe.hset(name=f'asset_editing_data:{data["user_id"]}',
+                            mapping=data)
+            await pipe.expire(name=f'asset_editing_data:{data["user_id"]}',
+                              time=BROKER_TTL)
+            # execute transaction
+            await pipe.execute()
 
     async def get_asset_editing_data(self, user_id: int) -> dict:
         return await self.hgetall(name=f'asset_editing_data:{user_id}')
