@@ -3,7 +3,6 @@ from typing import Union
 from aioredis import Redis
 
 from .validation.utils import HashDict
-from .creds import BROKER_TTL
 
 
 class Broker(Redis):
@@ -15,6 +14,12 @@ class Broker(Redis):
     else:
         used when user in some FSM state
     """
+
+    def __init__(self, host: str, port: int, decode_responses: bool, broker_ttl: int):
+        super().__init__(host=host,
+                         port=port,
+                         decode_responses=decode_responses)
+        self.broker_ttl = broker_ttl
 
     async def set_data(self, user_id: int, data: Union[dict, tuple[tuple]]) -> Union[dict, tuple[dict]]:
         """
@@ -32,7 +37,7 @@ class Broker(Redis):
         """hset"""
 
         # generate hash part of key from data dict
-        pointer = await HashDict.get_dict_hash(data)
+        pointer = HashDict.get_dict_hash(data)
         data["pointer"] = pointer
 
         # check if key not in broker
@@ -42,7 +47,7 @@ class Broker(Redis):
                 await pipe.hset(name=f'{user_id}:{pointer}',
                                 mapping=data)
                 await pipe.expire(name=f'{user_id}:{pointer}',
-                                  time=BROKER_TTL)
+                                  time=self.broker_ttl)
                 # execute transaction if any tasks exist
                 await pipe.execute()
 
@@ -59,7 +64,7 @@ class Broker(Redis):
                 data_dict = {key: val for key, val in zip(data[1], b_data)}
 
                 # generate hash part of key from data_dict
-                pointer = await HashDict.get_dict_hash(data_dict)
+                pointer = HashDict.get_dict_hash(data_dict)
 
                 data_dict["pointer"] = pointer
                 result.append(data_dict)
@@ -69,7 +74,7 @@ class Broker(Redis):
                     await pipe.hset(name=f'{user_id}:{pointer}',
                                     mapping=data_dict)
                     await pipe.expire(name=f'{user_id}:{pointer}',
-                                      time=BROKER_TTL)
+                                      time=self.broker_ttl)
 
             # execute transaction if any tasks exist
             await pipe.execute()
@@ -96,7 +101,7 @@ class Broker(Redis):
             await pipe.hset(name=f'asset_editing_data:{data["user_id"]}',
                             mapping=data)
             await pipe.expire(name=f'asset_editing_data:{data["user_id"]}',
-                              time=BROKER_TTL)
+                              time=self.broker_ttl)
             # execute transaction
             await pipe.execute()
 
@@ -108,5 +113,4 @@ class Broker(Redis):
             await pipe.hgetall(name=f'asset_editing_data:{user_id}')
             await pipe.delete(f'asset_editing_data:{user_id}')
             # execute transaction
-            result = await pipe.execute()
-            return result[0]
+            return (await pipe.execute())[0]
