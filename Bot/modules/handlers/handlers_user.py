@@ -52,7 +52,7 @@ async def hndlr_start(message: Message) -> None:
 async def hndlr_info(message: Message) -> None:
     """/info command handler"""
 
-    msg = 'Here is my repo: https://github.com/dmitriidavs/TrekB'
+    msg = f'{message.from_user.first_name}, follow the link to learn more: https://github.com/dmitriidavs/TrekB'
     await message.answer(text=msg)
     await aiosleep(0.5)
     msg = '★ Don\'t forget to star the project ★'
