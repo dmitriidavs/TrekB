@@ -21,7 +21,7 @@ def create_log_dir() -> bool:
 
 
 def gen_filename() -> str:
-    return os.path.join('logs', dt.datetime.now().strftime(f'{BOT_ARCH_TYPE}_bot_%Y_%m_%d_%H_%M_%S.log'))
+    return os.path.join(LOG_FOLDER_PATH, dt.datetime.now().strftime(f'{BOT_ARCH_TYPE}_bot_%Y_%m_%d_%H_%M_%S.log'))
 
 
 logging.basicConfig(
