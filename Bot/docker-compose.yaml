@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  redis_cache:
+    image: redis:alpine
+    container_name: TrekB_cache
+    env_file:
+      - .env
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_cache_volume:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: on-failure
+
+  redis_broker:
+    image: redis:alpine
+    container_name: TrekB_broker
+    ports:
+      - "6380:6379"
+    volumes:
+      - redis_broker_volume:/data
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 30s
+      retries: 50
+      start_period: 30s
+    restart: on-failure
+
+  bot:
+    build: .
+    image: trekb-bot:lite
+    container_name: TrekB_bot_lite
+    env_file:
+      - .env
+    environment:
+      - CACHE_HOST=TrekB_cache
+      - CACHE_PORT=6379
+      - BROKER_HOST=TrekB_broker
+      - BROKER_PORT=6379
+    volumes:
+      - users_db_volume:/storage
+    ports:
+      - "8000:8000"
+    command: python app.py
+    restart: always
+    depends_on:
+      - redis_cache
+      - redis_broker
+
+volumes:
+  redis_cache_volume:
+  redis_broker_volume:
+  users_db_volume:
