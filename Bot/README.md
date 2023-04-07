@@ -33,8 +33,11 @@
     |   ├── __init__.py             <- creates cache & broker clients
     |   ├── cache.py                <- Redis based cache class
     |   ├── broker.py               <- Redis based message broker class
-    |   └── creds.py                <- environment variables getter & setter
-    ├── .venv_example.bat       <- example of VM variables to run locally
+    |   └── creds.py                <- validates and sets environment variables
+    ├── requirements.txt        <- required python packages
+    ├── example.env             <- example of environment variables
     ├── README.md               <- Bot README
-    ├── app.py                  <- entrypoint
-    └── requirements.txt        <- required python packages
+    ├── Dockerfile              <- creates custom bot image based on python3.9
+    ├── docker-compose.yaml     <- defines multi-container Docker application
+    └── app.py                  <- entrypoint
+    
