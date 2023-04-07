@@ -6,10 +6,9 @@ Static
 
 venv
 .venv.bat
+.env
 
 logs
-
-.ipynb_checkpoints
 
 tmp.txt
 
