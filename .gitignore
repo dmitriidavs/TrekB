@@ -10,6 +10,4 @@ venv
 
 logs
 
-tmp.txt
-
 *.db
