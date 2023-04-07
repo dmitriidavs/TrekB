@@ -2,15 +2,12 @@
 
     └── modules                 <- python packages
     |   └── bot                     <- bot package
-    |   |   ├── __init__.py             <- creates bot & dispatcher depending on architecture
+    |   |   ├── __init__.py             <- creates bot & dispatcher clients
     |   |   ├── corebot.py              <- bot classes for different architectures
     |   |   └── bot_ctx.py              <- bot context
-    |   └── callbacks               <- callbacks package
-    |   |   ├── __init__.py             <- registrates callbacks
-    |   |   └── callbacks_portfolio.py  <- functions for portfolio callback processing
     |   └── database                <- callbacks package
     |   |   ├── __init__.py             <- creates async DB connection context manager
-    |   |   ├── create_db.sql           <- SQL DDL queries, activated on bot start
+    |   |   ├── ddl.sql                 <- SQL DDL queries for users DB
     |   |   ├── logic_portfolio.py      <- functions for portfolio dialogue DB logic processing
     |   |   ├── logic_user.py           <- functions for user dialogue DB logic processing
     |   |   ├── queries_portfolio.py    <- portfolio SQL queries for users DB
@@ -26,14 +23,16 @@
     |   |   ├── inline.py               <- functions for inline buttons creation
     |   |   └── reply.py                <- functions for reply buttons creation
     |   └── log                     <- log package
-    |   |   ├── __init__.py             <- creates logging configs & logger
+    |   |   ├── __init__.py             <- configures logger client
     |   |   └── loggers.py              <- logging decorators
     |   └── validation              <- validation package
     |   |   ├── __init__.py             <- creates validation functions
     |   |   ├── formatters.py           <- formatters for better ux/ui
+    |   |   ├── utils.py                <- hashing utilities for message broker
     |   |   └── validators.py           <- pydantic validator classes
-    |   ├── __init__.py             <- imports only
-    |   ├── cache.py                <- Redis client for caching
+    |   ├── __init__.py             <- creates cache & broker clients
+    |   ├── cache.py                <- Redis based cache class
+    |   ├── broker.py               <- Redis based message broker class
     |   └── creds.py                <- environment variables getter & setter
     ├── .venv_example.bat       <- example of VM variables to run locally
     ├── README.md               <- Bot README
