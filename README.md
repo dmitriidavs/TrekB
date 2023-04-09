@@ -14,17 +14,15 @@ via simple Telegram interfaces. **Try it out yourself:**
 </div>
 
 ## Repository Organization:
-
-    ├── README.md               <- Project README
-    ├── Bot                     <- Core Telegram "front-end" component of the project 👨‍💻
-        ├── branch: main            <- MVP runner with some basic features ✔️
-        └── branch: placeholder     <- Interim runner while main is in DEV ✔️
-    ├── Airflow                 <- Airflow dags, queries & setup 👨‍💻
-    └── Misc                    <- Miscellaneous objects
+    
+    ├── .github                 <- CI/CD workflows
+    ├── Airflow & Bot           <- source code
+        ├── branch: main            <- currently running production code
+        └── branch: dev             <- development code
+    └── Misc                    <- Miscellaneous items
 
 <div align="center">
 
-[About](#about) •
 [Capabilities](#capabilities) •
 [Architecture](#architecture) •
 [Scaling](#scaling) •
@@ -32,10 +30,6 @@ via simple Telegram interfaces. **Try it out yourself:**
 [Links](#links)
 
 </div>
-
-## About
-
-To be updated ...
 
 ## Capabilities
     
@@ -45,8 +39,8 @@ To be updated ...
     
 <ins>Upcoming</ins>
 
-    • [VM]: improved portfolio navigation
-    • [VM]: import crypto wallet balance & history into portfolio
+    • [MAIN]: improved portfolio navigation
+    • [MAIN]: import crypto wallet balance & history into portfolio
 
 ## Architecture
 
@@ -58,25 +52,27 @@ MVP version of the project which enables users to manage their asset portfolios.
 
     • asynchronous I/O
     • DB* keeps users' info & handles portfolio management
-    • Redis caching is used to optimize DB* querying
-    • users' input data is validated with pydantic
+    • Redis cache is used for DB* querying optimization & keeping dialogue FSM states
+    • Redis message broker is used for data transmission between callbacks
     • DB* querying performance & users' actions are logged to either CLI, local folder or logging service
+    • users' input data is validated with pydantic
+    • deployed with Docker Compose on EC2
     
-      * DB - transactional DB (SQLite in [LITE] & PostgreSQL in [VM])
+      * DB - OLTP DB (SQLite in [LITE] & RDS PostgreSQL in [MAIN])
     
 <ins>System Design</ins>
 
 ![LITE Architecture](Misc/pics/lite_arch_high_lvl.png?raw=true "LITE Architecture")
 
-<ins>Screenshots</ins>
-
 Tags: `SQLite`, `Redis`, `Python`, `SQL`, `Docker Compose`, `EC2`
+
+<ins>Table Dependencies</ins>
 
 ---
 
-### [VM]
+### [MAIN]
 
-Main version of the projects which enables users to gain insights on their portfolios.
+Primary version of the projects which enables users to gain insights on their portfolios.
 
 <ins>Tech Features</ins>
 
@@ -95,11 +91,9 @@ Tags: `ClickHouse`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apach
 
 Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `CDC`, `Web3`, `API`
 
-<ins>DB Tables</ins>
+<ins>Table Dependencies</ins>
 
-<ins>Docker Layers</ins>
-
-<ins>CI/CD Component</ins>
+<ins>Orchestration</ins>
 
 ---
 
