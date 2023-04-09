@@ -62,11 +62,13 @@ MVP version of the project which enables users to manage their asset portfolios.
     
 <ins>System Design</ins>
 
-![LITE Architecture](Misc/pics/lite_arch_high_lvl.png?raw=true "LITE Architecture")
+![LITE Architecture](Misc/pics/lite_arch.png?raw=true "LITE Architecture")
 
 Tags: `SQLite`, `Redis`, `Python`, `SQL`, `Docker Compose`, `EC2`
 
-<ins>Table Dependencies</ins>
+<ins>DB Dependencies</ins>
+
+![LITE Dependencies](Misc/pics/lite_db_diagram.png?raw=true "LITE Dependencies")
 
 ---
 
@@ -91,7 +93,7 @@ Tags: `ClickHouse`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apach
 
 Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `CDC`, `Web3`, `API`
 
-<ins>Table Dependencies</ins>
+<ins>DB Dependencies</ins>
 
 <ins>Orchestration</ins>
 
