@@ -5,8 +5,7 @@
 
 A bot powered by modern data engineering and infrastructure solutions,\
 designed to allow easy performance tracking of your digital assets\
-via simple Telegram interfaces. **Try it out yourself:**\
-[ COMING VERY SOON xD ]
+via simple Telegram interfaces. **Try it out yourself:**
 
 <a href="https://t.me/TrekB_bot">
   <img src="Misc/pics/TrekB_logo.png" alt="TrekB Logo" title="https://t.me/TrekB_bot" style="width:10% ; height:10%">
@@ -104,6 +103,8 @@ Tags: `tag1`
 <ins>CI/CD Component</ins>
 
 ---
+
+## Scaling
 
 ## Takeaways
 
