@@ -64,13 +64,13 @@ MVP version of the project which enables users to manage their asset portfolios.
     
       * DB - transactional DB (SQLite in [LITE] & PostgreSQL in [VM])
     
-<ins>High-Level Overview</ins>
+<ins>System Design</ins>
 
 ![LITE Architecture](Misc/pics/lite_arch_high_lvl.png?raw=true "LITE Architecture")
 
 <ins>Screenshots</ins>
 
-Stack: `SQLite`, `Redis`, `Python`, `SQL`, `Docker`
+Tags: `SQLite`, `Redis`, `Python`, `SQL`, `Docker Compose`, `EC2`
 
 ---
 
@@ -83,17 +83,17 @@ Main version of the projects which enables users to gain insights on their portf
     Everything from [LITE] plus:
     • 
 
-<ins>High-Level Overview</ins>
+<ins>System Design</ins>
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "High-Level Architecture")
 
-Stack: `ClickHouse`, `PostgreSQL`, `Redis`, `Apache Kafka`, `Apache Airflow`, `S3`, `Docker Compose`, `Python`, `SQL`
+Tags: `ClickHouse`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apache Airflow`, `S3`, `Python`, `SQL`, `Docker Compose`, `EC2`
 
 <ins>Data Pipelines</ins>
 
 ![Data Pipelines](Misc/pics/data_pipelines.png?raw=true "Data Pipelines")
 
-Tags: `tag1`
+Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `Web3`, `API`
 
 <ins>DB Tables</ins>
 
