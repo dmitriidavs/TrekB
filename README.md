@@ -87,8 +87,7 @@ Main version of the projects which enables users to gain insights on their portf
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "High-Level Architecture")
 
-Stack: `PostgreSQL`, `Redis`, `Apache Airflow`, `MinIO S3`, `Docker`,
-`Python`, `SQL`
+Stack: `ClickHouse`, `PostgreSQL`, `Redis`, `Apache Kafka`, `Apache Airflow`, `S3`, `Docker Compose`, `Python`, `SQL`
 
 <ins>Data Pipelines</ins>
 
