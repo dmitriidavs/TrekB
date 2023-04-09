@@ -93,7 +93,7 @@ Tags: `ClickHouse`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apach
 
 ![Data Pipelines](Misc/pics/data_pipelines.png?raw=true "Data Pipelines")
 
-Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `Web3`, `API`
+Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `CDC`, `Web3`, `API`
 
 <ins>DB Tables</ins>
 
