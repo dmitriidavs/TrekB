@@ -4,8 +4,6 @@ services:
   redis_cache:
     image: redis:alpine
     container_name: TrekB_cache
-    env_file:
-      - .env
     ports:
       - "6379:6379"
     volumes:
