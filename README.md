@@ -16,9 +16,9 @@ via simple Telegram interfaces. **Try it out yourself:**
 ## Repository Organization:
     
     ├── .github                 <- CI/CD workflows
-    ├── Airflow & Bot           <- source code
-        ├── branch: main            <- development code
-        └── branch: prod            <- currently running production code
+    ├── AWS                     <- code for AWS services
+    ├── Airflow                 <- code for Airflow dags
+    ├── Bot                     <- code for Telegram Bot
     └── Misc                    <- Miscellaneous items
 
 <div align="center">
