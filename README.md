@@ -17,8 +17,8 @@ via simple Telegram interfaces. **Try it out yourself:**
     
     ├── .github                 <- CI/CD workflows
     ├── Airflow & Bot           <- source code
-        ├── branch: main            <- currently running production code
-        └── branch: dev             <- development code
+        ├── branch: main            <- development code
+        └── branch: prod            <- currently running production code
     └── Misc                    <- Miscellaneous items
 
 <div align="center">
