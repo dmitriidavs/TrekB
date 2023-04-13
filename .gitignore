@@ -11,3 +11,5 @@ venv
 logs
 
 *.db
+
+creds.py
