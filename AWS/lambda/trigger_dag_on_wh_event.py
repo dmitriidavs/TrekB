@@ -5,7 +5,8 @@ import requests
 
 
 AIRFLOW_URL = os.environ['AIRFLOW_URL']
-DAG_ID = 'trigger_menu_job_dag'
+AUTH = (os.environ['AIRFLOW_USR'], os.environ['AIRFLOW_PWD'])
+DAG_NAME = 'test_api_dag'
 
 
 logging.basicConfig(
@@ -15,15 +16,20 @@ logging.basicConfig(
 logging.getLogger(name='lambda').setLevel(logging.INFO)
 
 
-def handler(event, context):
-    url = f'https://{AIRFLOW_URL}/api/v1/dags/{DAG_ID}/dagRuns'
-    payload = {
-        'run_id': f'lambda_run_{dt.datetime.utcnow().isoformat()}'
-    }
+def handler(event=None, context=None):
+    url = f'http://{AIRFLOW_URL}/api/v1/dags/{DAG_NAME}/dagRuns'
+
     headers = {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     }
 
-    logging.info(f'Triggering Airflow DAG {DAG_ID}')
-    requests.post(url, data=payload, headers=headers)
+    payload = {
+        'conf': {},
+    }
+
+    logging.info(f'Triggering Airflow DAG {DAG_NAME}')
+    return requests.post(url, auth=AUTH, json=payload, headers=headers).json()
+
+
+print(handler())
