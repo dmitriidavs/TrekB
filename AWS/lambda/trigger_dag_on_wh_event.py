@@ -6,7 +6,7 @@ import requests
 
 AIRFLOW_URL = os.environ['AIRFLOW_URL']
 AUTH = (os.environ['AIRFLOW_USR'], os.environ['AIRFLOW_PWD'])
-DAG_NAME = 'test_api_dag'
+DAG_NAME = 'test_api_dag_1'
 
 
 logging.basicConfig(
@@ -29,7 +29,7 @@ def handler(event=None, context=None):
     }
 
     logging.info(f'Triggering Airflow DAG {DAG_NAME}')
-    return requests.post(url, auth=AUTH, json=payload, headers=headers).json()
+    return requests.post(url, auth=AUTH, json=payload, headers=headers).text
 
 
 print(handler())
