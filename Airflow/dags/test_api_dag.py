@@ -18,10 +18,52 @@ def on_api_trigger(task_id: int) -> None:
     print(f'Task id: {task_id} triggered - {dt.datetime.now()}')
 
 
-with DAG(dag_id='test_api_dag',
+with DAG(dag_id='test_api_dag_1',
          default_args=args,
          schedule_interval='@once',
-         catchup=False) as dag:
+         catchup=False):
+    t1 = EmptyOperator(
+        task_id='start_task'
+    )
+    t2 = PythonOperator(
+        task_id=f'triggered_on_api_call',
+        python_callable=on_api_trigger,
+        op_kwargs={
+            'task_id': 1
+        }
+    )
+    t3 = EmptyOperator(
+        task_id='end_task'
+    )
+
+    t1 >> t2 >> t3
+
+
+with DAG(dag_id='test_api_dag_2',
+         default_args=args,
+         schedule_interval='@once',
+         catchup=False):
+    t1 = EmptyOperator(
+        task_id='start_task'
+    )
+    t2 = PythonOperator(
+        task_id=f'triggered_on_api_call',
+        python_callable=on_api_trigger,
+        op_kwargs={
+            'task_id': 1
+        }
+    )
+    t3 = EmptyOperator(
+        task_id='end_task'
+    )
+
+    t1 >> t2 >> t3
+
+
+with DAG(dag_id='test_api_dag_3',
+         default_args=args,
+         schedule_interval='@once',
+         catchup=False):
     t1 = EmptyOperator(
         task_id='start_task'
     )
