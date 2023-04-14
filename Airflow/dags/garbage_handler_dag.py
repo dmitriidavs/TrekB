@@ -1,5 +1,3 @@
-import os
-import logging
 import datetime as dt
 
 import requests
@@ -7,9 +5,9 @@ from requests.exceptions import HTTPError
 from airflow.models import DAG
 from airflow.operators.empty import EmptyOperator
 from airflow.operators.python import PythonOperator
-from airflow.exceptions import AirflowException
 
 from includes.creds import *
+from includes.utils.log import logger
 
 
 args = {
@@ -20,64 +18,59 @@ args = {
     'depends_on_past': False,
 }
 
-logging.basicConfig(
-    format='[%(levelname)s] %(name)s: %(message)s - %(asctime)s',
-    datefmt='%Y-%m-%d %H:%M:%S'
-)
-logging.getLogger(name='lambda').setLevel(logging.INFO)
+
+def get_data(url: str) -> dict:
+    """Get data from Airflow API"""
+
+    response = requests.get(url,
+                            auth=AIRFLOW_API_AUTH,
+                            headers=AIRFLOW_API_HEADERS)
+
+    if response.status_code == 200:
+        return response.json()
+    else:
+        raise HTTPError(f'Failed fetching url: {url}')
 
 
-def delete_dag(dag_name: str, dag_file_path: str) -> bool:
-    """Delete dag"""
+def delete_dag_data(dag_id: str) -> None:
+    """Delete dag from UI and metabase"""
 
-    # send delete request to Airflow API
-    url = f'{AIRFLOW_API_URL}/{dag_name}'
+    url = f'http://{AIRFLOW_API_URL}/api/v1/dags/{dag_id}'
     response = requests.delete(url,
                                auth=AIRFLOW_API_AUTH,
                                headers=AIRFLOW_API_HEADERS)
 
-    # check response for successful deletion
-    if response.status_code != 204:
-        logging.info(f'Could not delete DAG {dag_name}: {response.text}')
-        return False
-
-    # delete file by its path
-    if not os.path.exists(dag_file_path):
-        logging.info(f'Could not find DAG {dag_name}: {dag_file_path}')
-        return False
+    if response.status_code == 204:
+        logger.info(f'{dag_id}: Deleted DAG')
     else:
-        os.remove(dag_file_path)
-        logging.info(f'DAG {dag_name} deleted successfully')
-        return True
+        raise HTTPError(f'{dag_id}: Could not delete DAG')
 
 
-def delete_garbage_dags(dags_to_delete: tuple[tuple[str, str]], dags_folder_path: str) -> None:
-    """Delete dags cloned from the original dags by users"""
+def delete_garbage_dags(garbage_dag_prefixes: tuple[str]) -> None:
+    """Delete dags cloned from the original dags by users' requests"""
 
-    for dag_name, dag_file_name in dags_to_delete:
-        # check that dag finished execution - TODO: dag_name as wildcard (dag_name + user_id)
-        last_dag_runs_url = f'{AIRFLOW_API_URL}/{dag_name}/dagRuns?order_by=-execution_date&state=success'
-        response = requests.get(last_dag_runs_url,
-                                auth=AIRFLOW_API_AUTH,
-                                headers=AIRFLOW_API_HEADERS)
-        if response.status_code != 200:
-            raise AirflowException(f'Could not retrieve DAGs: {response.text}')
+    # get all dags' info in airflow
+    response = get_data(f'http://{AIRFLOW_API_URL}/api/v1/dags')
+    for resp_dag in response["dags"]:
+        dag_id = resp_dag["dag_id"]
+        logger.info(f'{dag_id}: Found DAG')
 
-        last_dag_runs = response.json()
+        dag_in_dags_to_delete = any(dag_id.startswith(prefix) for prefix in garbage_dag_prefixes)
+        latest_dag_run_state = get_data(
+            f'http://{AIRFLOW_API_URL}/api/v1/dags/{dag_id}/dagRuns?order_by=-execution_date&limit=1'
+        )["dag_runs"][0]["state"]
 
-        print(last_dag_runs)
-
-        # # get dag file path
-        # dag_file_path = os.path.join(dags_folder_path, dag_file_name)
-        #
-        # # delete dag
-        # delete_dag(dag_name, dag_file_path)
+        # check if dag_id in garbage_dag_prefixes tuple and latest run was successful
+        if dag_in_dags_to_delete and latest_dag_run_state == 'success':
+            logger.info(f'{dag_id}: Has garbage prefix & successful latest run')
+            delete_dag_data(dag_id)
 
 
 with DAG(dag_id='garbage_handler_dag',
          default_args=args,
-         schedule_interval='@hourly',
+         schedule_interval='0 4 * * *',
          catchup=False) as dag:
+
     t1 = EmptyOperator(
         task_id='start_task'
     )
@@ -85,8 +78,7 @@ with DAG(dag_id='garbage_handler_dag',
         task_id=f'delete_garbage_dags',
         python_callable=delete_garbage_dags,
         op_kwargs={
-            'dags_to_delete': DAGS_TO_DELETE,
-            'dags_folder': DAGS_FOLDER_PATH
+            'garbage_dag_prefixes': GARBAGE_DAG_PREFIXES,
         }
     )
     t3 = EmptyOperator(
