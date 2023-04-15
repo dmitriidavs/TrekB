@@ -11,7 +11,7 @@ from includes.utils.log import logger
 
 
 args = {
-    'owner': 'admin',
+    'owner': 'dmitriidavs',
     'start_date': dt.datetime(2023, 4, 13, 10, 0, 0, 0),
     'retries': 2,
     'retry_delay': dt.timedelta(minutes=3),
@@ -29,7 +29,7 @@ def get_data(url: str) -> dict:
     if response.status_code == 200:
         return response.json()
     else:
-        raise HTTPError(f'Failed fetching url: {url}')
+        raise HTTPError(f'{url}: Failed fetching url. Response:\n{response.text}')
 
 
 def delete_dag_data(dag_id: str) -> None:
@@ -43,7 +43,7 @@ def delete_dag_data(dag_id: str) -> None:
     if response.status_code == 204:
         logger.info(f'{dag_id}: Deleted DAG')
     else:
-        raise HTTPError(f'{dag_id}: Could not delete DAG')
+        raise HTTPError(f'{dag_id}: Could not delete DAG. Response:\n{response.text}')
 
 
 def delete_garbage_dags(garbage_dag_prefixes: tuple[str]) -> None:
@@ -62,7 +62,7 @@ def delete_garbage_dags(garbage_dag_prefixes: tuple[str]) -> None:
 
         # check if dag_id in garbage_dag_prefixes tuple and latest run was successful
         if dag_in_dags_to_delete and latest_dag_run_state == 'success':
-            logger.info(f'{dag_id}: Has garbage prefix & successful latest run')
+            logger.info(f'{dag_id}: Found garbage prefix & successful latest run')
             delete_dag_data(dag_id)
 
 
