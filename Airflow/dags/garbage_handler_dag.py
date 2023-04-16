@@ -68,7 +68,7 @@ def delete_garbage_dags(garbage_dag_prefixes: tuple[str]) -> None:
 
 with DAG(dag_id='garbage_handler_dag',
          default_args=args,
-         schedule_interval='0 4 * * *',
+         schedule_interval=GARBAGE_HANDLER_SCHEDULE,
          catchup=False) as dag:
 
     t1 = EmptyOperator(
