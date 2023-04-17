@@ -85,7 +85,7 @@ Primary version of the projects which enables users to gain insights on their po
 
 ![VM Architecture](Misc/pics/arch_high_lvl.png?raw=true "High-Level Architecture")
 
-Tags: `ClickHouse`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apache Airflow`, `S3`, `Python`, `SQL`, `Docker Compose`, `EC2`, `API Gateway`, `Lambda`
+Tags: `Redshift`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apache Airflow`, `S3`, `Python`, `SQL`, `Docker Compose`, `EC2`, `API Gateway`, `Lambda`
 
 <ins>Data Pipelines</ins>
 
