@@ -9,7 +9,7 @@ PACKAGE_NAME="webhook"
 echo 'Creating src files.'
 cd ${TARGET_FUNC}
 mkdir src
-pip install --target ./src -r requirements.txt
+pip install --target src -r requirements.txt
 cp app.py src
 cp -r modules src
 
