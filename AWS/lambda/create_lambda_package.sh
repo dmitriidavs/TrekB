@@ -10,7 +10,7 @@ echo 'Creating src files.'
 cd ${TARGET_FUNC}
 mkdir src
 pip install --target src -r requirements.txt
-cp app.py src
+cp app.py src/lambda_function.py
 cp -r modules src
 
 # zip src files
