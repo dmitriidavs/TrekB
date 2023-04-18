@@ -1,8 +1,11 @@
+import json
+
 import asyncio
 from aiogram import Bot
 from aiogram.types import Update
 
 from modules.handlers import dp
+from modules.creds import WEBHOOK_URL
 
 
 async def main(event):
@@ -14,7 +17,10 @@ async def main(event):
     update = Update.to_object(event)
     await dp.process_update(update)
 
-    return 'ok'
+    return {
+        'statusCode': 200,
+        'body': json.dumps({'url': WEBHOOK_URL})
+    }
 
 
 def lambda_handler(event, context) -> str:
