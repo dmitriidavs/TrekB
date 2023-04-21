@@ -46,7 +46,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             c_response = await cache.get_data(key=f'user_has_portfolio:{user_id}')
             if c_response is None or int(c_response) == 0:
                 try:
-                    # update has_portfolio flag in users
+                    # update has_portfolio flag in users DB
                     await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
                                                {'user_id': user_id,
                                                 'has_portfolio': True})
@@ -75,7 +75,7 @@ async def delete_portfolio(user_id: int) -> int:
             raise error
         else:
             try:
-                # update has_portfolio in users
+                # update has_portfolio = False in users DB
                 await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
                                            {'user_id': user_id,
                                             'has_portfolio': False})
@@ -102,6 +102,9 @@ async def delete_asset_from_portfolio(user_id: int, asset_id: int) -> None:
             await conn.session.commit()
         except UsersDBError as error:
             raise error
+        else:
+            # if last asset -> update has_portfolio = False in users DB
+            pass
         finally:
             await conn.session.close()
 
