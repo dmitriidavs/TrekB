@@ -93,11 +93,11 @@ Tags: `Redshift`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apache 
 
 Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `CDC`, `Web3`, `API`
 
-<ins>DB Dependencies</ins>
+<ins>VPC & Networking</ins>
 
 <ins>Orchestration</ins>
 
-<ins>Networking</ins>
+<ins>DB Dependencies</ins>
 
 ---
 
