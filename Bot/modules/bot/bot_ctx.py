@@ -1,3 +1,4 @@
+from ..database.ddl_setup import setup_users_ddl
 from ..creds import BOT_ARCH_TYPE, BOT_ADDRESS, LOG_TYPE
 
 
@@ -8,6 +9,12 @@ async def on_startup(_) -> None:
           'TrekB | Smart Portfolio Tracker\n'
           ':copyright: (c) 2023 by Dmitrii Davletshin (@dmitriidavs)\n'
           ':license: Apache 2.0, see LICENSE for more details\n'
+          '---------------------------------------------------------\n')
+
+    # run DDL queries
+    await setup_users_ddl()
+
+    print('Users DB has been set up\n'
           '---------------------------------------------------------\n'
           f'Logging is in {LOG_TYPE} mode\n'
           '---------------------------------------------------------\n')
