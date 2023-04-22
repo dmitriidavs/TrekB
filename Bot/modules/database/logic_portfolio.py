@@ -67,10 +67,8 @@ async def delete_portfolio(user_id: int) -> int:
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             # delete portfolio returning number of deleted records
-            await conn.session.execute(text(SQL_DELETE_PORTFOLIO),
-                                       {'user_id': user_id})
-            # TODO: to be changed in pg
-            response = (await conn.session.execute("""SELECT CHANGES()""")).fetchone()[0]
+            response = (await conn.session.execute(text(SQL_DELETE_PORTFOLIO),
+                                                   {'user_id': user_id})).fetchone()[0]
         except UsersDBError as error:
             raise error
         else:
