@@ -2,7 +2,7 @@ import datetime as dt
 import pytz
 
 from sqlalchemy import text
-from sqlite3 import Error as UsersDBError
+from asyncpg.exceptions import PostgresError as UsersDBError
 
 from .queries_portfolio import *
 from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
