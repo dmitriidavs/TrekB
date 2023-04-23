@@ -3,6 +3,7 @@ __pycache__
 .idea
 
 Static
+DEV
 
 venv
 .venv.bat
@@ -11,6 +12,8 @@ venv
 logs
 
 test.py
+
+env.sh
 
 *.db
 
