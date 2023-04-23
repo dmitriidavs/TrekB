@@ -1,5 +1,5 @@
 from sqlalchemy import text
-from sqlite3 import Error as UsersDBError
+from asyncpg.exceptions import PostgresError as UsersDBError
 
 from .queries_user import *
 from . import DBMSCreateConnection
