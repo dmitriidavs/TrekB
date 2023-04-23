@@ -1,5 +1,5 @@
 SQL_CREATE_SCHEMA_USERS = """
-CREATE SCHEMA IF NOT EXISTS users
+CREATE SCHEMA IF NOT EXISTS users;
 """
 
 SQL_CREATE_TABLE_ASSETS = """
@@ -31,17 +31,18 @@ CREATE TABLE IF NOT EXISTS users.portfolio (
     quantity float NOT NULL,
     added_at timestamptz NOT NULL,
     PRIMARY KEY(user_id, asset_id, added_at),
-    FOREIGN KEY(user_id) REFERENCES users(user_id),
-    FOREIGN KEY(asset_id) REFERENCES assets(asset_id)
+    FOREIGN KEY(user_id) REFERENCES users.users(user_id),
+    FOREIGN KEY(asset_id) REFERENCES users.assets(asset_id)
 );
 """
 
 SQL_INSERT_DEFAULT_ASSETS = """
-INSERT OR IGNORE INTO users.assets VALUES
+INSERT INTO users.assets VALUES
     (0, 'BTC', 'Bitcoin'),
     (1, 'ETH', 'Ethereum'),
     (2, 'BNB', 'BNB'),
     (3, 'XRP', 'Ripple'),
     (4, 'ADA', 'Cardano'),
-    (5, 'LTC', 'Litecoin');
+    (5, 'LTC', 'Litecoin')
+ON CONFLICT (asset_id) DO NOTHING;
 """
