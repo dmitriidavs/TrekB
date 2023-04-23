@@ -10,7 +10,7 @@ from pydantic import BaseModel, validator
 
 
 class EnvVarsValidTypes:
-    implemented_arch_types = ('Lite',)
+    implemented_arch_types = ('Lite', 'Prod',)
     implemented_fsm_storage_types = ('memory', 'redis',)
     implemented_log_types = ('cli', 'file', 'service',)
 
