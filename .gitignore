@@ -13,8 +13,6 @@ logs
 
 test.py
 
-env.sh
-
 *.db
 
 *.zip
