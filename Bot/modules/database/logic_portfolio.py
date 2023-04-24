@@ -25,8 +25,13 @@ async def ticker_symbol_is_valid(ticker: str) -> bool:
             await conn.session.close()
 
 
-async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: str) -> None:
-    """Add new entry to user's portfolio"""
+async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: str) -> bool:
+    """
+    Add new entry to user's portfolio
+    ---------------------------------
+    returns T/F if user added asset
+    for the first time to show menu
+    """
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
@@ -57,6 +62,9 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
                     # update user_has_portfolio key
                     await cache.set_data(key=f'user_has_portfolio:{user_id}',
                                          value=1)
+                    return True
+            else:
+                return False
         finally:
             await conn.session.close()
 
