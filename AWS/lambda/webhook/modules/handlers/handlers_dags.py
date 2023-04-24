@@ -3,8 +3,11 @@ from aiogram.types import Message
 from ..bot import dp
 
 
-@dp.message_handler(commands=['start'])
+@dp.message_handler(commands=['import'])
 async def hndlr_start(message: Message) -> None:
-    """/start command handler"""
+    """/import command handler for importing wallet balance"""
 
-    await message.answer(text=f'Hello, {message.from_user.first_name}')
+    msg = 'Wallet balance import is not supported in Lite version :('
+    await message.answer(text=msg)
+    
+    # gen DAG with custom params
