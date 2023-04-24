@@ -65,13 +65,8 @@ async def hndlr_info(message: Message) -> None:
 async def hndlr_join(message: Message) -> None:
     """/join command handler"""
 
-    msg = 'Let\'s set you up!'
+    msg = 'Let\'s set you up! Click /add to start your portfolio.'
     await message.answer(text=msg)
-    await aiosleep(0.5)
-    msg = 'There are 2 ways to start configuring your portfolio. You can:\n' \
-          '/add - add your assets by hand\n' \
-          '/import - import your crypto wallet balance'
-    await message.answer(text=msg, reply_markup=kb_add)
 
 
 @log_ux(btn='/help')
