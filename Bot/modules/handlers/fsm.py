@@ -14,6 +14,6 @@ class FSMEditDate(StatesGroup):
     new_asset_date = State()
 
 
-# class FSMImportWallet(StatesGroup):
-#     blockchain: State()
-#     wallet: State()
+class FSMImportWallet(StatesGroup):
+    blockchain: State()
+    wallet_address: State()
