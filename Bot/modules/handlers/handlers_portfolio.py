@@ -26,6 +26,7 @@ from ..validation.formatters import (
     format_float_to_currency,
     format_dt
 )
+from ..keyboards.menu import set_menu_commands
 from ..keyboards.reply import (
     kb_manual,
     kb_start,
@@ -367,21 +368,14 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
             msg = f'+{data["asset_quantity"]} {data["asset_name"]} in your portfolio.'
             await message.answer(text=msg, reply_markup=kb_manual)
             # add asset to portfolio table in DB
-            await add_asset_to_portfolio(user_id=message.from_user.id,
-                                         asset_name=data["asset_name"],
-                                         asset_quantity=data["asset_quantity"])
+            is_first_entry = await add_asset_to_portfolio(user_id=message.from_user.id,
+                                                          asset_name=data["asset_name"],
+                                                          asset_quantity=data["asset_quantity"])
+            # set menu commands for the user after adding first asset
+            if is_first_entry:
+                await set_menu_commands(message.bot, message.from_user.id)
             # finish fsm states
             await state.finish()
     else:
         msg = f'Failed to interpret value. Please try again or go /back.'
         await message.answer(text=msg)
-
-
-# TODO: when imported wallet address should be removed from dialogue in some time
-@log_ux(btn='/import')
-@dp.message_handler(commands=['import'])
-async def hndlr_import(message: Message) -> None:
-    """/import command handler for crypto wallet balances"""
-
-    msg = 'Wallet balance import is not supported in Lite version :('
-    await message.answer(text=msg)
