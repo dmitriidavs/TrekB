@@ -1,8 +1,8 @@
 from aiogram import Bot
-from aiogram.types import BotCommand
+from aiogram.types import BotCommand, BotCommandScopeChat
 
 
-async def setup_menu_commands(bot: Bot):
+async def set_menu_commands(bot: Bot, chat_id: int):
     """
     Main bot commands that allow portfolio insights
     -----------------------------------------------
@@ -13,5 +13,6 @@ async def setup_menu_commands(bot: Bot):
         commands=[
             BotCommand('summary', 'Show portfolio infographics'),
             BotCommand('import', 'Import balance using your wallet address'),
-        ]
+        ],
+        scope=BotCommandScopeChat(chat_id)
     )
