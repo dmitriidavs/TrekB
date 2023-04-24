@@ -16,7 +16,7 @@ INSERT INTO users.portfolio (
     (
         SELECT
             asset_id
-        FROM assets
+        FROM users.assets
         WHERE ticker_symbol = :asset_name
     ),
     :asset_quantity,
