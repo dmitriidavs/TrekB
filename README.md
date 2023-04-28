@@ -93,7 +93,9 @@ Tags: `Redshift`, `RDS PostgreSQL`, `Redis`, `Apache Kafka & Debezium`, `Apache 
 
 Tags: `OLAP`, `OLTP`, `Orchestration`, `Message Broker`, `Cache`, `Webhook`, `Logging`, `Data Buckets`, `Data Discovery`, `CDC`, `Web3`, `API`
 
-<ins>VPC & Networking</ins>
+<ins>VPC & Networking (current)</ins>
+
+![VPC & Networking](Misc/pics/vpc_networking.png?raw=true "VPC & Networking")
 
 <ins>Orchestration</ins>
 
