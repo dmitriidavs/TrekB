@@ -8,7 +8,9 @@ DEV
 
 venv
 .venv.bat
+venv.bat
 .env
+env
 
 logs
 
