@@ -36,7 +36,7 @@ services:
     image: trekb-bot:prod_v1.0.0
     container_name: TrekB_bot_prod
     env_file:
-      - .env
+      - env
     environment:
       - CACHE_HOST=TrekB_cache
       - CACHE_PORT=6379
