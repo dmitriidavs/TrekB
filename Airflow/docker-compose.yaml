@@ -2,7 +2,7 @@ version: '3.9'
 x-airflow-common:
   &airflow-common
   env_file:
-    - .env
+    - env
   build:
     context: .
     args:
@@ -28,7 +28,7 @@ x-airflow-common:
 services:
   postgres:
     env_file:
-      - .env
+      - env
     image: postgres:13
     ports:
       - "5432:5432"
@@ -69,7 +69,7 @@ services:
   airflow-init:
     <<: *airflow-common
     env_file:
-      - .env
+      - env
     command: version
     environment:
       <<: *airflow-common-env
