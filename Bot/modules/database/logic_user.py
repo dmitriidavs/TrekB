@@ -26,7 +26,7 @@ async def user_exists(user_id: int) -> bool:
                                                        {'user_id': user_id})).fetchone()[0]
                 # save response in cache
                 await cache.set_data(key=f'user_exists:{user_id}',
-                                     value=response)
+                                     value=int(response))
                 return response
             except UsersDBError as error:
                 raise error
