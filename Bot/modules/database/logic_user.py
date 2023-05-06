@@ -56,7 +56,7 @@ async def user_has_portfolio(user_id: int) -> int:
                                                        {'user_id': user_id})).fetchone()[0]
                 # save answer in cache
                 await cache.set_data(key=f'user_has_portfolio:{user_id}',
-                                     value=response)
+                                     value=int(response))
                 return response
             except UsersDBError as error:
                 raise error
