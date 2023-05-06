@@ -3,9 +3,9 @@ version: '3.9'
 services:
   redis_cache:
     image: redis:alpine
-    container_name: TrekB_cache
+    container_name: TrekB_cache_prod
     ports:
-      - "6379:6379"
+      - "6381:6379"
     volumes:
       - redis_cache_volume:/data
     healthcheck:
@@ -18,9 +18,9 @@ services:
 
   redis_broker:
     image: redis:alpine
-    container_name: TrekB_broker
+    container_name: TrekB_broker_prod
     ports:
-      - "6380:6379"
+      - "6382:6379"
     volumes:
       - redis_broker_volume:/data
     healthcheck:
@@ -33,17 +33,17 @@ services:
 
   bot:
     build: .
-    image: trekb-bot:prod_v1.0.0
+    image: trekb-bot:prod-v1.0.0
     container_name: TrekB_bot_prod
     env_file:
       - env
     environment:
-      - CACHE_HOST=TrekB_cache
+      - CACHE_HOST=TrekB_cache_prod
       - CACHE_PORT=6379
-      - BROKER_HOST=TrekB_broker
+      - BROKER_HOST=TrekB_broker_prod
       - BROKER_PORT=6379
     ports:
-      - "8000:8000"
+      - "8001:8000"
     command: python app.py
     restart: always
     depends_on:
