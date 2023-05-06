@@ -54,7 +54,7 @@ SELECT
 FROM users.portfolio AS p
 INNER JOIN users.assets AS a
     ON a.asset_id = p.asset_id
-WHERE user_id = :user_id AND p.asset_id = :asset_id::integer
+WHERE user_id = :user_id AND p.asset_id = CAST(:asset_id AS integer)
 ORDER BY added_at DESC;
 """
 
