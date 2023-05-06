@@ -36,13 +36,13 @@ SELECT COUNT(*) FROM deleted;
 SQL_SELECT_ASSETS_OUTER = """
 SELECT
     p.asset_id,
-    ticker_symbol,
+    a.ticker_symbol,
     SUM(quantity)
 FROM users.portfolio AS p
 INNER JOIN users.assets AS a
     ON a.asset_id = p.asset_id
 WHERE user_id = :user_id
-GROUP BY user_id, p.asset_id;
+GROUP BY user_id, p.asset_id, a.ticker_symbol;
 """
 
 SQL_SELECT_ASSETS_INNER = """
