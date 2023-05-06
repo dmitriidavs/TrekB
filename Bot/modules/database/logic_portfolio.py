@@ -42,7 +42,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
                                         'asset_quantity': asset_quantity,
                                         'added_at': dt.datetime.now(
                                             pytz.timezone(TIMEZONE)
-                                        ).strftime('%Y-%m-%d %H:%M:%S')})
+                                        )})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
