@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users.assets (
 
 SQL_CREATE_TABLE_USERS = """
 CREATE TABLE IF NOT EXISTS users.users (
-    user_id int4 PRIMARY KEY,
+    user_id int8 PRIMARY KEY,
     first_name varchar NOT NULL,
     last_name varchar NULL,
     username varchar NULL,
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS users.users (
 
 SQL_CREATE_TABLE_PORTFOLIO = """
 CREATE TABLE IF NOT EXISTS users.portfolio (
-    user_id int4 NOT NULL,
+    user_id int8 NOT NULL,
     asset_id int2 NOT NULL,
     quantity float NOT NULL,
     added_at timestamptz NOT NULL,
