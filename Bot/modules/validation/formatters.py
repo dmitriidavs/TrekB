@@ -22,4 +22,4 @@ def format_float_to_currency(val: float, max_dec: int) -> str:
 
 
 def format_dt(val: str) -> str:
-    return dt.datetime.strptime(val, '%Y-%m-%d %H:%M:%S').strftime('%b %d, %Y %H:%M:%S')
+    return dt.datetime.strptime(val, '%Y-%m-%d %H:%M:%S.%f %z').strftime('%b %d, %Y %H:%M:%S')
