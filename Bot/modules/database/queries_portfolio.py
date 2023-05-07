@@ -50,7 +50,7 @@ SELECT
     p.asset_id,
     ticker_symbol,
     quantity,
-    to_char(added_at, 'YYYY-MM-DD HH24:MI:SS') AS added_at
+    to_char(added_at, 'YYYY-MM-DD HH24:MI:SS TZ') AS added_at
 FROM users.portfolio AS p
 INNER JOIN users.assets AS a
     ON a.asset_id = p.asset_id
