@@ -7,6 +7,7 @@ from asyncpg.exceptions import PostgresError as UsersDBError
 from .queries_portfolio import *
 from .queries_user import SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG
 from . import DBMSCreateConnection
+from ..validation.formatters import str_to_dt
 from ..creds import TIMEZONE, USERS_DB_CONN
 from .. import cache
 
@@ -42,6 +43,8 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
                                         'asset_quantity': asset_quantity,
                                         'added_at': dt.datetime.now(
                                             pytz.timezone(TIMEZONE)
+                                        ).replace(
+                                            microsecond=0
                                         )})
             await conn.session.commit()
         except UsersDBError as error:
@@ -144,30 +147,30 @@ async def get_assets_outer(user_id: int) -> list[tuple[int, str, float]]:
             await conn.session.close()
 
 
-async def get_assets_inner(user_id: int, asset_id: int) -> list[tuple[int, float, str]]:
+async def get_assets_inner(user_id: int, asset_id: str) -> list[tuple[int, float, str]]:
     """Get user's asset activity history info"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             return (await conn.session.execute(text(SQL_SELECT_ASSETS_INNER),
                                                {'user_id': user_id,
-                                                'asset_id': asset_id})).fetchall()
+                                                'asset_id': int(asset_id)})).fetchall()
         except UsersDBError as error:
             raise error
         finally:
             await conn.session.close()
 
 
-async def update_asset_record_data(col: str, val: float, user_id: int, asset_id: int, added_at: str) -> None:
+async def update_asset_record_data(col: str, val: str, user_id: str, asset_id: str, added_at: str) -> None:
     """Update user's asset info"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
         try:
             await conn.session.execute(text(SQL_UPDATE_ASSET_RECORD.format(col=col)),
-                                       {'val': val,
-                                        'user_id': user_id,
-                                        'asset_id': asset_id,
-                                        'added_at': added_at})
+                                       {'val': float(val),
+                                        'user_id': int(user_id),
+                                        'asset_id': int(asset_id),
+                                        'added_at': str_to_dt(added_at)})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
