@@ -1,5 +1,9 @@
+import pytz
 import datetime as dt
 from decimal import Decimal
+
+from ..creds import TIMEZONE
+from ..log.loggers import logger
 
 
 def format_float_to_currency(val: float, max_dec: int) -> str:
@@ -20,6 +24,14 @@ def format_float_to_currency(val: float, max_dec: int) -> str:
 
     return format_currency(res)
 
-
 def format_dt(val: str) -> str:
-    return dt.datetime.strptime(val, '%Y-%m-%d %H:%M:%S.%f %z').strftime('%b %d, %Y %H:%M:%S')
+    return dt.datetime.strptime(
+        val, '%Y-%m-%d %H:%M:%S.%f'
+    ).strftime(
+        '%b %d, %Y %H:%M:%S'
+    )
+
+def str_to_dt(val: str) -> dt.datetime:
+    return pytz.timezone(TIMEZONE).localize(
+        dt.datetime.strptime(val, '%Y-%m-%d %H:%M:%S.%f')
+    )
