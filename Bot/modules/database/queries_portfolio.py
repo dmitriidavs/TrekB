@@ -50,11 +50,11 @@ SELECT
     p.asset_id,
     ticker_symbol,
     quantity,
-    to_char(added_at, 'YYYY-MM-DD HH24:MI:SS TZ') AS added_at
+    SUBSTRING(to_char(added_at, 'YYYY-MM-DD HH24:MI:SS.US TZ'), 1, 23) AS added_at
 FROM users.portfolio AS p
 INNER JOIN users.assets AS a
     ON a.asset_id = p.asset_id
-WHERE user_id = :user_id AND p.asset_id = CAST(:asset_id AS integer)
+WHERE user_id = :user_id AND p.asset_id = :asset_id
 ORDER BY added_at DESC;
 """
 
