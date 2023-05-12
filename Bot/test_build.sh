@@ -6,6 +6,7 @@ IMAGE_NAME=$(sudo docker images --format '{{.Repository}}:{{.Tag}}' --no-trunc |
 CNTNR_NAME=$(sudo docker ps -ql --format "{{.Names}}")
 
 sudo docker system prune -af
+sudo docker volume prune -f
 sudo docker compose down
 sudo docker rmi ${IMAGE_NAME}
 sudo docker compose up -d
