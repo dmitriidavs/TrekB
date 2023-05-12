@@ -22,7 +22,7 @@ args = {
 
 
 def get_wallet_balance(address: str, **context) -> None:
-    pass
+
 
 
 def apply_changes_in_portfolio() -> None:
@@ -41,7 +41,7 @@ with DAG(dag_id='import_wallet_balance_dag',
         task_id=f'get_wallet_balance',
         python_callable=get_wallet_balance,
         op_kwargs={
-            'address': '',
+            'address': 'passed_by_api',
         }
     )
     t_send_ok_message = TelegramOperator(
