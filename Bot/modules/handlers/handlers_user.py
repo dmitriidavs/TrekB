@@ -65,8 +65,19 @@ async def hndlr_info(message: Message) -> None:
 async def hndlr_join(message: Message) -> None:
     """/join command handler"""
 
-    msg = 'Let\'s set you up! Click /add to start your portfolio.'
-    await message.answer(text=msg)
+    # if user has already got a portfolio
+    if await user_has_portfolio(message.from_user.id):
+        msg = f'{message.from_user.first_name}, you already have a portfolio!\n' \
+              'You can hit:\n' \
+              ' • /portfolio - to manage portfolio\n' \
+              ' • /add - to add new assets\n' \
+              ' • /import - to import wallet balance\n' \
+              ' • /flushit - to remove portfolio\n' \
+              ' • /help - to see all capabilities'
+        await message.answer(text=msg, reply_markup=kb_manual)
+    else:
+        msg = 'Let\'s set you up! Click /add to start your portfolio.'
+        await message.answer(text=msg)
 
 
 @log_ux(btn='/help')
