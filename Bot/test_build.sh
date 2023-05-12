@@ -1,4 +1,5 @@
 #!/bin/bash
+# shellcheck disable=SC2086
 
 # TODO before running: chmod +x test_build.sh
 
