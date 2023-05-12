@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS users.users (
     language_code varchar(2) NULL,
     is_premium bool NOT NULL,
     has_portfolio bool DEFAULT FALSE NOT NULL,
-    registration_date timestamptz DEFAULT NOW() NOT NULL,
-    update_date timestamptz DEFAULT NOW() NOT NULL
+    registration_date timestamp DEFAULT NOW() NOT NULL,
+    update_date timestamp DEFAULT NOW() NOT NULL
 );
 """
 
@@ -29,7 +29,7 @@ CREATE TABLE IF NOT EXISTS users.portfolio (
     user_id int8 NOT NULL,
     asset_id int2 NOT NULL,
     quantity float NOT NULL,
-    added_at timestamptz NOT NULL,
+    added_at timestamp NOT NULL,
     PRIMARY KEY(user_id, asset_id, added_at),
     FOREIGN KEY(user_id) REFERENCES users.users(user_id),
     FOREIGN KEY(asset_id) REFERENCES users.assets(asset_id)
