@@ -46,25 +46,27 @@
 1. Install and activate Docker on your OS:
 https://www.docker.com/get-started/
 
-2. Run chosen service setup in **Setups** folder:
+2. Download stable version of the project from **Releases**
+
+3. Run chosen service setup in **Setups** folder:
 
         docker compose up -d
 
-3. Create virtual environment and activate it in **Bot** folder:
+4. Create virtual environment and activate it in **Bot** folder:
 
         python3 -m venv venv
         source venv/bin/activate
 
-4. (venv) Install dependencies:
+5. (venv) Install dependencies:
 
         pip install -r requirements.txt
 
-5. (venv) Create env file with your variables (*see example.env*) and export them:
+6. (venv) Create env file with your variables (*see example.env*) and export them:
 
         python3 -m venv venv
         source env
 
-6. (venv) Run your bot:
+7. (venv) Run your bot:
 
         python3 app.py
 
