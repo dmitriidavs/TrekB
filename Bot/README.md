@@ -40,4 +40,41 @@
     ├── Dockerfile              <- creates custom bot image based on python3.9
     ├── docker-compose.yaml     <- defines multi-container Docker application
     └── app.py                  <- entrypoint
+
+## DIY:
+
+1. Install and activate Docker on your OS:
+https://www.docker.com/get-started/
+
+2. Run chosen service setup in **Setups** folder:
+
+        docker compose up -d
+
+3. Create virtual environment and activate it in **Bot** folder:
+
+        python3 -m venv venv
+        source venv/bin/activate
+
+4. (venv) Install dependencies:
+
+        pip install -r requirements.txt
+
+5. (venv) Create env file with your variables (*see example.env*) and export them:
+
+        python3 -m venv venv
+        source env
+
+6. (venv) Run your bot:
+
+        python3 app.py
+
+
+## Fixes:
+
+1. env file line endings should be converted when sourcing on Unix-based system venv:
+
+        brew install dos2unix
+        dos2unix /path/to/your/env_file
+        source venv/bin/activate
+        source /path/to/your/env_file
     
