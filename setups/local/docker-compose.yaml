@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: stage
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis_cache:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  redis_broker:
+    image: redis
+    ports:
+      - "6380:6379"
+
+volumes:
+  db_data:
