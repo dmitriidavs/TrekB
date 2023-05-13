@@ -77,6 +77,4 @@ https://www.docker.com/get-started/
 
         brew install dos2unix
         dos2unix /path/to/your/env_file
-        source venv/bin/activate
-        source /path/to/your/env_file
     
