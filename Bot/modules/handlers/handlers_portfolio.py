@@ -117,8 +117,7 @@ async def edit_record_quantity(callback: CallbackQuery, broker_data: dict) -> No
     # set data for editing in broker
     await broker.set_asset_editing_data({
         'user_id': callback.from_user.id,
-        'asset_id': broker_data["asset_id"],
-        'added_at': broker_data["added_at"]
+        'record_id': broker_data["record_id"]
     })
 
 
@@ -167,8 +166,7 @@ async def edit_record_date(callback: CallbackQuery, broker_data: dict) -> None:
     # set data for asset editing in broker
     await broker.set_asset_editing_data({
         'user_id': callback.from_user.id,
-        'asset_id': broker_data["asset_id"],
-        'added_at': broker_data["added_at"]
+        'record_id': broker_data["record_id"]
     })
 
 
