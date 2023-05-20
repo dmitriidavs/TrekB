@@ -55,7 +55,7 @@ async def assets_inner_keyboard(user_id: int, broker_data: dict) -> InlineKeyboa
 
     # request asset's records data from users DB
     assets_inner = await get_assets_inner(user_id=user_id, asset_id=broker_data["asset_id"])
-    attributes = ('asset_id', 'ticker_symbol', 'quantity', 'added_at')
+    attributes = ('record_id', 'asset_id', 'ticker_symbol', 'quantity', 'added_at')
 
     # add broker message & get data w/pointers
     new_broker_data = await broker.set_data(user_id=user_id, data=(assets_inner, attributes))
