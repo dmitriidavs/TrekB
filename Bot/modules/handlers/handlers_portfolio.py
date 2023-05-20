@@ -134,12 +134,10 @@ async def stt_edit_record_quantity(message: Message, state: FSMContext) -> None:
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
 
-        # update asset quanity in portfolio table
+        # update asset quantity in portfolio table
         await update_asset_record_data(col='quantity',
-                                       val=message.text,
-                                       user_id=broker_editing_data["user_id"],
-                                       asset_id=broker_editing_data["asset_id"],
-                                       added_at=broker_editing_data["added_at"])
+                                       val=float(message.text),
+                                       record_id=int(broker_editing_data["record_id"]))
 
         # send OK reply message
         msg = f'Good! {message.text} is the new quantity.'
@@ -186,12 +184,10 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
         # get editing data from broker
         broker_editing_data = await broker.get_asset_editing_data(message.from_user.id)
 
-        # update asset quanity in portfolio table
+        # update asset quantity in portfolio table
         await update_asset_record_data(col='added_at',
-                                       val=message.text,
-                                       user_id=broker_editing_data["user_id"],
-                                       asset_id=broker_editing_data["asset_id"],
-                                       added_at=broker_editing_data["added_at"])
+                                       val=float(message.text),
+                                       record_id=int(broker_editing_data["record_id"]))
 
         # send OK reply message
         msg = f'Good! {message.text} is the new date.'
@@ -209,7 +205,8 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
 async def list_delete_asset_history(callback: CallbackQuery, broker_data: dict) -> None:
     """/portfolio -> asset -> delete data: ask if user wants to delete asset data"""
 
-    markup = await delete_asset_history_keyboard(user_id=callback.from_user.id, broker_data=broker_data)
+    markup = await delete_asset_history_keyboard(user_id=callback.from_user.id,
+                                                 broker_data=broker_data)
     msg = f'You\'re about to delete all of the {broker_data["ticker_symbol"]} history. Are you sure?'
     await callback.message.edit_text(text=msg, reply_markup=markup)
 
@@ -219,7 +216,8 @@ async def list_delete_asset_history(callback: CallbackQuery, broker_data: dict) 
 async def delete_asset_history(callback: CallbackQuery, broker_data: dict) -> None:
     """/portfolio -> asset -> delete data: yes"""
 
-    await delete_asset_from_portfolio(user_id=callback.from_user.id, asset_id=broker_data["asset_id"])
+    await delete_asset_from_portfolio(user_id=callback.from_user.id,
+                                      asset_id=int(broker_data["asset_id"]))
     msg = f'{broker_data["ticker_symbol"]} deleted'
     await callback.answer(text=msg)
     await list_portfolio(callback)
@@ -230,7 +228,8 @@ async def delete_asset_history(callback: CallbackQuery, broker_data: dict) -> No
 async def list_delete_record_from_history(callback: CallbackQuery, broker_data: dict) -> None:
     """/portfolio -> asset -> record -> delete data: ask if user wants to delete record data"""
 
-    markup = await delete_record_keyboard(user_id=callback.from_user.id, broker_data=broker_data)
+    markup = await delete_record_keyboard(user_id=callback.from_user.id,
+                                          broker_data=broker_data)
     msg = f'You\'re about to delete {broker_data["quantity"]} {broker_data["ticker_symbol"]} ' \
           f'added on {broker_data["added_at"]}. Are you sure?'
     await callback.message.edit_text(text=msg, reply_markup=markup)
@@ -241,9 +240,7 @@ async def list_delete_record_from_history(callback: CallbackQuery, broker_data: 
 async def delete_record_from_history(callback: CallbackQuery, broker_data: dict) -> None:
     """/portfolio -> asset -> record -> delete data: yes"""
 
-    await delete_record_from_portfolio(user_id=callback.from_user.id,
-                                       asset_id=broker_data["asset_id"],
-                                       added_at=broker_data["added_at"])
+    await delete_record_from_portfolio(record_id=int(broker_data["record_id"]))
     msg = f'-{broker_data["quantity"]} {broker_data["ticker_symbol"]} | {broker_data["added_at"]}'
     await callback.answer(text=msg)
     await list_asset_history(callback, broker_data)
@@ -370,7 +367,7 @@ async def stt_asset_quantity(message: Message, state: FSMContext) -> None:
             # add asset to portfolio table in DB
             is_first_entry = await add_asset_to_portfolio(user_id=message.from_user.id,
                                                           asset_name=data["asset_name"],
-                                                          asset_quantity=data["asset_quantity"])
+                                                          asset_quantity=float(data["asset_quantity"]))
             # set menu commands for the user after adding first asset
             if is_first_entry:
                 await set_menu_commands(message.bot, message.from_user.id)
