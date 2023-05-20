@@ -24,7 +24,8 @@ from ..validation import (
 )
 from ..validation.formatters import (
     format_float_to_currency,
-    format_dt
+    format_dt,
+    format_str_to_dt
 )
 from ..keyboards.menu import set_menu_commands
 from ..keyboards.reply import (
@@ -184,7 +185,7 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
 
         # update asset quantity in portfolio table
         await update_asset_record_data(col='added_at',
-                                       val=message.text,
+                                       val=format_str_to_dt(message.text),
                                        record_id=int(broker_editing_data["record_id"]))
 
         # send OK reply message
