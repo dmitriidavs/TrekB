@@ -1,6 +1,3 @@
-import datetime as dt
-import pytz
-
 from sqlalchemy import text
 from asyncpg.exceptions import PostgresError as UsersDBError
 
