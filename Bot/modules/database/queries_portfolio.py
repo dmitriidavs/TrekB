@@ -45,6 +45,7 @@ GROUP BY user_id, p.asset_id, a.ticker_symbol;
 
 SQL_SELECT_ASSETS_INNER = """
 SELECT
+    p.record_id,
     p.asset_id,
     ticker_symbol,
     quantity,
@@ -59,7 +60,7 @@ ORDER BY added_at DESC;
 SQL_UPDATE_ASSET_RECORD = """
 UPDATE users.portfolio
 SET {col} = :val
-WHERE user_id = :user_id AND asset_id = :asset_id AND added_at = :added_at;
+WHERE record_id = :record_id;
 """
 
 SQL_DELETE_ASSET = """
@@ -69,5 +70,5 @@ WHERE user_id = :user_id AND asset_id = :asset_id;
 
 SQL_DELETE_RECORD = """
 DELETE FROM users.portfolio
-WHERE user_id = :user_id AND asset_id = :asset_id AND added_at = :added_at;
+WHERE record_id = :record_id;
 """
