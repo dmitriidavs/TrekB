@@ -1,3 +1,5 @@
+from ..creds import TIMEZONE
+
 SQL_CREATE_SCHEMA_USERS = """
 CREATE SCHEMA IF NOT EXISTS users;
 """
@@ -24,12 +26,12 @@ CREATE TABLE IF NOT EXISTS users.users (
 );
 """
 
-SQL_CREATE_TABLE_PORTFOLIO = """
+SQL_CREATE_TABLE_PORTFOLIO = f"""
 CREATE TABLE IF NOT EXISTS users.portfolio (
     user_id int8 NOT NULL,
     asset_id int2 NOT NULL,
     quantity float NOT NULL,
-    added_at timestamp NOT NULL,
+    added_at timestamp DEFAULT timezone('{TIMEZONE}', now()),
     PRIMARY KEY(user_id, asset_id, added_at),
     FOREIGN KEY(user_id) REFERENCES users.users(user_id),
     FOREIGN KEY(asset_id) REFERENCES users.assets(asset_id)
