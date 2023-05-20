@@ -184,7 +184,7 @@ async def stt_edit_record_date(message: Message, state: FSMContext) -> None:
 
         # update asset quantity in portfolio table
         await update_asset_record_data(col='added_at',
-                                       val=float(message.text),
+                                       val=message.text,
                                        record_id=int(broker_editing_data["record_id"]))
 
         # send OK reply message
