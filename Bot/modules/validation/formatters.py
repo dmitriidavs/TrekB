@@ -27,3 +27,7 @@ def format_dt(val: str) -> str:
     ).strftime(
         '%b %d, %Y %H:%M:%S'
     )
+
+
+def format_str_to_dt(val: str) -> dt.datetime:
+    return dt.datetime.strptime(val, '%Y-%m-%d %H:%M:%S')
