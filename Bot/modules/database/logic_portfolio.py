@@ -1,3 +1,5 @@
+import datetime as dt
+
 from sqlalchemy import text
 from asyncpg.exceptions import PostgresError as UsersDBError
 
@@ -150,7 +152,7 @@ async def get_assets_inner(user_id: int, asset_id: str) -> list[tuple[int, float
             await conn.session.close()
 
 
-async def update_asset_record_data(col: str, val: float, record_id: int) -> None:
+async def update_asset_record_data(col: str, val: dt.datetime, record_id: int) -> None:
     """Update user's asset info"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
