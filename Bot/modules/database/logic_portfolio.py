@@ -40,8 +40,7 @@ async def add_asset_to_portfolio(user_id: int, asset_name: str, asset_quantity: 
             await conn.session.execute(text(SQL_ADD_ASSET_TO_PORTFOLIO),
                                        {'user_id': user_id,
                                         'asset_name': asset_name,
-                                        'asset_quantity': asset_quantity,
-                                        'added_at': dt.datetime.now()})
+                                        'asset_quantity': asset_quantity})
             await conn.session.commit()
         except UsersDBError as error:
             raise error
