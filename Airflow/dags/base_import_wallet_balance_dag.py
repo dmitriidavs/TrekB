@@ -9,6 +9,7 @@ from moralis import evm_api
 from includes.CustomConnectors.DBMSconnection import DBMSCreateConnection
 from includes.CustomConnectors.context import ContextOperator
 from includes.utils.log import logger
+from includes.utils.notification import notify_on_task_failure
 from includes.creds import *
 
 
@@ -18,6 +19,7 @@ args = {
     'retries': 2,
     'retry_delay': dt.timedelta(minutes=3),
     'depends_on_past': False,
+    'on_failure_callback': notify_on_task_failure
 }
 
 
