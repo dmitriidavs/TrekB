@@ -106,13 +106,31 @@ async def delete_asset_from_portfolio(user_id: int, asset_id: int) -> None:
         except UsersDBError as error:
             raise error
         else:
-            # TODO: if last asset -> update has_portfolio = False in users DB
-            pass
+            # check if no more records in portfolio
+            try:
+                response = (await conn.session.execute(text(SQL_SELECT_REMAINING),
+                                                       {'user_id': user_id})).fetchone()[0]
+            except UsersDBError as error:
+                raise error
+            else:
+                if response == 0:
+                    try:
+                        # update has_portfolio = False in users DB
+                        await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
+                                                   {'user_id': user_id,
+                                                    'has_portfolio': False})
+                        await conn.session.commit()
+                    except UsersDBError as error:
+                        raise error
+                    else:
+                        # update user_has_portfolio key
+                        await cache.set_data(key=f'user_has_portfolio:{user_id}',
+                                             value=0)
         finally:
             await conn.session.close()
 
 
-async def delete_record_from_portfolio(record_id: int) -> None:
+async def delete_record_from_portfolio(user_id: int, record_id: int) -> None:
     """Delete user's record data"""
 
     async with DBMSCreateConnection(USERS_DB_CONN) as conn:
@@ -122,6 +140,27 @@ async def delete_record_from_portfolio(record_id: int) -> None:
             await conn.session.commit()
         except UsersDBError as error:
             raise error
+        else:
+            # check if no more records in portfolio
+            try:
+                response = (await conn.session.execute(text(SQL_SELECT_REMAINING),
+                                                       {'user_id': user_id})).fetchone()[0]
+            except UsersDBError as error:
+                raise error
+            else:
+                if response == 0:
+                    try:
+                        # update has_portfolio = False in users DB
+                        await conn.session.execute(text(SQL_UPDATE_USER_HAS_PORTFOLIO_FLAG),
+                                                   {'user_id': user_id,
+                                                    'has_portfolio': False})
+                        await conn.session.commit()
+                    except UsersDBError as error:
+                        raise error
+                    else:
+                        # update user_has_portfolio key
+                        await cache.set_data(key=f'user_has_portfolio:{user_id}',
+                                             value=0)
         finally:
             await conn.session.close()
 
