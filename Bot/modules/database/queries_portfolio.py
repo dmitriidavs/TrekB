@@ -26,7 +26,7 @@ SQL_DELETE_PORTFOLIO = """
 WITH deleted AS (
     DELETE FROM users.portfolio
     WHERE user_id = :user_id
-    RETURNING *
+    RETURNING record_id
 )
 SELECT COUNT(*) FROM deleted;
 """
@@ -71,4 +71,9 @@ WHERE user_id = :user_id AND asset_id = :asset_id;
 SQL_DELETE_RECORD = """
 DELETE FROM users.portfolio
 WHERE record_id = :record_id;
+"""
+
+SQL_SELECT_REMAINING = """
+SELECT COUNT(*) FROM users.portfolio
+WHERE user_id = :user_id
 """
