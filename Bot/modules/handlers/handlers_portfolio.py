@@ -239,7 +239,8 @@ async def list_delete_record_from_history(callback: CallbackQuery, broker_data: 
 async def delete_record_from_history(callback: CallbackQuery, broker_data: dict) -> None:
     """/portfolio -> asset -> record -> delete data: yes"""
 
-    await delete_record_from_portfolio(record_id=int(broker_data["record_id"]))
+    await delete_record_from_portfolio(user_id=callback.from_user.id,
+                                       record_id=int(broker_data["record_id"]))
     msg = f'-{broker_data["quantity"]} {broker_data["ticker_symbol"]} | {broker_data["added_at"]}'
     await callback.answer(text=msg)
     await list_asset_history(callback, broker_data)
