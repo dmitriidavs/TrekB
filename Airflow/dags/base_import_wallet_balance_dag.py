@@ -17,14 +17,14 @@ args = {
     'owner': 'dmitriidavs',
     'start_date': dt.datetime(2023, 5, 3, 10, 0, 0, 0),
     'retries': 2,
-    'retry_delay': dt.timedelta(minutes=3),
+    'retry_delay': dt.timedelta(seconds=3),
     'depends_on_past': False,
     'on_failure_callback': notify_on_task_failure
 }
 
 
 def get_wallet_balance(address: str, **context) -> None:
-
+    pass
 
 
 def apply_changes_in_portfolio() -> None:
