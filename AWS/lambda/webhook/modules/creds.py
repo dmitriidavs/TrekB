@@ -9,4 +9,4 @@ WEBHOOK_URL = os.environ.get('WEBHOOK_URL')
 AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
 AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
 
-BUCKET_DAGS = os.environ.get('BUCKET_DAGS')
+BUCKET_DAGS = os.environ.get('BUCKET_DAGS')     # should include different paths for base and active copies
