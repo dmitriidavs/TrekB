@@ -9,3 +9,5 @@ aioredis==2.0.1
 xxhash==3.2.0
 msgpack==1.0.5
 greenlet==2.0.2
+uvicorn==0.21.1
+fastapi==0.95.0
