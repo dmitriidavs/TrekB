@@ -4,7 +4,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from ..database.logic import get_supported_networks
 
 
-wallet_address_cd = CallbackData('list_newtworks', 'network_id', 'network_name', 'wallet_address')
+wallet_address_cd = CallbackData('list_networks', 'network_id', 'network_name', 'wallet_address')
 
 
 def create_cd_bc(network_id: int, network_name: str, wallet_address: str = '_wallet_address_err') -> str:
