@@ -16,11 +16,11 @@ async def hndlr_summary(message: Message) -> None:
     msg = 'OK. Loading your portfolio summary.'
     await message.answer(text=msg)
 
-    # copy base summary DAG
-    create_dag_copy(BUCKET_DAGS, f'{message.from_user.id}_portfolio_summary_dag',
-                    BUCKET_DAGS, 'base_portfolio_summary_dag')
-
-    # activate DAG with custom params
+    # # copy base summary DAG
+    # create_dag_copy(BUCKET_DAGS, f'{message.from_user.id}_portfolio_summary_dag',
+    #                 BUCKET_DAGS, 'base_portfolio_summary_dag')
+    #
+    # # activate DAG with custom params
 
 
 # @dp.message_handler(commands=['import'], state=None)
