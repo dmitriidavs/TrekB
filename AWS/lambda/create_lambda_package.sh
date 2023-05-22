@@ -9,7 +9,7 @@ PACKAGE_NAME="webhook"
 echo 'Creating src files.'
 cd ${TARGET_FUNC}
 mkdir src
-pip install -r requirements.txt --target src
+pip3 install -r requirements.txt --target src
 cp app.py src/lambda_function.py
 cp -r modules src
 
