@@ -3,7 +3,7 @@ FROM python:3.9.15-alpine3.16
 WORKDIR /app
 
 COPY modules modules
-COPY env .
+COPY .env .
 COPY app.py .
 COPY requirements.txt .
 
