@@ -1,4 +1,4 @@
-__all__ = ['corebot', 'bot_ctx',
+__all__ = ['corebot',
            'bot', 'dp']
 
 from .corebot import CoreBot
