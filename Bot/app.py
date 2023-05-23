@@ -4,12 +4,11 @@ TrekB | Smart Portfolio Tracker
 :license: Apache 2.0, see LICENSE for more details
 """
 
-from aiogram.utils import executor
+import uvicorn
 
-from modules.handlers import dp
-from modules.bot.bot_ctx import on_startup, on_shutdown
+from modules.handlers.webhook import app
 
 
 if __name__ == '__main__':
-    # start polling
-    executor.start_polling(dp, skip_updates=True, on_startup=on_startup, on_shutdown=on_shutdown)
+    # start the FastAPI server
+    uvicorn.run(app, host="0.0.0.0", port=8000)
