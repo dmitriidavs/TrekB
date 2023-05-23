@@ -31,20 +31,3 @@ class CoreBot:
                                          state_ttl=FSM_TTL)
 
         return Dispatcher(self.bot, storage=self.storage)
-
-
-# class LiteBot(CoreBot):
-#     """Lite Bot class creator"""
-#
-#     def __init__(self,
-#                  api_token: str, arch_type: str, users_db_conn: str, util_db_host: str,
-#                  util_db_port: int, storage_type: str):
-#
-#         super().__init__(api_token, storage_type, util_db_host, util_db_port)
-#         super().set_bot()
-#         super().set_dispatcher()
-#         self.arch_type = arch_type
-#         self.users_db_conn = users_db_conn
-#         # TODO: add connectors to db through external parent class in DBMSconnection
-#         # smth like set_conn depending on bot class
-
