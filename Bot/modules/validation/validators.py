@@ -47,6 +47,9 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     log_port: Optional[int]
     log_type: str
 
+    # webhook
+    webhook_url: str
+
     # links
     project_link: str
     supported_assets_link: str
