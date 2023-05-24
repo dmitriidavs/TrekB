@@ -1,1 +1,1 @@
-__all__ = ['reply', 'inline', 'callback']
+__all__ = ['reply', 'inline', 'menu', 'callback']
