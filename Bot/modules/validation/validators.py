@@ -48,7 +48,9 @@ class EnvVars(EnvVarsValidTypes, BaseModel):
     log_type: str
 
     # webhook
-    webhook_url: str
+    webhook_host: str
+    local_server_host: str
+    local_server_port: int
 
     # links
     project_link: str
