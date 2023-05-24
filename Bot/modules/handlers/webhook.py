@@ -3,7 +3,7 @@ from aiogram import types, Dispatcher, Bot
 
 from . import dp
 from ..bot import bot
-from ..creds import BOT_API_TOKEN, WEBHOOK_URL
+from ..creds import BOT_API_TOKEN, WEBHOOK_HOST
 from ..database.ddl_setup import setup_users_ddl
 from ..creds import BOT_ARCH_TYPE, BOT_ADDRESS, LOG_TYPE
 
@@ -33,7 +33,7 @@ async def on_startup():
     ]
 
     # set webhook
-    webhook_url = f'{WEBHOOK_URL}/bot/{BOT_API_TOKEN}'
+    webhook_url = f'{WEBHOOK_HOST}/bot/{BOT_API_TOKEN}'
     if await bot.get_webhook_info() != webhook_url:
         await bot.set_webhook(url=webhook_url)
         on_startup_message.append('Webhook has been set')
