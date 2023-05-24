@@ -6,9 +6,10 @@ TrekB | Smart Portfolio Tracker
 
 import uvicorn
 
+from modules.creds import LOCAL_SERVER_HOST, LOCAL_SERVER_PORT
 from modules.handlers.webhook import app
 
 
 if __name__ == '__main__':
-    # start the FastAPI server
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    # start local FastAPI server
+    uvicorn.run(app, host=LOCAL_SERVER_HOST, port=LOCAL_SERVER_PORT)
