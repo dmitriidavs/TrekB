@@ -54,5 +54,9 @@ async def on_shutdown():
     """On shutdown: remove webhook"""
 
     await bot.delete_webhook()
-    print('Webhook has been removed\n')
+    await bot.close()
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    print('Webhook has been removed')
+    print('All connections have been closed')
     print(f'{BOT_ARCH_TYPE} {BOT_ADDRESS} deactivated')
