@@ -22,7 +22,9 @@ env_vars = validate_env_vars({
     'log_folder_path': os.environ.get('LOG_FOLDER_PATH'),
     'log_host': os.environ.get('LOG_HOST'),
     'log_port': os.environ.get('LOG_PORT'),
-    'webhook_url': os.environ.get('WEBHOOK_URL'),
+    'webhook_host': os.environ.get('WEBHOOK_HOST'),
+    'local_server_host': os.environ.get('LOCAL_SERVER_HOST'),
+    'local_server_port': os.environ.get('LOCAL_SERVER_PORT'),
     'project_link': os.environ.get('PROJECT_LINK'),
     'supported_assets_link': os.environ.get('SUPPORTED_ASSETS_LINK'),
 })
@@ -52,7 +54,9 @@ LOG_FOLDER_PATH = env_vars['log_folder_path']
 LOG_HOST = env_vars['log_host']
 LOG_PORT = env_vars['log_port']
 
-WEBHOOK_URL = env_vars['webhook_url']
+WEBHOOK_HOST = env_vars['webhook_host']
+LOCAL_SERVER_HOST = env_vars['local_server_host']
+LOCAL_SERVER_PORT = env_vars['local_server_port']
 
 PROJECT_LINK = env_vars['project_link']
 SUPPORTED_ASSETS_LINK = env_vars['supported_assets_link']
